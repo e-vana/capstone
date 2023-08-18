@@ -10,7 +10,9 @@ export default function HomeView() {
     <div>
       <h1>Hey Team!</h1>
       {teamMembersIsLoading && <h1>Loading...</h1>}
-      {teamMembersIsError && <h1>Problem loading todos</h1>}
+      {teamMembersIsError && (
+        <h1>Cant find team members. Make sure you start the server!</h1>
+      )}
       {teamMembersData &&
         teamMembersData.teamMembers.map((teamMember) => (
           <div key={teamMember.name}>{teamMember.name}</div>
