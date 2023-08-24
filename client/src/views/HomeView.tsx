@@ -13,7 +13,7 @@ export default function HomeView() {
       {teamMembersIsError && (
         <h1>Cant find team members. Make sure you start the server!</h1>
       )}
-      {teamMembersData &&
+      {teamMembersData?.teamMembers &&
         teamMembersData.teamMembers.map((teamMember) => (
           <div key={teamMember.name}>{teamMember.name}</div>
         ))}

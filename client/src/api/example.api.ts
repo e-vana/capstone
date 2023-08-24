@@ -9,6 +9,6 @@ interface GetTeamMembersResponse {
 
 export const getTeamMembers =
   async function (): Promise<GetTeamMembersResponse> {
-    let response = await axios.get("http://localhost:3000");
-    return response.data;
+    let response = await axios.get(`${import.meta.env.VITE_BASE_URL}/test`);
+    return response.data as GetTeamMembersResponse;
   };
