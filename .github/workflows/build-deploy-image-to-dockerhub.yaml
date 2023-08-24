@@ -22,11 +22,8 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build \
-            --build-arg DOCKERHUB_USERNAME=${DOCKERHUB_USERNAME} \
-            --build-arg DOCKERHUB_TOKEN=${DOCKERHUB_TOKEN} \
-            -t ${{ secrets.DOCKERHUB_USERNAME }}/your-image-name:latest -f path/to/Dockerfile .
+          docker build --build-arg VITE_BASE_URL="" -t ${{ secrets.DOCKERHUB_USERNAME }}/capstone:latest .
 
       - name: Push Docker image to Docker Hub
         run: |
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/your-image-name:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/capstone:latest
