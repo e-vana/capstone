@@ -2,7 +2,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express, { Express } from "express";
 import morgan from "morgan";
-import { testRouter } from "./routes/test.routes";
+import { userRouter } from "./routes/users.routes";
 import path from "path";
 dotenv.config();
 
@@ -18,7 +18,7 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(morgan("dev"));
-app.use("/test", testRouter);
+app.use("/users", userRouter);
 
 if (process.env.NODE_ENV == "production") {
   app.use(express.static(path.join(__dirname, "../../client/dist")));
