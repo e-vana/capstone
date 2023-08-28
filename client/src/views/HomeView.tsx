@@ -14,7 +14,15 @@ const HomeView: FunctionComponent = () => {
     data: userData,
     isLoading: userIsLoading,
     isError: userIsError,
-  } = useQuery("getUsers", waitWrapper(getUsers)); // waits for two seconds to test loader
+  } = useQuery({
+    queryKey: ["getUsers"],
+    queryFn: waitWrapper(getUsers), // waits for two seconds to test loader
+    onSuccess: () =>
+      toast({
+        status: "success",
+        title: "Success",
+      }),
+  });
 
   const renderState = {
     loading: (
@@ -35,10 +43,7 @@ const HomeView: FunctionComponent = () => {
             userData.users.map((user: Omit<iUser, "password">) => (
               <UserCard key={user.email} user={user} />
             ))}
-          {toast({
-            status: "success",
-            title: "Success",
-          })}
+
           <Button as={RouterLink} to={"/test"}>
             Go To Test Page
           </Button>
