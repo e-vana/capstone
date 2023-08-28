@@ -1,5 +1,13 @@
 import { useState } from "react";
 import { useAppSelector, useAppDispatch } from "../app/hooks";
+import {
+  Heading,
+  Stack,
+  HStack,
+  Button,
+  FormLabel,
+  Input,
+} from "@chakra-ui/react";
 import { increment, decrement, addByAmount } from "../features/counterReducer";
 
 const TestView = () => {
@@ -7,34 +15,23 @@ const TestView = () => {
   const dispatch = useAppDispatch();
   const [amt, setAmt] = useState<number>(0);
 
-  const handleFormSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    dispatch(addByAmount(amt));
-  };
-
   return (
-    <div>
-      <h1>Count: {count}</h1>
-      <div
-        style={{
-          display: "flex",
-        }}
-      >
-        <button onClick={() => dispatch(increment())}>Add +</button>
-        <button onClick={() => dispatch(decrement())}>Subtract -</button>
-      </div>
-      <div>
-        <form onSubmit={handleFormSubmit}>
-          <label>Add by amount</label>
-          <input
-            type="number"
-            value={amt}
-            onChange={(e) => setAmt(+e.currentTarget.value)} // ts '+' turns string to number
-          />
-          <button type="submit">+</button>
-        </form>
-      </div>
-    </div>
+    <Stack align={"center"}>
+      <Heading>Count: {count}</Heading>
+      <HStack>
+        <Button onClick={() => dispatch(increment())}>Add +</Button>
+        <Button onClick={() => dispatch(decrement())}>Subtract -</Button>
+      </HStack>
+      <HStack>
+        <FormLabel>Add by amount</FormLabel>
+        <Input
+          type="number"
+          value={amt}
+          onChange={(e) => setAmt(+e.currentTarget.value)} // ts '+' turns string to number
+        />
+        <Button onClick={() => dispatch(addByAmount(amt))}>+</Button>
+      </HStack>
+    </Stack>
   );
 };
 
