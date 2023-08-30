@@ -50,6 +50,7 @@ router.post(
       let connection = await mysql.createConnection(
         process.env.DATABASE_URL as string
       );
+      await connection.beginTransaction();
       let selectUserQuery = `SELECT * FROM users WHERE email = ?`;
       const [userExists] = await connection.query<RowDataPacket[]>(
         selectUserQuery,
@@ -62,11 +63,17 @@ router.post(
       if (!passwordsMatch) {
         throw { message: "Incorrect password." };
       }
+      let getUserPermissionsQuery = `SELECT user_id, organization_id, level FROM permissions WHERE user_id = ?`;
+      const [userPermissions] = await connection.query<RowDataPacket[]>(
+        getUserPermissionsQuery,
+        userExists[0].id
+      );
       const token = jwt.sign(
-        { id: userExists[0].id },
+        { userId: userExists[0].id, permissions: userPermissions },
         process.env.JWT_SECRET!,
         { expiresIn: "24h" }
       );
+      await connection.commit();
       await connection.end();
       res.status(200).json({ success: true, jwt: token });
     } catch (error) {
