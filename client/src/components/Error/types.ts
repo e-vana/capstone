@@ -1,6 +1,7 @@
+import { StackProps } from "@chakra-ui/react";
 import { FunctionComponent } from "react";
 
-interface ErrorMessageProps {
+interface ErrorMessageProps extends StackProps {
   code: number;
   message: string;
 }
