@@ -4,6 +4,7 @@ import express, { Express } from "express";
 import morgan from "morgan";
 import { userRouter } from "./routes/users.routes";
 import path from "path";
+import { authRouter } from "./routes/auth.routes";
 dotenv.config();
 
 const app: Express = express();
@@ -19,6 +20,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(morgan("dev"));
 app.use("/users", userRouter);
+app.use("/auth", authRouter);
 
 if (process.env.NODE_ENV == "production") {
   app.use(express.static(path.join(__dirname, "../../client/dist")));
