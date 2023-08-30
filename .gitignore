@@ -4,3 +4,13 @@ server/dist
 
 client/.env.development
 client/.env.production
+client/node_modules
+
+# MacOS generated files
+**/.DS_Store
+**/__MACOSX
+**/.Spotlight-V100
+**/.Trashes
+# For Windows
+**/Thumbs.db 
+**/$RECYCLE.BIN/
