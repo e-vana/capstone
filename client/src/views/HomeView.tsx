@@ -26,7 +26,7 @@ const HomeView: FunctionComponent = () => {
 
   const renderState = {
     loading: (
-      <Stack align={"center"} minH={"100vh"} justify={"center"}>
+      <Stack align={"center"} height={"100%"} flex={1} justify={"center"}>
         <Spinner color={"green"} size={"xl"} />
       </Stack>
     ),
@@ -34,17 +34,18 @@ const HomeView: FunctionComponent = () => {
       <ErrorMessage
         code={404}
         message="Cant find users. Make sure you start the server!"
+        flex={1}
       />
     ),
     success: () => (
-      <Stack align={"center"} height={"100vh"} justify={"center"}>
+      <Stack align={"center"} height={"100%"} flex={1} justify={"center"}>
         <Stack>
           {userData?.users &&
             userData.users.map((user: Omit<iUser, "password">) => (
               <UserCard key={user.email} user={user} />
             ))}
 
-          <Button as={RouterLink} to={"/test"}>
+          <Button as={RouterLink} to={"test"}>
             Go To Test Page
           </Button>
         </Stack>
