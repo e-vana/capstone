@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Flex,
   Box,
@@ -11,10 +12,48 @@ import {
   Text,
   useColorModeValue,
   Link,
+  useToast,
 } from "@chakra-ui/react";
-import { Link as RouterLink } from "react-router-dom";
+import { useMutation } from "react-query";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { iUser } from "../../interfaces/user.interface";
+import { loginUser } from "../../api/users.api";
 
 const Login = () => {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const toast = useToast();
+  const navigate = useNavigate();
+
+  const mutation = useMutation((data: Pick<iUser, "email" | "password">) => {
+    return loginUser(data);
+  });
+
+  const handleSubmit = () => {
+    const data: Pick<iUser, "email" | "password"> = {
+      email: email,
+      password: password,
+    };
+    mutation.mutate(data);
+  };
+
+  if (mutation.isSuccess) {
+    toast({
+      status: "success",
+      title: "Logging in",
+    });
+    navigate("/home");
+    mutation.reset();
+  }
+
+  if (mutation.status === "error") {
+    toast({
+      status: "error",
+      title: "error logging in",
+    });
+    mutation.reset();
+  }
+
   return (
     <>
       <Flex
@@ -39,17 +78,25 @@ const Login = () => {
           <Box
             rounded={"lg"}
             bg={useColorModeValue("white", "#505050")}
-            boxShadow={"lg"}
+            boxShadow={useColorModeValue("lg", "none")}
             p={8}
           >
             <Stack spacing={4}>
               <FormControl id="email">
                 <FormLabel>Email address</FormLabel>
-                <Input type="email" />
+                <Input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.currentTarget.value)}
+                />
               </FormControl>
               <FormControl id="password">
                 <FormLabel>Password</FormLabel>
-                <Input type="password" />
+                <Input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.currentTarget.value)}
+                />
               </FormControl>
               <Stack spacing={10}>
                 <Stack
@@ -66,6 +113,8 @@ const Login = () => {
                   _hover={{
                     bg: "purple.500",
                   }}
+                  isLoading={mutation.isLoading}
+                  onClick={handleSubmit}
                 >
                   Sign in
                 </Button>

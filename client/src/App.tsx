@@ -15,9 +15,10 @@ import Login from "./views/Auth/login";
 import Register from "./views/Auth/register";
 import { LandingNav } from "./components/Nav/landingNav";
 import HeroView from "./views/HeroView";
-import DashNav from "./components/Nav/DashNav";
+import { DashNav } from "./components/Nav/DashNav";
 import ToolBar from "./components/Nav/ToolBar";
 import SettingsView from "./views/SettingsView";
+import AuthGuard from "./components/RouteGuard/AuthGuard";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -52,9 +53,11 @@ const DashNavOutlet = () => {
       spacing={0}
       bg={useColorModeValue("#ffffff", "#303030")}
     >
-      <DashNav />
-      <Outlet />
-      <ToolBar />
+      <AuthGuard>
+        <DashNav />
+        <Outlet />
+        <ToolBar />
+      </AuthGuard>
     </Stack>
   );
 };
@@ -112,7 +115,7 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <ChakraProvider
           toastOptions={{
-            defaultOptions: { position: "bottom-right", isClosable: true },
+            defaultOptions: { position: "top-right", isClosable: true },
           }}
           theme={theme}
         >

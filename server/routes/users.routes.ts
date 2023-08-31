@@ -4,15 +4,6 @@ import mysql, { ResultSetHeader } from "mysql2/promise";
 
 const router: Router = Router();
 
-interface User {
-  email: string;
-  first_name: string;
-  last_name: string;
-  password: string;
-  created_at: Date;
-  updated_at: Date;
-}
-
 router.get("/", async (req: Request, res: Response) => {
   try {
     let connection = await mysql.createConnection(

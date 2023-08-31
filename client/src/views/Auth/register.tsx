@@ -13,13 +13,57 @@ import {
   Text,
   useColorModeValue,
   Link,
+  useToast,
 } from "@chakra-ui/react";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import { useMutation } from "react-query";
+import { iUser } from "../../interfaces/user.interface";
+import { registerUser } from "../../api/users.api";
 
 const Register = () => {
+  const [email, setEmail] = useState<string>("");
+  const [firstName, setFirstName] = useState<string>("");
+  const [lastName, setLastName] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const [showPassword, setShowPassword] = useState(false);
+
+  const toast = useToast();
+  const navigate = useNavigate();
+
+  const mutation = useMutation(
+    (data: Omit<iUser, "created_at" | "updated_at">) => {
+      return registerUser(data);
+    }
+  );
+
+  const handleSubmit = () => {
+    const data: Omit<iUser, "created_at" | "updated_at"> = {
+      first_name: firstName,
+      last_name: lastName,
+      email: email,
+      password: password,
+    };
+    mutation.mutate(data);
+  };
+
+  if (mutation.isSuccess) {
+    toast({
+      status: "success",
+      title: "Created Account!",
+    });
+    navigate("/home");
+    mutation.reset();
+  }
+
+  if (mutation.status === "error") {
+    toast({
+      status: "error",
+      title: "error creating account",
+    });
+    mutation.reset();
+  }
 
   return (
     <Flex
@@ -44,7 +88,7 @@ const Register = () => {
         <Box
           rounded={"lg"}
           bg={useColorModeValue("white", "#505050")}
-          boxShadow={"lg"}
+          boxShadow={useColorModeValue("lg", "none")}
           p={8}
         >
           <Stack spacing={4}>
@@ -52,24 +96,40 @@ const Register = () => {
               <Box>
                 <FormControl id="firstName" isRequired>
                   <FormLabel>First Name</FormLabel>
-                  <Input type="text" />
+                  <Input
+                    type="text"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.currentTarget.value)}
+                  />
                 </FormControl>
               </Box>
               <Box>
                 <FormControl id="lastName">
                   <FormLabel>Last Name</FormLabel>
-                  <Input type="text" />
+                  <Input
+                    type="text"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.currentTarget.value)}
+                  />
                 </FormControl>
               </Box>
             </HStack>
             <FormControl id="email" isRequired>
               <FormLabel>Email address</FormLabel>
-              <Input type="email" />
+              <Input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.currentTarget.value)}
+              />
             </FormControl>
             <FormControl id="password" isRequired>
               <FormLabel>Password</FormLabel>
               <InputGroup>
-                <Input type={showPassword ? "text" : "password"} />
+                <Input
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.currentTarget.value)}
+                />
                 <InputRightElement h={"full"}>
                   <Button
                     variant={"ghost"}
@@ -86,11 +146,13 @@ const Register = () => {
               <Button
                 loadingText="Submitting"
                 size="lg"
-                bg={"purple.400"}
+                bg={useColorModeValue("purple.500", "purple.400")}
                 color={"white"}
                 _hover={{
-                  bg: "blue.500",
+                  bg: useColorModeValue("purple.500", "purple.400"),
                 }}
+                isLoading={mutation.isLoading}
+                onClick={handleSubmit}
               >
                 Sign up
               </Button>
