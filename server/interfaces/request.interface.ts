@@ -1,9 +1,10 @@
-import { User } from "../interfaces/user.interface";
+import { iPermission } from "./permissions.interface";
 
 declare global {
   namespace Express {
     interface Request {
-      user?: User;
+      userId: string | undefined;
+      permissions: iPermission[];
     }
   }
 }

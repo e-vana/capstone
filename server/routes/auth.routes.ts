@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
 dotenv.config();
-import { protect } from "../middleware/auth.middleware";
+import decodeToken from "../middleware/token.middleware";
 import { User } from "../interfaces/user.interface";
 const router: Router = Router();
 
@@ -52,7 +52,7 @@ router.post(
 
       // generate token
       const token = jwt.sign(
-        { id: resultsInsertUser.insertId },
+        { userId: resultsInsertUser.insertId, permissions: [] },
         process.env.JWT_SECRET!,
         { expiresIn: "24h" }
       );
@@ -101,9 +101,15 @@ router.post(
         throw { message: "Incorrect password." };
       }
 
+      const getUserPermissionsQuery = `SELECT user_id, organization_id, level FROM permissions WHERE user_id = ?`;
+      const [userPermissions] = await connection.query<RowDataPacket[]>(
+        getUserPermissionsQuery,
+        userExists[0].id
+      );
+
       // sign token
       const token = jwt.sign(
-        { id: userExists[0].id },
+        { userId: userExists[0].id, permissions: userPermissions },
         process.env.JWT_SECRET!,
         { expiresIn: "24h" }
       );
@@ -120,24 +126,27 @@ router.post(
 );
 
 // call middleware function -> protect
-router.get("/me", protect, async (req: Request, res: Response) => {
+router.get("/me", decodeToken, async (req: Request, res: Response) => {
   try {
     // check if user exists on req object
-    if (!req.user) {
+    if (req.userId === undefined) {
+      console.log(req.userId);
       res.status(404).json({ error: "User not found" });
     }
 
-    // bind user without password
-    const user: Omit<User, "password"> = {
-      first_name: req.user?.first_name!,
-      last_name: req.user?.last_name!,
-      email: req.user?.email!,
-      created_at: req.user?.created_at!,
-      updated_at: req.user?.updated_at!,
-    };
+    const connection = await mysql.createConnection(
+      process.env.DATABASE_URL as string
+    );
+    const query = `SELECT * FROM users WHERE id = ?`;
+
+    const [rows] = await connection.execute<RowDataPacket[]>(query, [
+      req.userId,
+    ]);
+
+    const foundUser: Omit<User, "password"> = rows[0] as User;
 
     // return the user
-    res.status(200).json({ message: "success", data: user });
+    res.status(200).json({ message: "success", data: foundUser });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Server error" });
