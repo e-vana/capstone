@@ -21,7 +21,6 @@ const decodeToken = async function (
       }
       req.permissions = (<any>tokenIsValid).permissions;
       req.userId = (<any>tokenIsValid).userId;
-      console.log(req.userId);
     }
     next();
   } catch (error) {
