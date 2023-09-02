@@ -44,7 +44,6 @@ const HomeView: FunctionComponent = () => {
             userData.users.map((user: Omit<iUser, "password">) => (
               <UserCard key={user.email} user={user} />
             ))}
-
           <Button as={RouterLink} to={"test"}>
             Go To Test Page
           </Button>
