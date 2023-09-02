@@ -23,7 +23,8 @@ CREATE TABLE organizations (
 CREATE TABLE events (
   id INT AUTO_INCREMENT PRIMARY KEY,
   organization_id INT,
-  name VARCHAR(100) NOT NULL,
+  created_by_user_id INT,
+  name VARCHAR(150) NOT NULL,
   description TEXT,
   address_street VARCHAR(100) NOT NULL,
   address_city VARCHAR(100) NOT NULL,
@@ -86,10 +87,10 @@ INSERT INTO organizations (owner_user_id, name, website_url, phone_number, logo_
   (1, 'Org1', 'https://org1.com', '+123456789', 'https://org1.com/logo.png'),
   (1, 'Org2', 'https://org2.com', '+987654321', 'https://org2.com/logo.png'),
   (2, 'Org3', 'https://org3.com', '+555555555', 'https://org3.com/logo.png');
-INSERT INTO events (organization_id, name, description, address_street, address_city, address_state, address_zipcode, start_time, end_time) VALUES
-  (1, 'Event1', 'Description for Event 1', '123 Main St', 'City1', 'State1', '12345', '2023-08-28 10:00:00', '2023-08-28 15:00:00'),
-  (1, 'Event2', 'Description for Event 2', '456 Elm St', 'City1', 'State1', '12345', '2023-09-05 13:00:00', '2023-09-05 18:00:00'),
-  (2, 'Event3', 'Description for Event 3', '789 Oak St', 'City2', 'State2', '67890', '2023-08-30 09:30:00', '2023-08-30 12:30:00');
+INSERT INTO events (organization_id, created_by_user_id, name, description, address_street, address_city, address_state, address_zipcode, start_time, end_time) VALUES
+  (1, 6, 'Event1', 'Description for Event 1', '123 Main St', 'City1', 'State1', '12345', '2023-08-28 10:00:00', '2023-08-28 15:00:00'),
+  (1, 6, 'Event2', 'Description for Event 2', '456 Elm St', 'City1', 'State1', '12345', '2023-09-05 13:00:00', '2023-09-05 18:00:00'),
+  (2, 6, 'Event3', 'Description for Event 3', '789 Oak St', 'City2', 'State2', '67890', '2023-08-30 09:30:00', '2023-08-30 12:30:00');
 INSERT INTO work_hours (event_id, user_id, start_time, end_time) VALUES
   (1, 1, '2023-08-28 09:00:00', '2023-08-28 17:00:00'),
   (2, 2, '2023-09-05 10:00:00', '2023-09-05 16:00:00'),
