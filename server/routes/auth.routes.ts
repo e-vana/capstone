@@ -143,10 +143,18 @@ router.get("/me", decodeToken, async (req: Request, res: Response) => {
       req.userId,
     ]);
 
-    const foundUser: Omit<User, "password"> = rows[0] as User;
+    const foundUser: User = rows[0] as User;
+
+    const returnUser: Omit<User, "password"> = {
+      first_name: foundUser.first_name,
+      last_name: foundUser.last_name,
+      email: foundUser.email,
+      created_at: foundUser.created_at,
+      updated_at: foundUser.updated_at,
+    };
 
     // return the user
-    res.status(200).json({ message: "success", data: foundUser });
+    res.status(200).json({ message: "success", data: returnUser });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Server error" });

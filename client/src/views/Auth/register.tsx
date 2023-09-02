@@ -14,6 +14,9 @@ import {
   useColorModeValue,
   Link,
   useToast,
+  List,
+  UnorderedList,
+  ListItem,
 } from "@chakra-ui/react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -21,12 +24,14 @@ import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { useMutation } from "react-query";
 import { iUser } from "../../interfaces/user.interface";
 import { registerUser } from "../../api/users.api";
+import { RegisterComponent } from "./types";
 
-const Register = () => {
+const Register: RegisterComponent = () => {
   const [email, setEmail] = useState<string>("");
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [showPassword, setShowPassword] = useState(false);
 
   const toast = useToast();
@@ -38,7 +43,36 @@ const Register = () => {
     }
   );
 
-  const handleSubmit = () => {
+  const passwordErrors = [];
+
+  if (!/[A-Z]/.test(password)) {
+    passwordErrors.push("One capital letter is required");
+  }
+
+  if (!/[a-z]/.test(password)) {
+    passwordErrors.push("One lowercase letter is required");
+  }
+
+  if (!/[\d/]/.test(password)) {
+    passwordErrors.push("One digit is required");
+  }
+
+  if (!/[@!?=()]/.test(password)) {
+    passwordErrors.push("One special character (@!?=()) is required");
+  }
+
+  if (password.length < 8 || password.length > 15) {
+    passwordErrors.push("Password must be between 8 and 15 characters long");
+  }
+
+  if (
+    confirmPassword !== password ||
+    (password === "" && confirmPassword === "")
+  ) {
+    passwordErrors.push("Passwords must match");
+  }
+
+  const handleSubmit = (): void => {
     const data: Omit<iUser, "created_at" | "updated_at"> = {
       first_name: firstName,
       last_name: lastName,
@@ -104,7 +138,7 @@ const Register = () => {
                 </FormControl>
               </Box>
               <Box>
-                <FormControl id="lastName">
+                <FormControl id="lastName" isRequired>
                   <FormLabel>Last Name</FormLabel>
                   <Input
                     type="text"
@@ -142,7 +176,27 @@ const Register = () => {
                 </InputRightElement>
               </InputGroup>
             </FormControl>
+            <FormControl id="confirm-password" isRequired>
+              <FormLabel>Confirm Password</FormLabel>
+              <Input
+                type={showPassword ? "text" : "password"}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.currentTarget.value)}
+              />
+            </FormControl>
             <Stack spacing={10} pt={2}>
+              <List fontSize={"sm"} color={useColorModeValue("red", "red.400")}>
+                {passwordErrors.length > 0 && password !== "" && (
+                  <>
+                    <Text>Password needs the following: </Text>
+                    <UnorderedList>
+                      {passwordErrors.map((err) => (
+                        <ListItem>{err}</ListItem>
+                      ))}
+                    </UnorderedList>
+                  </>
+                )}
+              </List>
               <Button
                 loadingText="Submitting"
                 size="lg"
@@ -153,6 +207,9 @@ const Register = () => {
                 }}
                 isLoading={mutation.isLoading}
                 onClick={handleSubmit}
+                isDisabled={
+                  passwordErrors.length > 0 || confirmPassword !== password
+                }
               >
                 Sign up
               </Button>
