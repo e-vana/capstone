@@ -18,8 +18,9 @@ import { useMutation } from "react-query";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { iUser } from "../../interfaces/user.interface";
 import { loginUser } from "../../api/users.api";
+import { LoginComponent } from "./types";
 
-const Login = () => {
+const Login: LoginComponent = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const toast = useToast();
