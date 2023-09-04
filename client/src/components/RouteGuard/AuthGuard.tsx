@@ -15,7 +15,8 @@ const AuthGuard: AuthGuardComponent = ({ children }) => {
     queryFn: getUser,
   });
 
-  const isAuthenticated = isSuccess && data != null;
+  const isAuthenticated =
+    localStorage.getItem("token") && (isSuccess && data) != null;
 
   if (isLoading) {
     return (
@@ -24,7 +25,7 @@ const AuthGuard: AuthGuardComponent = ({ children }) => {
       </Stack>
     );
   } else if (isError || !isAuthenticated) {
-    navigate("/");
+    navigate("/login");
     return null;
   } else {
     dispatch(setUser(data!));
