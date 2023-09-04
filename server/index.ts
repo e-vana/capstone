@@ -6,6 +6,8 @@ import { userRouter } from "./routes/users.routes";
 import path from "path";
 import { authRouter } from "./routes/auth.routes";
 import { organizationsRouter } from "./routes/organizations.routes";
+import { eventsRouter } from "./routes/events.routes";
+import { tasksRouter } from "./routes/tasks.routes";
 dotenv.config();
 
 const app: Express = express();
@@ -23,6 +25,8 @@ app.use(morgan("dev"));
 app.use("/users", userRouter);
 app.use("/auth", authRouter);
 app.use("/organizations", organizationsRouter);
+app.use("/organizations", eventsRouter);
+app.use("/organizations", tasksRouter);
 
 if (process.env.NODE_ENV == "production") {
   app.use(express.static(path.join(__dirname, "../../client/dist")));

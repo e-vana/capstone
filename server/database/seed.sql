@@ -41,18 +41,14 @@ CREATE TABLE users_events (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (user_id, event_id)
 );
-CREATE TABLE task (
+CREATE TABLE tasks (
   id INT AUTO_INCREMENT PRIMARY KEY,
   event_id INT,
-  created_by_user_id INT,
   name VARCHAR(150) NOT NULL,
   description TEXT,
-  address_street VARCHAR(100) NOT NULL,
-  address_city VARCHAR(100) NOT NULL,
-  address_state VARCHAR(100) NOT NULL,
-  address_zipcode VARCHAR(100) NOT NULL,
-  start_time TIMESTAMP,
-  end_time TIMESTAMP,
+  completed BOOLEAN NOT NULL DEFAULT 0,
+  completed_by_user_id INT,
+  completed_at TIMESTAMP,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
@@ -115,3 +111,5 @@ INSERT INTO work_expenses (event_id, user_id, expense_name, expense_type, amount
   (1, 1, 'Lunch Meeting', 'Meals', 30.50, 'Lunch with clients', 'https://receipts.com/lunch.jpg');
 
 INSERT INTO users_events (user_id, event_id) VALUES (1, 1);
+INSERT INTO tasks (event_id, name, description) VALUES
+  (1, "Outdoor cleanup - South East Door", "Clean up outdoor entrance after event ends.");
