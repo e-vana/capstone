@@ -24,7 +24,7 @@ const decodeToken = async function (
     }
     next();
   } catch (error) {
-    res.status(400).json({ success: false, error });
+    res.status(401).json({ success: false, error });
   }
 };
 

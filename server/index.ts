@@ -10,7 +10,7 @@ import { eventsRouter } from "./routes/events.routes";
 import { tasksRouter } from "./routes/tasks.routes";
 dotenv.config();
 
-const app: Express = express();
+export const app: Express = express();
 const port = process.env.PORT;
 app.use(
   cors({
