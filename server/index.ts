@@ -34,7 +34,7 @@ if (process.env.NODE_ENV == "production") {
     res.sendFile(path.join(__dirname, "../../client/dist/index.html"));
   });
 }
-
+//RANDOM COMMENT
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);
 });
