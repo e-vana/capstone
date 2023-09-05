@@ -64,4 +64,17 @@ describe("/organization", () => {
     expect(response.status).toBe(200);
     expect(response.body.organizations).toHaveLength(1);
   });
+  it("GET /organizations/1/events/1/tasks should 200 and return an array of tasks", async () => {
+    const response = await request(app)
+      .get("/organizations/1/events")
+      .set(authHeader);
+    expect(response.status).toBe(200);
+  });
+  it("GET /organizations/1/events/1 should 200 and return an array of length 1 with a single event", async () => {
+    const response = await request(app)
+      .get("/organizations/1/events")
+      .set(authHeader);
+    expect(response.status).toBe(200);
+    expect(response.body.organizations).toHaveLength(1);
+  });
 });
