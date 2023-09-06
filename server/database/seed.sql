@@ -1,3 +1,13 @@
+DROP TABLE IF EXISTS permissions;
+DROP TABLE IF EXISTS work_expenses;
+DROP TABLE IF EXISTS work_miles;
+DROP TABLE IF EXISTS work_hours;
+DROP TABLE IF EXISTS tasks;
+DROP TABLE IF EXISTS users_events;
+DROP TABLE IF EXISTS events;
+DROP TABLE IF EXISTS organizations;
+DROP TABLE IF EXISTS users;
+
 CREATE TABLE users (
   id INT AUTO_INCREMENT PRIMARY KEY,
   email VARCHAR(100) NOT NULL,
@@ -91,7 +101,7 @@ CREATE TABLE permissions (
   PRIMARY KEY (user_id, organization_id)
 );
 INSERT INTO users (email, first_name, last_name, password) VALUES
-  ('test@test.com', 'test', 'test', '$2b$10$PufwQrTeW5b1PfjwqY/oueOrD78LNlB5Sy1t4eiG9ta/QfhGbF4Pi');
+  ('test@test.com', 'test', 'test', '$2b$10$3HHLfnRLhhjJKJOWk2HnPOb90giJc6pRhpRdznFeoUFbu2i5oBn4y');
 
 INSERT INTO organizations (owner_user_id, name, website_url, phone_number, logo_url) VALUES
   (1, 'test_org', 'https://testorg.com', '+123456789', 'https://testorg.com/logo.png');
