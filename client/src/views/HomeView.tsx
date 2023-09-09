@@ -13,12 +13,21 @@ import {
   Tr,
   Text,
   Button,
+  IconButton,
+  Badge,
+  Tabs,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tab,
 } from "@chakra-ui/react";
 import { FunctionComponent, useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { getEvents } from "../api/events.api";
 import { getOrganizations } from "../api/organizations.api";
 import ErrorMessage from "../components/Error";
+import { AddIcon } from "@chakra-ui/icons";
+import MyOrganizationsView from "./MyOrganizationsView";
 const HomeView: FunctionComponent = () => {
   const {
     data: orgData,
@@ -57,86 +66,29 @@ const HomeView: FunctionComponent = () => {
       />
     ),
     success: () => (
-      <Box w="100%" p={4}>
-        <Heading marginBottom={"20px"}>Hey, User</Heading>
-        <Heading as="h6" size="xs" marginBottom={"5px"}>
-          Organizations
-        </Heading>
-        {orgData && (
-          <>
-            <Select
-              width={"200px"}
-              marginBottom={"50px"}
-              onChange={(e) => {
-                setSelectedOrganization(parseInt(e.target.value));
-              }}
-            >
-              {orgData &&
-                orgData.organizations.map((org) => {
-                  return <option value={org.id}>{org.name}</option>;
-                })}
-            </Select>
-          </>
-        )}
-        <Heading as="h4" size="md" marginBottom={"5px"}>
-          Events
-        </Heading>
-        {eventIsRefetching && (
-          <Stack align={"center"} height={"100%"} flex={1} justify={"center"}>
-            <Spinner color={"green"} size={"xl"} />
-          </Stack>
-        )}
+      <>
+        <h1>
+          <Tabs>
+            <TabList>
+              <Tab>Home</Tab>
+              <Tab>My Events</Tab>
+              <Tab>My Organizations</Tab>
+            </TabList>
 
-        {eventData && !eventIsRefetching && (
-          <>
-            <TableContainer>
-              <Table variant="simple">
-                <Thead>
-                  <Tr>
-                    <Th>Name</Th>
-                    <Th>Date & Time</Th>
-                    <Th>Description</Th>
-                    <Th>Location</Th>
-                    <Th>Options</Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {eventData.events.map((e) => {
-                    return (
-                      <>
-                        <Tr>
-                          <Td>{e.name}</Td>
-                          <Td>
-                            <div style={{ display: "block" }}>
-                              <Text fontSize="xs">
-                                {new Date(e.start_time).toDateString()}
-                              </Text>
-                            </div>
-                            <div style={{ display: "block" }}>
-                              <Text fontSize="md">
-                                {new Date(e.start_time).toLocaleTimeString()} to{" "}
-                                {new Date(e.end_time).toLocaleTimeString()}
-                              </Text>
-                            </div>
-                          </Td>
-                          <Td>{e.description}</Td>
-                          <Td>
-                            {e.address_street}, {e.address_city},{" "}
-                            {e.address_state} {e.address_zipcode}
-                          </Td>
-                          <Td>
-                            <Button variant="solid">View Event</Button>
-                          </Td>
-                        </Tr>
-                      </>
-                    );
-                  })}
-                </Tbody>
-              </Table>
-            </TableContainer>
-          </>
-        )}
-      </Box>
+            <TabPanels>
+              <TabPanel>
+                <h1>Home</h1>
+              </TabPanel>
+              <TabPanel>
+                <h1>My Events</h1>
+              </TabPanel>
+              <TabPanel>
+                <MyOrganizationsView></MyOrganizationsView>
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
+        </h1>
+      </>
     ),
   };
 
