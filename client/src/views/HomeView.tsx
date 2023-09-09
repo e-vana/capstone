@@ -1,29 +1,57 @@
+import {
+  Box,
+  Heading,
+  Select,
+  Spinner,
+  Stack,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+  Text,
+  Button,
+  IconButton,
+  Badge,
+  Tabs,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tab,
+} from "@chakra-ui/react";
+import { FunctionComponent, useEffect, useState } from "react";
 import { useQuery } from "react-query";
-import { Link as RouterLink } from "react-router-dom";
-import { Button, Spinner, Stack, useToast } from "@chakra-ui/react";
-import { getUsers, waitWrapper } from "../api/users.api";
-import { FunctionComponent } from "react";
+import { getEvents } from "../api/events.api";
+import { getOrganizations } from "../api/organizations.api";
 import ErrorMessage from "../components/Error";
-import UserCard from "../components/User/userCard";
-import { iUser } from "../interfaces/user.interface";
-
+import { AddIcon } from "@chakra-ui/icons";
+import MyOrganizationsView from "./MyOrganizationsView";
 const HomeView: FunctionComponent = () => {
-  const toast = useToast();
-
   const {
-    data: userData,
-    isLoading: userIsLoading,
-    isError: userIsError,
+    data: orgData,
+    isLoading: orgIsLoading,
+    isError: orgIsError,
   } = useQuery({
-    queryKey: ["getUsers"],
-    queryFn: waitWrapper(getUsers), // waits for two seconds to test loader
-    onSuccess: () =>
-      toast({
-        status: "success",
-        title: "Success",
-      }),
+    queryKey: ["getOrganizations"],
+    queryFn: getOrganizations,
   });
 
+  const {
+    data: eventData,
+    isLoading: eventIsLoading,
+    isError: eventIsError,
+    refetch: refetchEvents,
+    isRefetching: eventIsRefetching,
+  } = useQuery("getEvents", () => getEvents(selectedOrganization), {
+    enabled: false,
+  });
+
+  const [selectedOrganization, setSelectedOrganization] = useState<number>(1);
+  useEffect(() => {
+    refetchEvents();
+  }, [selectedOrganization]);
   const renderState = {
     loading: (
       <Stack align={"center"} height={"100%"} flex={1} justify={"center"}>
@@ -33,28 +61,40 @@ const HomeView: FunctionComponent = () => {
     error: (
       <ErrorMessage
         code={404}
-        message="Cant find users. Make sure you start the server!"
+        message="Cant find organizations. Make sure you start the server!"
         flex={1}
       />
     ),
     success: () => (
-      <Stack align={"center"} height={"100%"} flex={1} justify={"center"}>
-        <Stack>
-          {userData?.users &&
-            userData.users.map((user: Omit<iUser, "password">) => (
-              <UserCard key={user.email} user={user} />
-            ))}
-          <Button as={RouterLink} to={"test"}>
-            Go To Test Page
-          </Button>
-        </Stack>
-      </Stack>
+      <>
+        <h1>
+          <Tabs>
+            <TabList>
+              <Tab>Home</Tab>
+              <Tab>My Events</Tab>
+              <Tab>My Organizations</Tab>
+            </TabList>
+
+            <TabPanels>
+              <TabPanel>
+                <h1>Home</h1>
+              </TabPanel>
+              <TabPanel>
+                <h1>My Events</h1>
+              </TabPanel>
+              <TabPanel>
+                <MyOrganizationsView></MyOrganizationsView>
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
+        </h1>
+      </>
     ),
   };
 
-  if (userIsLoading) return renderState.loading;
-  else if (userIsError) return renderState.error;
-  else if (userData?.users) return renderState.success();
+  if (orgIsLoading) return renderState.loading;
+  else if (orgIsError) return renderState.error;
+  else if (orgData?.organizations) return renderState.success();
 };
 
 export default HomeView;

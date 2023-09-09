@@ -64,12 +64,12 @@ const HeroView = () => {
                 _hover={{
                   bg: "purple.500",
                 }}
-                to={"/home"}
+                to={"/register"}
               >
-                Add Organization
+                Register Today
               </Button>
-              <Button as={RouterLink} to={"/about"} rounded={"full"}>
-                How It Works
+              <Button as={RouterLink} to={"/login"} rounded={"full"}>
+                Login
               </Button>
             </Stack>
           </Stack>
