@@ -1,38 +1,24 @@
-import { useQuery } from "react-query";
-import { Link as RouterLink } from "react-router-dom";
 import {
   Box,
-  Button,
-  Card,
-  CardBody,
   Heading,
   Select,
   Spinner,
   Stack,
-  Stat,
-  StatHelpText,
-  StatLabel,
-  StatNumber,
-  useToast,
-} from "@chakra-ui/react";
-import { getUsers, waitWrapper } from "../api/users.api";
-import { FunctionComponent, useEffect, useState } from "react";
-import ErrorMessage from "../components/Error";
-import UserCard from "../components/User/userCard";
-import { iUser } from "../interfaces/user.interface";
-import { getOrganizations } from "../api/organizations.api";
-import { getEvents } from "../api/events.api";
-import {
   Table,
-  Thead,
-  Tbody,
-  Tfoot,
-  Tr,
-  Th,
-  Td,
-  TableCaption,
   TableContainer,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+  Text,
+  Button,
 } from "@chakra-ui/react";
+import { FunctionComponent, useEffect, useState } from "react";
+import { useQuery } from "react-query";
+import { getEvents } from "../api/events.api";
+import { getOrganizations } from "../api/organizations.api";
+import ErrorMessage from "../components/Error";
 const HomeView: FunctionComponent = () => {
   const {
     data: orgData,
@@ -66,7 +52,7 @@ const HomeView: FunctionComponent = () => {
     error: (
       <ErrorMessage
         code={404}
-        message="Cant find users. Make sure you start the server!"
+        message="Cant find organizations. Make sure you start the server!"
         flex={1}
       />
     ),
@@ -108,8 +94,10 @@ const HomeView: FunctionComponent = () => {
                 <Thead>
                   <Tr>
                     <Th>Name</Th>
+                    <Th>Date & Time</Th>
                     <Th>Description</Th>
                     <Th>Location</Th>
+                    <Th>Options</Th>
                   </Tr>
                 </Thead>
                 <Tbody>
@@ -118,10 +106,26 @@ const HomeView: FunctionComponent = () => {
                       <>
                         <Tr>
                           <Td>{e.name}</Td>
+                          <Td>
+                            <div style={{ display: "block" }}>
+                              <Text fontSize="xs">
+                                {new Date(e.start_time).toDateString()}
+                              </Text>
+                            </div>
+                            <div style={{ display: "block" }}>
+                              <Text fontSize="md">
+                                {new Date(e.start_time).toLocaleTimeString()} to{" "}
+                                {new Date(e.end_time).toLocaleTimeString()}
+                              </Text>
+                            </div>
+                          </Td>
                           <Td>{e.description}</Td>
                           <Td>
                             {e.address_street}, {e.address_city},{" "}
                             {e.address_state} {e.address_zipcode}
+                          </Td>
+                          <Td>
+                            <Button variant="solid">View Event</Button>
                           </Td>
                         </Tr>
                       </>
