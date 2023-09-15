@@ -1,5 +1,5 @@
 import {
-  Box,
+  Card,
   Heading,
   Select,
   Spinner,
@@ -15,13 +15,21 @@ import {
   Button,
   IconButton,
   Badge,
+  CardFooter,
+  Icon,
+  useColorModeValue,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { FunctionComponent, useEffect, useState } from "react";
+import { Link as RouterLink } from "react-router-dom";
 import { useQuery } from "react-query";
 import { getEvents } from "../api/events.api";
 import { getOrganizations } from "../api/organizations.api";
 import ErrorMessage from "../components/Error";
-import { AddIcon } from "@chakra-ui/icons";
+import { AddIcon, ChevronRightIcon } from "@chakra-ui/icons";
+import "./table.css";
+import AddOrg from "../components/AddModal/AddOrg";
+
 const MyOrganizationsView: FunctionComponent = () => {
   const {
     data: orgData,
@@ -46,6 +54,9 @@ const MyOrganizationsView: FunctionComponent = () => {
   useEffect(() => {
     refetchEvents();
   }, [selectedOrganization]);
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   const renderState = {
     loading: (
       <Stack align={"center"} height={"100%"} flex={1} justify={"center"}>
@@ -60,7 +71,7 @@ const MyOrganizationsView: FunctionComponent = () => {
       />
     ),
     success: () => (
-      <Stack style={{ height: "100vh" }} w="100%" p={4} flex={1}>
+      <Stack w="100%" p={4} flex={1} height={"fit-content"}>
         <Heading as="h1" size="lg" marginBottom={"20px"}>
           My Organizations
         </Heading>
@@ -86,7 +97,8 @@ const MyOrganizationsView: FunctionComponent = () => {
                 aria-label="Create new organization"
                 icon={<AddIcon />}
                 marginLeft={"5px"}
-              ></IconButton>
+                onClick={onOpen}
+              />
             </div>
           </>
         )}
@@ -104,7 +116,7 @@ const MyOrganizationsView: FunctionComponent = () => {
             icon={<AddIcon />}
             marginLeft={"5px"}
             size="xs"
-          ></IconButton>
+          />
         </div>
 
         {eventIsRefetching && (
@@ -115,7 +127,7 @@ const MyOrganizationsView: FunctionComponent = () => {
 
         {eventData && !eventIsRefetching && (
           <>
-            <TableContainer>
+            <TableContainer display={{ base: "none", md: "initial" }}>
               <Table variant="simple">
                 <Thead>
                   <Tr>
@@ -181,8 +193,36 @@ const MyOrganizationsView: FunctionComponent = () => {
                 </Tbody>
               </Table>
             </TableContainer>
+            <Stack display={{ base: "initial", md: "none" }}>
+              {eventData.events.map((e) => (
+                <Card
+                  backgroundColor={useColorModeValue("white", "#505050")}
+                  color={useColorModeValue("blackAlpha.700", "white")}
+                >
+                  <CardFooter
+                    width={"100%"}
+                    alignItems={"center"}
+                    justifyContent={"space-between"}
+                  >
+                    <Heading size={"sm"}>{e.name}</Heading>
+                    <Button
+                      colorScheme="purple"
+                      alignSelf={"end"}
+                      variant={"outline"}
+                      justifyContent={"space-between"}
+                      width={"50%"}
+                      as={RouterLink}
+                      to={"/" + e.organization_id + "/" + e.name}
+                    >
+                      View Event <Icon as={ChevronRightIcon} />
+                    </Button>
+                  </CardFooter>
+                </Card>
+              ))}
+            </Stack>
           </>
         )}
+        <AddOrg isOpen={isOpen} onClose={onClose} />
       </Stack>
     ),
   };

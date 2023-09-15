@@ -1,10 +1,10 @@
 import { extendTheme, type ThemeConfig } from "@chakra-ui/react";
-import { GlobalStyleProps, mode } from "@chakra-ui/theme-tools";
+import { mode } from "@chakra-ui/theme-tools";
 
 const styles = {
-  global: (props: GlobalStyleProps) => ({
+  global: (props) => ({
     body: {
-      bg: mode("#f6dcb7", "#303030")(props),
+      bg: mode("#ffffff", "#303030")(props),
     },
   }),
 };

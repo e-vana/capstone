@@ -1,20 +1,6 @@
 import {
-  Box,
-  Heading,
-  Select,
   Spinner,
   Stack,
-  Table,
-  TableContainer,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  Tr,
-  Text,
-  Button,
-  IconButton,
-  Badge,
   Tabs,
   TabList,
   TabPanel,
@@ -26,7 +12,6 @@ import { useQuery } from "react-query";
 import { getEvents } from "../api/events.api";
 import { getOrganizations } from "../api/organizations.api";
 import ErrorMessage from "../components/Error";
-import { AddIcon } from "@chakra-ui/icons";
 import MyOrganizationsView from "./MyOrganizationsView";
 const HomeView: FunctionComponent = () => {
   const {
@@ -38,20 +23,6 @@ const HomeView: FunctionComponent = () => {
     queryFn: getOrganizations,
   });
 
-  const {
-    data: eventData,
-    isLoading: eventIsLoading,
-    isError: eventIsError,
-    refetch: refetchEvents,
-    isRefetching: eventIsRefetching,
-  } = useQuery("getEvents", () => getEvents(selectedOrganization), {
-    enabled: false,
-  });
-
-  const [selectedOrganization, setSelectedOrganization] = useState<number>(1);
-  useEffect(() => {
-    refetchEvents();
-  }, [selectedOrganization]);
   const renderState = {
     loading: (
       <Stack align={"center"} height={"100%"} flex={1} justify={"center"}>
@@ -68,22 +39,17 @@ const HomeView: FunctionComponent = () => {
     success: () => (
       <>
         <h1>
-          <Tabs>
+          <Tabs defaultIndex={0} variant={"line"} colorScheme="purple" isLazy>
             <TabList>
-              <Tab>Home</Tab>
-              <Tab>My Events</Tab>
-              <Tab>My Organizations</Tab>
+              <Tab>Organizations</Tab>
+              <Tab>Events</Tab>
             </TabList>
-
             <TabPanels>
-              <TabPanel>
-                <h1>Home</h1>
+              <TabPanel flex={1}>
+                <MyOrganizationsView></MyOrganizationsView>
               </TabPanel>
               <TabPanel>
                 <h1>My Events</h1>
-              </TabPanel>
-              <TabPanel>
-                <MyOrganizationsView></MyOrganizationsView>
               </TabPanel>
             </TabPanels>
           </Tabs>
