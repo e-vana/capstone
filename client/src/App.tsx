@@ -87,7 +87,11 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/home",
-        element: <HomeView />,
+        element: (
+          <Stack flex={1}>
+            <HomeView />
+          </Stack>
+        ),
       },
       {
         path: "/home/test",
@@ -113,17 +117,10 @@ function App() {
   return (
     <>
       <QueryClientProvider client={queryClient}>
-        <ChakraProvider
-          toastOptions={{
-            defaultOptions: { position: "top-right", isClosable: true },
-          }}
-          theme={theme}
-        >
-          <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-          <Provider store={store}>
-            <RouterProvider router={router} />
-          </Provider>
-        </ChakraProvider>
+        <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+        <Provider store={store}>
+          <RouterProvider router={router} />
+        </Provider>
       </QueryClientProvider>
     </>
   );

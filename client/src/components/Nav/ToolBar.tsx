@@ -54,6 +54,7 @@ const ToolBar = () => {
       minH={"60px"}
       borderTop={"1px solid"}
       borderColor={useColorModeValue("gray.200", "gray.900")}
+      bg={useColorModeValue("#ffffff", "#303030")}
     >
       <HStack width={"100%"} px={5} justify={"space-around"}>
         {TOOL_BAR_ITEMS.map((item) => (
