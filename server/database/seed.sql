@@ -7,6 +7,10 @@ DROP TABLE IF EXISTS users_events;
 DROP TABLE IF EXISTS events;
 DROP TABLE IF EXISTS organizations;
 DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS teams;
+DROP TABLE IF EXISTS users_teams;
+DROP TABLE IF EXISTS users_orgs;
+
 
 CREATE TABLE users (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -30,9 +34,17 @@ CREATE TABLE organizations (
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   UNIQUE KEY unique_name (name)
 );
-CREATE TABLE events (
+CREATE TABLE teams (
   id INT AUTO_INCREMENT PRIMARY KEY,
   organization_id INT,
+  created_by_user_id INT,
+  name VARCHAR(100) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+CREATE TABLE events (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  team_id INT,
   created_by_user_id INT,
   name VARCHAR(150) NOT NULL,
   description TEXT,
@@ -44,6 +56,12 @@ CREATE TABLE events (
   end_time TIMESTAMP,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+CREATE TABLE users_orgs (
+  user_id INT,
+  organization_id INT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (user_id, organization_id)
 );
 CREATE TABLE users_events (
   event_id INT,  
@@ -106,11 +124,11 @@ INSERT INTO users (email, first_name, last_name, password) VALUES
 INSERT INTO organizations (owner_user_id, name, website_url, phone_number, logo_url) VALUES
   (1, 'test_org', 'https://testorg.com', '+123456789', 'https://testorg.com/logo.png');
 
-INSERT INTO permissions (user_id, organization_id) VALUES (1, 1);
-
-INSERT INTO events (organization_id, created_by_user_id, name, description, address_street, address_city, address_state, address_zipcode, start_time, end_time) VALUES
+INSERT INTO permissions (user_id, organization_id, level) VALUES (1, 1, 0);
+INSERT INTO teams (organization_id, created_by_user_id, name) VALUES (1, 1, "Soup Kitchen");
+INSERT INTO events (team_id, created_by_user_id, name, description, address_street, address_city, address_state, address_zipcode, start_time, end_time) VALUES
   (1, 1, 'test_event', 'Description for test_event', '1234 Test Street', 'test_city', 'test_state', '12345', '2023-08-28 10:00:00', '2023-08-28 15:00:00');
-
+INSERT INTO users_orgs (user_id, organization_id) VALUES (1, 1);
 INSERT INTO work_hours (event_id, user_id, start_time, end_time) VALUES
   (1, 1, '2023-08-28 09:00:00', '2023-08-28 17:00:00');
 

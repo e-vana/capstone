@@ -8,6 +8,7 @@ import { authRouter } from "./routes/auth.routes";
 import { organizationsRouter } from "./routes/organizations.routes";
 import { eventsRouter } from "./routes/events.routes";
 import { tasksRouter } from "./routes/tasks.routes";
+import { teamsRouter } from "./routes/teams.routes";
 dotenv.config();
 
 const app: Express = express();
@@ -27,7 +28,7 @@ app.use("/auth", authRouter);
 app.use("/organizations", organizationsRouter);
 app.use("/organizations", eventsRouter);
 app.use("/organizations", tasksRouter);
-
+app.use("/organizations", teamsRouter);
 if (process.env.NODE_ENV == "production") {
   app.use(express.static(path.join(__dirname, "../../client/dist")));
   app.get("/*", function (req, res) {
@@ -38,4 +39,4 @@ if (process.env.NODE_ENV == "production") {
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);
 });
-//Test commit 
+//Test commit

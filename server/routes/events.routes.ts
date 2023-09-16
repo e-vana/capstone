@@ -63,10 +63,6 @@ router.post(
 //GET ALL EVENTS IN AN ORGANIZATION
 router.get("/:organization_id/events", async (req: Request, res: Response) => {
   try {
-    let validationErrors = validationResult(req);
-    if (!validationErrors.isEmpty()) {
-      throw { validationErrors: validationErrors.array() };
-    }
     let connection = await mysql.createConnection(
       process.env.DATABASE_URL as string
     );
@@ -86,10 +82,6 @@ router.get(
   "/:organization_id/events/:event_id",
   async (req: Request, res: Response) => {
     try {
-      let validationErrors = validationResult(req);
-      if (!validationErrors.isEmpty()) {
-        throw { validationErrors: validationErrors.array() };
-      }
       let connection = await mysql.createConnection(
         process.env.DATABASE_URL as string
       );
@@ -109,4 +101,44 @@ router.get(
   }
 );
 
+//GET EVENTS IN A TEAM
+router.get(
+  "/:organization_id/teams/:team_id/events",
+  async (req: Request, res: Response) => {
+    try {
+      let connection = await mysql.createConnection(
+        process.env.DATABASE_URL as string
+      );
+      let getEventsQuery = `SELECT * FROM events WHERE team_id = ?`;
+      const [getEventsResults] = await connection.query<RowDataPacket[]>(
+        getEventsQuery,
+        [parseInt(req.params.team_id), parseInt(req.params.event_id)]
+      );
+      await connection.end();
+      res.status(200).json({ success: true, events: getEventsResults });
+    } catch (error) {
+      res.status(500).json({ success: false, error });
+    }
+  }
+);
+//GET AN EVENT IN A TEAM
+router.get(
+  "/:organization_id/teams/:team_id/events/:event_id",
+  async (req: Request, res: Response) => {
+    try {
+      let connection = await mysql.createConnection(
+        process.env.DATABASE_URL as string
+      );
+      let getEventsQuery = `SELECT * FROM events WHERE team_id = ? AND id = ?`;
+      const [getEventsResults] = await connection.query<RowDataPacket[]>(
+        getEventsQuery,
+        [parseInt(req.params.team_id), parseInt(req.params.event_id)]
+      );
+      await connection.end();
+      res.status(200).json({ success: true, events: getEventsResults });
+    } catch (error) {
+      res.status(500).json({ success: false, error });
+    }
+  }
+);
 export { router as eventsRouter };
