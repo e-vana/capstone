@@ -69,7 +69,11 @@ const AddOrg: AddOrgComponent = ({ isOpen, onClose }) => {
       title: "Added Organization!",
     });
     mutation.reset();
-    queryClient.invalidateQueries("getOrganizations");
+    queryClient.invalidateQueries([
+      "getOrganizations",
+      "getEvents",
+      "getTeams",
+    ]);
   }
 
   if (mutation.isError) {
