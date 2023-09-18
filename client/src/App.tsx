@@ -1,4 +1,5 @@
 import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import { Provider } from "react-redux";
 import {
@@ -8,6 +9,7 @@ import {
   theme,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { Helmet } from "react-helmet";
 import HomeView from "./views/HomeView";
 import TestView from "./views/TestView";
 import { store } from "./app/store";
@@ -30,35 +32,41 @@ export const queryClient = new QueryClient({
 
 const LandingNavOutlet = () => {
   return (
-    <Stack
-      position={"relative"}
-      minH={"100vh"}
-      flex={1}
-      spacing={0}
-      bg={useColorModeValue("#ffffff", "#303030")}
-    >
-      <LandingNav />
-      <Outlet />
-    </Stack>
+    <>
+      <Helmet defaultTitle={import.meta.env.VITE_APP_NAME} titleTemplate={"%s | " + import.meta.env.VITE_APP_NAME} />
+      <Stack
+        position={"relative"}
+        minH={"100vh"}
+        flex={1}
+        spacing={0}
+        bg={useColorModeValue("#ffffff", "#303030")}
+      >
+        <LandingNav />
+        <Outlet />
+      </Stack>
+    </>
   );
 };
 
 const DashNavOutlet = () => {
   return (
-    <Stack
-      position={"relative"}
-      height={"100vh"}
-      minH={"100vh"}
-      flex={1}
-      spacing={0}
-      bg={useColorModeValue("#ffffff", "#303030")}
-    >
-      <AuthGuard>
-        <DashNav />
-        <Outlet />
-        <ToolBar />
-      </AuthGuard>
-    </Stack>
+    <>
+      <Helmet defaultTitle={import.meta.env.VITE_APP_NAME} titleTemplate={"%s | " + import.meta.env.VITE_APP_NAME} />
+      <Stack
+        position={"relative"}
+        height={"100vh"}
+        minH={"100vh"}
+        flex={1}
+        spacing={0}
+        bg={useColorModeValue("#ffffff", "#303030")}
+      >
+        <AuthGuard>
+          <DashNav />
+          <Outlet />
+          <ToolBar />
+        </AuthGuard>
+      </Stack>
+    </>
   );
 };
 
@@ -117,6 +125,8 @@ function App() {
   return (
     <>
       <QueryClientProvider client={queryClient}>
+        {/* On production, don't render react-query-devtools */}
+        {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} />}
         <ColorModeScript initialColorMode={theme.config.initialColorMode} />
         <Provider store={store}>
           <RouterProvider router={router} />

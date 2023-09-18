@@ -9,10 +9,12 @@ import {
 } from "@chakra-ui/react";
 import { FunctionComponent, useEffect, useState } from "react";
 import { useQuery } from "react-query";
+import { Helmet } from "react-helmet";
 import { getEvents } from "../api/events.api";
 import { getOrganizations } from "../api/organizations.api";
 import ErrorMessage from "../components/Error";
 import MyOrganizationsView from "./MyOrganizationsView";
+
 const HomeView: FunctionComponent = () => {
   const {
     data: orgData,
@@ -39,6 +41,7 @@ const HomeView: FunctionComponent = () => {
     success: () => (
       <>
         <h1>
+          <Helmet title="Home" />
           <Tabs defaultIndex={0} variant={"line"} colorScheme="purple" isLazy>
             <TabList>
               <Tab>Organizations</Tab>
@@ -46,9 +49,11 @@ const HomeView: FunctionComponent = () => {
             </TabList>
             <TabPanels>
               <TabPanel flex={1}>
+                <Helmet title="Organizations" />
                 <MyOrganizationsView></MyOrganizationsView>
               </TabPanel>
               <TabPanel>
+                <Helmet title="Events" />
                 <h1>My Events</h1>
               </TabPanel>
             </TabPanels>

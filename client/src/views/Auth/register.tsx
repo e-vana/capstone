@@ -22,6 +22,7 @@ import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { useMutation } from "react-query";
+import { Helmet } from "react-helmet";
 import { iUser } from "../../interfaces/user.interface";
 import { registerUser } from "../../api/users.api";
 import { RegisterComponent } from "./types";
@@ -100,132 +101,138 @@ const Register: RegisterComponent = () => {
   }
 
   return (
-    <Flex
-      height={"100%"}
-      align={"center"}
-      justify={"center"}
-      bg={useColorModeValue("gray.50", "#303030")}
-      color={useColorModeValue("#303030", "whiteAlpha.800")}
-      flex={1}
-    >
-      <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
-        <Stack align={"center"}>
-          <Heading fontSize={"4xl"}>Sign up</Heading>
-          <Text fontSize={"lg"}>
-            to enjoy all of our cool{" "}
-            <Text as={"span"} color={"purple.400"}>
-              features
-            </Text>{" "}
-            ✌️
-          </Text>
-        </Stack>
-        <Box
-          rounded={"lg"}
-          bg={useColorModeValue("white", "#505050")}
-          boxShadow={useColorModeValue("lg", "none")}
-          p={8}
-        >
-          <Stack spacing={4}>
-            <HStack>
-              <Box>
-                <FormControl id="firstName" isRequired>
-                  <FormLabel>First Name</FormLabel>
+    <>
+      <Helmet title="Register" />
+      <Flex
+        height={"100%"}
+        align={"center"}
+        justify={"center"}
+        bg={useColorModeValue("gray.50", "#303030")}
+        color={useColorModeValue("#303030", "whiteAlpha.800")}
+        flex={1}
+      >
+        <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
+          <Stack align={"center"}>
+            <Heading fontSize={"4xl"}>Sign up</Heading>
+            <Text fontSize={"lg"}>
+              to enjoy all of our cool{" "}
+              <Text as={"span"} color={"purple.400"}>
+                features
+              </Text>{" "}
+              ✌️
+            </Text>
+          </Stack>
+          <Box
+            rounded={"lg"}
+            bg={useColorModeValue("white", "#505050")}
+            boxShadow={useColorModeValue("lg", "none")}
+            p={8}
+          >
+            <form onSubmit={handleSubmit}>
+              <Stack spacing={4}>
+                <HStack>
+                  <Box>
+                    <FormControl id="firstName" isRequired>
+                      <FormLabel>First Name</FormLabel>
+                      <Input
+                        type="text"
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.currentTarget.value)}
+                      />
+                    </FormControl>
+                  </Box>
+                  <Box>
+                    <FormControl id="lastName" isRequired>
+                      <FormLabel>Last Name</FormLabel>
+                      <Input
+                        type="text"
+                        value={lastName}
+                        onChange={(e) => setLastName(e.currentTarget.value)}
+                      />
+                    </FormControl>
+                  </Box>
+                </HStack>
+                <FormControl id="email" isRequired>
+                  <FormLabel>Email address</FormLabel>
                   <Input
-                    type="text"
-                    value={firstName}
-                    onChange={(e) => setFirstName(e.currentTarget.value)}
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.currentTarget.value)}
                   />
                 </FormControl>
-              </Box>
-              <Box>
-                <FormControl id="lastName" isRequired>
-                  <FormLabel>Last Name</FormLabel>
+                <FormControl id="password" isRequired>
+                  <FormLabel>Password</FormLabel>
+                  <InputGroup>
+                    <Input
+                      type={showPassword ? "text" : "password"}
+                      value={password}
+                      onChange={(e) => setPassword(e.currentTarget.value)}
+                    />
+                    <InputRightElement h={"full"}>
+                      <Button
+                        variant={"ghost"}
+                        onClick={() =>
+                          setShowPassword((showPassword) => !showPassword)
+                        }
+                      >
+                        {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                      </Button>
+                    </InputRightElement>
+                  </InputGroup>
+                </FormControl>
+                <FormControl id="confirm-password" isRequired>
+                  <FormLabel>Confirm Password</FormLabel>
                   <Input
-                    type="text"
-                    value={lastName}
-                    onChange={(e) => setLastName(e.currentTarget.value)}
+                    type={showPassword ? "text" : "password"}
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.currentTarget.value)}
                   />
                 </FormControl>
-              </Box>
-            </HStack>
-            <FormControl id="email" isRequired>
-              <FormLabel>Email address</FormLabel>
-              <Input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.currentTarget.value)}
-              />
-            </FormControl>
-            <FormControl id="password" isRequired>
-              <FormLabel>Password</FormLabel>
-              <InputGroup>
-                <Input
-                  type={showPassword ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.currentTarget.value)}
-                />
-                <InputRightElement h={"full"}>
+                <Stack spacing={10} pt={2}>
+                  <List fontSize={"sm"} color={useColorModeValue("red", "red.400")}>
+                    {passwordErrors.length > 0 && password !== "" && (
+                      <>
+                        <Text>Password needs the following: </Text>
+                        <UnorderedList>
+                          {passwordErrors.map((err) => (
+                            <ListItem>{err}</ListItem>
+                          ))}
+                        </UnorderedList>
+                      </>
+                    )}
+                  </List>
                   <Button
-                    variant={"ghost"}
-                    onClick={() =>
-                      setShowPassword((showPassword) => !showPassword)
+                    type="submit"
+                    loadingText="Submitting"
+                    size="lg"
+                    bg={useColorModeValue("purple.500", "purple.400")}
+                    color={"white"}
+                    _hover={{
+                      bg: useColorModeValue("purple.500", "purple.400"),
+                    }}
+                    isLoading={mutation.isLoading}
+                    onClick={handleSubmit}
+                    isDisabled={
+                      passwordErrors.length > 0 || confirmPassword !== password
                     }
                   >
-                    {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                    Sign up
                   </Button>
-                </InputRightElement>
-              </InputGroup>
-            </FormControl>
-            <FormControl id="confirm-password" isRequired>
-              <FormLabel>Confirm Password</FormLabel>
-              <Input
-                type={showPassword ? "text" : "password"}
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.currentTarget.value)}
-              />
-            </FormControl>
-            <Stack spacing={10} pt={2}>
-              <List fontSize={"sm"} color={useColorModeValue("red", "red.400")}>
-                {passwordErrors.length > 0 && password !== "" && (
-                  <>
-                    <Text>Password needs the following: </Text>
-                    <UnorderedList>
-                      {passwordErrors.map((err) => (
-                        <ListItem>{err}</ListItem>
-                      ))}
-                    </UnorderedList>
-                  </>
-                )}
-              </List>
-              <Button
-                loadingText="Submitting"
-                size="lg"
-                bg={useColorModeValue("purple.500", "purple.400")}
-                color={"white"}
-                _hover={{
-                  bg: useColorModeValue("purple.500", "purple.400"),
-                }}
-                isLoading={mutation.isLoading}
-                onClick={handleSubmit}
-                isDisabled={
-                  passwordErrors.length > 0 || confirmPassword !== password
-                }
-              >
-                Sign up
-              </Button>
-            </Stack>
-            <Stack pt={6}>
-              <Text align={"center"}>
-                Already a user?{" "}
-                <Link as={RouterLink} to={"/login"} color={"purple.400"}>
-                  Login
-                </Link>
-              </Text>
-            </Stack>
-          </Stack>
-        </Box>
-      </Stack>
-    </Flex>
+                </Stack>
+                <Stack pt={6}>
+                  <Text align={"center"}>
+                    Already a user?{" "}
+                    <Link as={RouterLink} to={"/login"} color={"purple.400"}>
+                      Login
+                    </Link>
+                  </Text>
+                </Stack>
+              </Stack>
+            </form>
+          </Box>
+        </Stack>
+      </Flex>
+    </>
   );
 };
 

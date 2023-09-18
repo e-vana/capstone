@@ -23,16 +23,17 @@ import {
   AlertIcon,
   Skeleton,
 } from "@chakra-ui/react";
+import { AddIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import { FunctionComponent, useEffect, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { useQuery } from "react-query";
 import { getEvents, getEventsInATeam } from "../api/events.api";
 import { getOrganizations } from "../api/organizations.api";
+import { getTeams } from "../api/teams.api";
 import ErrorMessage from "../components/Error";
-import { AddIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import "./table.css";
 import AddOrg from "../components/AddModal/AddOrg";
-import { getTeams } from "../api/teams.api";
+import AddTeam from "../components/AddModal/AddTeam";
 
 const MyOrganizationsView: FunctionComponent = () => {
   const {
@@ -55,6 +56,7 @@ const MyOrganizationsView: FunctionComponent = () => {
   } = useQuery("getTeams", () => getTeams(selectedOrganization), {
     enabled: false,
   });
+  
   const {
     data: eventData,
     isLoading: eventIsLoading,
@@ -72,6 +74,7 @@ const MyOrganizationsView: FunctionComponent = () => {
   const [selectedOrganization, setSelectedOrganization] = useState<number>(1);
   const [selectedTeam, setSelectedTeam] = useState<number>(1);
 
+  // When the user selects a different organization or team, refetch the events or teams
   useEffect(() => {
     refetchTeams();
   }, [selectedOrganization]);
@@ -80,7 +83,8 @@ const MyOrganizationsView: FunctionComponent = () => {
     refetchEvents();
   }, [selectedOrganization, selectedTeam]);
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen: isAddOrgOpen, onOpen: onAddOrgOpen, onClose: onAddOrgClose } = useDisclosure();
+  const { isOpen: isAddTeamOpen, onOpen: onAddTeamOpen, onClose: onAddTeamClose } = useDisclosure();
 
   const renderState = {
     loading: (
@@ -115,7 +119,7 @@ const MyOrganizationsView: FunctionComponent = () => {
             marginLeft={"5px"}
             marginBottom={"6px"}
             size="xs"
-            onClick={onOpen}
+            onClick={onAddOrgOpen}
           />
         </div>
         {orgData && (
@@ -130,7 +134,7 @@ const MyOrganizationsView: FunctionComponent = () => {
               >
                 {orgData &&
                   orgData.organizations.map((org) => {
-                    return <option value={org.id}>{org.name}</option>;
+                    return <option key={org.id} value={org.id}>{org.name}</option>;
                   })}
               </Select>
             </div>
@@ -153,7 +157,7 @@ const MyOrganizationsView: FunctionComponent = () => {
                 marginLeft={"5px"}
                 marginBottom={"10px"}
                 size="xs"
-                onClick={onOpen}
+                onClick={onAddTeamOpen}
               />
             </div>
             {teamData && teamData.teams.length == 0 && (
@@ -176,7 +180,7 @@ const MyOrganizationsView: FunctionComponent = () => {
                   >
                     {teamData &&
                       teamData.teams.map((team) => {
-                        return <option value={team.id}>{team.name}</option>;
+                        return <option key={team.id} value={team.id}>{team.name}</option>;
                       })}
                   </Select>
                 </div>
@@ -329,13 +333,17 @@ const MyOrganizationsView: FunctionComponent = () => {
               </Stack>
             </>
           )}
-        <AddOrg isOpen={isOpen} onClose={onClose} />
+        <AddOrg refetchOrganizations={refetchOrgs} refetchTeams={refetchTeams} refetchEvents={refetchEvents}
+          isOpen={isAddOrgOpen} onClose={onAddOrgClose} />
+        <AddTeam orgId={selectedOrganization} orgName={orgData?.organizations.find((org) => org.id === selectedOrganization)?.name || ""}
+          refetchTeams={refetchTeams} refetchEvents={refetchEvents}
+          isOpen={isAddTeamOpen} onClose={onAddTeamClose} />
       </Stack>
     ),
   };
 
-  if (orgIsLoading) return renderState.loading;
-  else if (orgIsError) return renderState.error;
+  if (orgIsLoading || teamIsLoading) return renderState.loading;
+  else if (orgIsError || teamIsError) return renderState.error;
   else if (orgData?.organizations) return renderState.success();
 };
 

@@ -33,8 +33,6 @@ export const DashNav = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { toggleColorMode } = useColorMode();
 
-  console.log("render");
-
   return (
     <Box position={"sticky"} top={0} left={0}>
       <Flex
@@ -60,10 +58,7 @@ export const DashNav = () => {
             fontSize={"1.2rem"}
             color={useColorModeValue("gray.800", "white")}
           >
-            Larbster.
-            <Text as={"span"} color={"purple.400"}>
-              io
-            </Text>
+            {import.meta.env.VITE_APP_NAME}
           </Text>
 
           <Flex display={{ base: "none", md: "flex" }} ml={10}>
