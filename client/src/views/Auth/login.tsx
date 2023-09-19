@@ -16,6 +16,7 @@ import {
 } from "@chakra-ui/react";
 import { useMutation } from "react-query";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet";
 import { iUser } from "../../interfaces/user.interface";
 import { loginUser } from "../../api/users.api";
 import { LoginComponent } from "./types";
@@ -57,6 +58,7 @@ const Login: LoginComponent = () => {
 
   return (
     <>
+      <Helmet title="Login" />
       <Flex
         height={"100%"}
         align={"center"}
@@ -82,53 +84,56 @@ const Login: LoginComponent = () => {
             boxShadow={useColorModeValue("lg", "none")}
             p={8}
           >
-            <Stack spacing={4}>
-              <FormControl id="email">
-                <FormLabel>Email address</FormLabel>
-                <Input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.currentTarget.value)}
-                />
-              </FormControl>
-              <FormControl id="password">
-                <FormLabel>Password</FormLabel>
-                <Input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.currentTarget.value)}
-                />
-              </FormControl>
-              <Stack spacing={10}>
-                <Stack
-                  direction={{ base: "column", sm: "row" }}
-                  align={"start"}
-                  justify={"space-between"}
-                >
-                  <Checkbox colorScheme="purple">Remember me</Checkbox>
-                  <Text color={"purple.400"}>Forgot password?</Text>
+            <form onSubmit={handleSubmit}>
+              <Stack spacing={4}>
+                <FormControl id="email">
+                  <FormLabel>Email address</FormLabel>
+                  <Input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.currentTarget.value)}
+                  />
+                </FormControl>
+                <FormControl id="password">
+                  <FormLabel>Password</FormLabel>
+                  <Input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.currentTarget.value)}
+                  />
+                </FormControl>
+                <Stack spacing={10}>
+                  <Stack
+                    direction={{ base: "column", sm: "row" }}
+                    align={"start"}
+                    justify={"space-between"}
+                  >
+                    <Checkbox colorScheme="purple">Remember me</Checkbox>
+                    <Text color={"purple.400"}>Forgot password?</Text>
+                  </Stack>
+                  <Button
+                    type="submit"
+                    bg={"purple.400"}
+                    color={"white"}
+                    _hover={{
+                      bg: "purple.500",
+                    }}
+                    isLoading={mutation.isLoading}
+                    onClick={handleSubmit}
+                  >
+                    Sign in
+                  </Button>
                 </Stack>
-                <Button
-                  bg={"purple.400"}
-                  color={"white"}
-                  _hover={{
-                    bg: "purple.500",
-                  }}
-                  isLoading={mutation.isLoading}
-                  onClick={handleSubmit}
-                >
-                  Sign in
-                </Button>
+                <Stack pt={6}>
+                  <Text align={"center"}>
+                    Don't have an account?{" "}
+                    <Link as={RouterLink} to={"/register"} color={"purple.400"}>
+                      Sign Up
+                    </Link>
+                  </Text>
+                </Stack>
               </Stack>
-              <Stack pt={6}>
-                <Text align={"center"}>
-                  Don't have an account?{" "}
-                  <Link as={RouterLink} to={"/register"} color={"purple.400"}>
-                    Sign Up
-                  </Link>
-                </Text>
-              </Stack>
-            </Stack>
+            </form>
           </Box>
         </Stack>
       </Flex>

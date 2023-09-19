@@ -57,10 +57,7 @@ export const LandingNav = () => {
             fontSize={"1.2rem"}
             color={useColorModeValue("gray.800", "white")}
           >
-            Larbster.
-            <Text as={"span"} color={"purple.400"}>
-              io
-            </Text>
+            {import.meta.env.VITE_APP_NAME}
           </Text>
 
           <Flex display={{ base: "none", md: "flex" }} ml={10}>
