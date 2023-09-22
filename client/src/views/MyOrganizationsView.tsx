@@ -56,7 +56,7 @@ const MyOrganizationsView: FunctionComponent = () => {
   } = useQuery("getTeams", () => getTeams(selectedOrganization), {
     enabled: false,
   });
-  
+
   const {
     data: eventData,
     isLoading: eventIsLoading,
@@ -83,8 +83,19 @@ const MyOrganizationsView: FunctionComponent = () => {
     refetchEvents();
   }, [selectedOrganization, selectedTeam]);
 
-  const { isOpen: isAddOrgOpen, onOpen: onAddOrgOpen, onClose: onAddOrgClose } = useDisclosure();
-  const { isOpen: isAddTeamOpen, onOpen: onAddTeamOpen, onClose: onAddTeamClose } = useDisclosure();
+  const {
+    isOpen: isAddOrgOpen,
+    onOpen: onAddOrgOpen,
+    onClose: onAddOrgClose,
+  } = useDisclosure();
+  const {
+    isOpen: isAddTeamOpen,
+    onOpen: onAddTeamOpen,
+    onClose: onAddTeamClose,
+  } = useDisclosure();
+
+  console.log(eventData?.events);
+  console.log(orgData);
 
   const renderState = {
     loading: (
@@ -129,12 +140,16 @@ const MyOrganizationsView: FunctionComponent = () => {
                 width={"200px"}
                 marginBottom={"10px"}
                 onChange={(e) => {
-                  setSelectedOrganization(parseInt(e.target.value));
+                  setSelectedOrganization(+e.target.value);
                 }}
               >
                 {orgData &&
                   orgData.organizations.map((org) => {
-                    return <option key={org.id} value={org.id}>{org.name}</option>;
+                    return (
+                      <option key={org.id} value={org.id}>
+                        {org.name}
+                      </option>
+                    );
                   })}
               </Select>
             </div>
@@ -175,12 +190,16 @@ const MyOrganizationsView: FunctionComponent = () => {
                     width={"200px"}
                     marginBottom={"50px"}
                     onChange={(e) => {
-                      setSelectedTeam(parseInt(e.target.value));
+                      setSelectedTeam(+e.target.value);
                     }}
                   >
                     {teamData &&
                       teamData.teams.map((team) => {
-                        return <option key={team.id} value={team.id}>{team.name}</option>;
+                        return (
+                          <option key={team.id} value={team.id}>
+                            {team.name}
+                          </option>
+                        );
                       })}
                   </Select>
                 </div>
@@ -293,7 +312,13 @@ const MyOrganizationsView: FunctionComponent = () => {
                                 {e.address_state} {e.address_zipcode}
                               </Td>
                               <Td>
-                                <Button variant="solid">View Event</Button>
+                                <Button
+                                  as={RouterLink}
+                                  to={"/" + selectedOrganization + "/" + e.name}
+                                  variant="solid"
+                                >
+                                  View Event
+                                </Button>
                               </Td>
                             </Tr>
                           </>
@@ -323,7 +348,7 @@ const MyOrganizationsView: FunctionComponent = () => {
                         justifyContent={"space-between"}
                         width={"50%"}
                         as={RouterLink}
-                        to={"/" + e.organization_id + "/" + e.name}
+                        to={"/" + selectedOrganization + "/" + e.name}
                       >
                         View Event <Icon as={ChevronRightIcon} />
                       </Button>
@@ -333,11 +358,25 @@ const MyOrganizationsView: FunctionComponent = () => {
               </Stack>
             </>
           )}
-        <AddOrg refetchOrganizations={refetchOrgs} refetchTeams={refetchTeams} refetchEvents={refetchEvents}
-          isOpen={isAddOrgOpen} onClose={onAddOrgClose} />
-        <AddTeam orgId={selectedOrganization} orgName={orgData?.organizations.find((org) => org.id === selectedOrganization)?.name || ""}
-          refetchTeams={refetchTeams} refetchEvents={refetchEvents}
-          isOpen={isAddTeamOpen} onClose={onAddTeamClose} />
+        <AddOrg
+          refetchOrganizations={refetchOrgs}
+          refetchTeams={refetchTeams}
+          refetchEvents={refetchEvents}
+          isOpen={isAddOrgOpen}
+          onClose={onAddOrgClose}
+        />
+        <AddTeam
+          orgId={selectedOrganization}
+          orgName={
+            orgData?.organizations.find(
+              (org) => org.id === selectedOrganization
+            )?.name || ""
+          }
+          refetchTeams={refetchTeams}
+          refetchEvents={refetchEvents}
+          isOpen={isAddTeamOpen}
+          onClose={onAddTeamClose}
+        />
       </Stack>
     ),
   };

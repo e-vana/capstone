@@ -33,7 +33,10 @@ export const queryClient = new QueryClient({
 const LandingNavOutlet = () => {
   return (
     <>
-      <Helmet defaultTitle={import.meta.env.VITE_APP_NAME} titleTemplate={"%s | " + import.meta.env.VITE_APP_NAME} />
+      <Helmet
+        defaultTitle={import.meta.env.VITE_APP_NAME}
+        titleTemplate={"%s | " + import.meta.env.VITE_APP_NAME}
+      />
       <Stack
         position={"relative"}
         minH={"100vh"}
@@ -51,7 +54,10 @@ const LandingNavOutlet = () => {
 const DashNavOutlet = () => {
   return (
     <>
-      <Helmet defaultTitle={import.meta.env.VITE_APP_NAME} titleTemplate={"%s | " + import.meta.env.VITE_APP_NAME} />
+      <Helmet
+        defaultTitle={import.meta.env.VITE_APP_NAME}
+        titleTemplate={"%s | " + import.meta.env.VITE_APP_NAME}
+      />
       <Stack
         position={"relative"}
         height={"100vh"}
@@ -63,7 +69,13 @@ const DashNavOutlet = () => {
         <AuthGuard>
           <DashNav />
           <Outlet />
-          <ToolBar />
+          <ToolBar
+            display={{ base: "flex", md: "none" }}
+            borderTop={"1px solid"}
+            position={"sticky"}
+            bottom={0}
+            left={0}
+          />
         </AuthGuard>
       </Stack>
     </>
