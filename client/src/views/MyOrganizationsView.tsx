@@ -1,5 +1,6 @@
 import {
   Card,
+  Flex,
   Heading,
   Select,
   Spinner,
@@ -22,11 +23,12 @@ import {
   Alert,
   AlertIcon,
   Skeleton,
+  HStack,
 } from "@chakra-ui/react";
 import { AddIcon, ChevronRightIcon } from "@chakra-ui/icons";
-import { FunctionComponent, useEffect, useState } from "react";
+import { ChangeEvent, FunctionComponent, useEffect, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import { getEvents, getEventsInATeam } from "../api/events.api";
 import { getOrganizations } from "../api/organizations.api";
 import { getTeams } from "../api/teams.api";
@@ -34,8 +36,11 @@ import ErrorMessage from "../components/Error";
 import "./table.css";
 import AddOrg from "../components/AddModal/AddOrg";
 import AddTeam from "../components/AddModal/AddTeam";
+import { LoadingComponent } from "../components/Loading";
 
-const MyOrganizationsView: FunctionComponent = () => {
+const EventsView: FunctionComponent = () => {
+  const queryClient = useQueryClient();
+
   const {
     data: orgData,
     isLoading: orgIsLoading,
@@ -53,9 +58,7 @@ const MyOrganizationsView: FunctionComponent = () => {
     isError: teamIsError,
     refetch: refetchTeams,
     isRefetching: teamIsRefetching,
-  } = useQuery("getTeams", () => getTeams(selectedOrganization), {
-    enabled: false,
-  });
+  } = useQuery("getTeams", () => getTeams(selectedOrganization));
 
   const {
     data: eventData,
@@ -63,18 +66,15 @@ const MyOrganizationsView: FunctionComponent = () => {
     isError: eventIsError,
     refetch: refetchEvents,
     isRefetching: eventIsRefetching,
-  } = useQuery(
-    "getEvents",
-    () => getEventsInATeam(selectedOrganization, selectedTeam),
-    {
-      enabled: false,
-    }
+  } = useQuery("getEvents", () =>
+    getEventsInATeam(selectedOrganization, selectedTeam)
   );
 
   const [selectedOrganization, setSelectedOrganization] = useState<number>(1);
   const [selectedTeam, setSelectedTeam] = useState<number>(1);
 
   // When the user selects a different organization or team, refetch the events or teams
+  /*
   useEffect(() => {
     refetchTeams();
   }, [selectedOrganization]);
@@ -82,6 +82,35 @@ const MyOrganizationsView: FunctionComponent = () => {
   useEffect(() => {
     refetchEvents();
   }, [selectedOrganization, selectedTeam]);
+
+*/
+
+  function refetchAll() {
+    refetchOrgs();
+    refetchTeams();
+    refetchEvents();
+  }
+
+  function invalidateAllQueries() {
+    queryClient.invalidateQueries([
+      "getOrganizations",
+      "getTeams",
+      "getEvents",
+    ]);
+    refetchAll();
+  }
+
+  const handleOrgChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    e.preventDefault();
+    setSelectedOrganization(+e.target.value);
+    invalidateAllQueries();
+  };
+
+  const handleTeamChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    e.preventDefault();
+    setSelectedTeam(+e.target.value);
+    invalidateAllQueries();
+  };
 
   const {
     isOpen: isAddOrgOpen,
@@ -98,11 +127,7 @@ const MyOrganizationsView: FunctionComponent = () => {
   console.log(orgData);
 
   const renderState = {
-    loading: (
-      <Stack align={"center"} height={"100%"} flex={1} justify={"center"}>
-        <Spinner color={"green"} size={"xl"} />
-      </Stack>
-    ),
+    loading: <LoadingComponent />,
     error: (
       <ErrorMessage
         code={404}
@@ -111,260 +136,270 @@ const MyOrganizationsView: FunctionComponent = () => {
       />
     ),
     success: () => (
-      <Stack w="100%" p={4} flex={1} height={"fit-content"}>
-        <Heading as="h1" size="lg" marginBottom={"20px"}>
-          My Organizations
-        </Heading>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
-          <Heading as="h4" size="xs" marginBottom={"5px"}>
-            Select an Organization
+      <Flex
+        flexDir={{ base: "column", md: "row" }}
+        w="100%"
+        p={4}
+        flex={1}
+        height={"fit-content"}
+        align={"start"}
+        gap={5}
+      >
+        <Stack width={{ base: "100%", md: "initial" }}>
+          <Heading size="md" marginBottom={"20px"}>
+            Organizations
           </Heading>
-          <IconButton
-            aria-label="Create new organization"
-            icon={<AddIcon />}
-            marginLeft={"5px"}
-            marginBottom={"6px"}
-            size="xs"
-            onClick={onAddOrgOpen}
-          />
-        </div>
-        {orgData && (
-          <>
-            <div style={{ display: "flex", justifyItems: "center" }}>
-              <Select
-                width={"200px"}
-                marginBottom={"10px"}
-                onChange={(e) => {
-                  setSelectedOrganization(+e.target.value);
-                }}
-              >
-                {orgData &&
-                  orgData.organizations.map((org) => {
-                    return (
-                      <option key={org.id} value={org.id}>
-                        {org.name}
-                      </option>
-                    );
-                  })}
-              </Select>
-            </div>
-          </>
-        )}
-        {!teamIsRefetching && (
-          <div className="select-teams-wrapper">
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-              }}
-            >
-              <Heading as="h4" size="xs" marginBottom={"10px"}>
-                Select a Team
-              </Heading>
-              <IconButton
-                aria-label="Create new team"
-                icon={<AddIcon />}
-                marginLeft={"5px"}
-                marginBottom={"10px"}
-                size="xs"
-                onClick={onAddTeamOpen}
-              />
-            </div>
-            {teamData && teamData.teams.length == 0 && (
-              <Stack spacing={3}>
-                <Alert status="info">
-                  <AlertIcon></AlertIcon>
-                  No teams found for this organization. Try creating one!
-                </Alert>
-              </Stack>
-            )}
-            {teamData && teamData.teams.length > 0 && (
-              <>
-                <div style={{ display: "flex", justifyItems: "center" }}>
-                  <Select
-                    width={"200px"}
-                    marginBottom={"50px"}
-                    onChange={(e) => {
-                      setSelectedTeam(+e.target.value);
-                    }}
-                  >
-                    {teamData &&
-                      teamData.teams.map((team) => {
-                        return (
-                          <option key={team.id} value={team.id}>
-                            {team.name}
-                          </option>
-                        );
-                      })}
-                  </Select>
-                </div>
-              </>
-            )}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <Heading as="h4" size="xs" marginBottom={"5px"}>
+              Select an Organization
+            </Heading>
+            <IconButton
+              aria-label="Create new organization"
+              icon={<AddIcon />}
+              marginLeft={"5px"}
+              marginBottom={"6px"}
+              size="xs"
+              onClick={onAddOrgOpen}
+            />
           </div>
-        )}
-        {/* Can tidy up this loading state, its a mess with all of the dependent API calls */}
-        {eventIsRefetching && teamIsRefetching && (
-          // <Stack align={"center"} height={"100%"} flex={1} justify={"center"}>
-          //   <Spinner color={"green"} size={"xl"} />
-          // </Stack>
-          <Stack>
-            <Skeleton height="50px" />
-            <Skeleton height="50px" />
-            <Skeleton height="50px" />
-          </Stack>
-        )}
-
-        {eventData &&
-          teamData &&
-          teamData?.teams.length > 0 &&
-          !teamIsRefetching &&
-          !eventIsRefetching && (
+          {orgData && (
             <>
+              <div style={{ display: "flex", justifyItems: "center" }}>
+                <Select
+                  width={"200px"}
+                  marginBottom={"10px"}
+                  onChange={(e) => handleOrgChange(e)}
+                >
+                  {orgData &&
+                    orgData.organizations.map((org) => {
+                      return (
+                        <option key={org.id} value={org.id}>
+                          {org.name}
+                        </option>
+                      );
+                    })}
+                </Select>
+              </div>
+            </>
+          )}
+          {!teamIsRefetching && (
+            <div className="select-teams-wrapper">
               <div
                 style={{
                   display: "flex",
                   alignItems: "center",
                 }}
               >
-                <Heading as="h4" size="md" marginBottom={"5px"}>
-                  Events
+                <Heading as="h4" size="xs" marginBottom={"10px"}>
+                  Select a Team
                 </Heading>
                 <IconButton
-                  aria-label="Create new event"
+                  aria-label="Create new team"
                   icon={<AddIcon />}
                   marginLeft={"5px"}
+                  marginBottom={"10px"}
                   size="xs"
+                  onClick={onAddTeamOpen}
                 />
               </div>
-              {eventData.events.length == 0 && (
+              {teamData && teamData.teams.length == 0 && (
                 <Stack spacing={3}>
                   <Alert status="info">
                     <AlertIcon></AlertIcon>
-                    No events found for this team.
+                    No teams found for this organization. Try creating one!
                   </Alert>
                 </Stack>
               )}
-              {eventData.events.length > 0 && (
-                <TableContainer display={{ base: "none", md: "initial" }}>
-                  <Table variant="simple">
-                    <Thead>
-                      <Tr>
-                        <Th>Name</Th>
-                        <Th>Date & Time</Th>
-                        <Th>Description</Th>
-                        <Th>Location</Th>
-                        <Th>Options</Th>
-                      </Tr>
-                    </Thead>
-                    <Tbody>
-                      {eventData.events.map((e) => {
-                        return (
-                          <>
-                            <Tr>
-                              <Td>
-                                {e.name}
-                                {new Date(Date.now()) > new Date(e.end_time) ? (
-                                  <Badge
-                                    marginLeft={"5px"}
-                                    fontSize="xx-small"
-                                    colorScheme="orange"
-                                  >
-                                    Completed
-                                  </Badge>
-                                ) : (
-                                  <Badge
-                                    marginLeft={"5px"}
-                                    fontSize="xx-small"
-                                    colorScheme="green"
-                                  >
-                                    Upcoming
-                                  </Badge>
-                                )}
-                              </Td>
-                              <Td>
-                                <>
-                                  <div style={{ display: "block" }}>
-                                    <Text fontSize="xs">
-                                      {new Date(e.start_time).toDateString()}
-                                    </Text>
-                                  </div>
-                                  <div style={{ display: "block" }}>
-                                    <Text fontSize="md">
-                                      {new Date(
-                                        e.start_time
-                                      ).toLocaleTimeString()}{" "}
-                                      to{" "}
-                                      {new Date(
-                                        e.end_time
-                                      ).toLocaleTimeString()}
-                                    </Text>
-                                  </div>
-                                </>
-                              </Td>
-                              <Td>{e.description}</Td>
-                              <Td>
-                                {e.address_street}, {e.address_city},{" "}
-                                {e.address_state} {e.address_zipcode}
-                              </Td>
-                              <Td>
-                                <Button
-                                  as={RouterLink}
-                                  to={"/" + selectedOrganization + "/" + e.name}
-                                  variant="solid"
-                                >
-                                  View Event
-                                </Button>
-                              </Td>
-                            </Tr>
-                          </>
-                        );
-                      })}
-                    </Tbody>
-                  </Table>
-                </TableContainer>
-              )}
-
-              <Stack display={{ base: "initial", md: "none" }}>
-                {eventData.events.map((e) => (
-                  <Card
-                    backgroundColor={useColorModeValue("white", "#505050")}
-                    color={useColorModeValue("blackAlpha.700", "white")}
-                  >
-                    <CardFooter
-                      width={"100%"}
-                      alignItems={"center"}
-                      justifyContent={"space-between"}
+              {teamData && teamData.teams.length > 0 && (
+                <>
+                  <div style={{ display: "flex", justifyItems: "center" }}>
+                    <Select
+                      width={"200px"}
+                      marginBottom={"50px"}
+                      onChange={(e) => handleTeamChange(e)}
                     >
-                      <Heading size={"sm"}>{e.name}</Heading>
-                      <Button
-                        colorScheme="purple"
-                        alignSelf={"end"}
-                        variant={"outline"}
-                        justifyContent={"space-between"}
-                        width={"50%"}
-                        as={RouterLink}
-                        to={"/" + selectedOrganization + "/" + e.name}
-                      >
-                        View Event <Icon as={ChevronRightIcon} />
-                      </Button>
-                    </CardFooter>
-                  </Card>
-                ))}
-              </Stack>
-            </>
+                      {teamData &&
+                        teamData.teams.map((team) => {
+                          return (
+                            <option key={team.id} value={team.id}>
+                              {team.name}
+                            </option>
+                          );
+                        })}
+                    </Select>
+                  </div>
+                </>
+              )}
+            </div>
           )}
-        <AddOrg
-          refetchOrganizations={refetchOrgs}
-          refetchTeams={refetchTeams}
-          refetchEvents={refetchEvents}
-          isOpen={isAddOrgOpen}
-          onClose={onAddOrgClose}
-        />
+        </Stack>
+        <Stack overflow={"auto"} width={{ base: "100%", md: "initial" }}>
+          {/* Can tidy up this loading state, its a mess with all of the dependent API calls */}
+          {eventIsRefetching && teamIsRefetching && (
+            // <Stack align={"center"} height={"100%"} flex={1} justify={"center"}>
+            //   <Spinner color={"green"} size={"xl"} />
+            // </Stack>
+            <Stack>
+              <Skeleton height="50px" />
+              <Skeleton height="50px" />
+              <Skeleton height="50px" />
+            </Stack>
+          )}
+
+          {eventData &&
+            teamData &&
+            teamData?.teams.length > 0 &&
+            !teamIsRefetching &&
+            !eventIsRefetching && (
+              <>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  <Heading size="md" marginBottom={"5px"}>
+                    Events
+                  </Heading>
+                  <IconButton
+                    aria-label="Create new event"
+                    icon={<AddIcon />}
+                    marginLeft={"5px"}
+                    size="xs"
+                  />
+                </div>
+                {eventData.events.length == 0 && (
+                  <Stack spacing={3}>
+                    <Alert status="info">
+                      <AlertIcon></AlertIcon>
+                      No events found for this team.
+                    </Alert>
+                  </Stack>
+                )}
+                {eventData.events.length > 0 && (
+                  <TableContainer
+                    display={{ base: "none", md: "table-row" }}
+                    fontSize={"sm"}
+                    width={"fit-content"}
+                  >
+                    <Table variant="simple">
+                      <Thead>
+                        <Tr>
+                          <Th>Name</Th>
+                          <Th>Date & Time</Th>
+                          <Th>Description</Th>
+                          <Th>Location</Th>
+                          <Th>Options</Th>
+                        </Tr>
+                      </Thead>
+                      <Tbody>
+                        {eventData.events.map((e) => {
+                          return (
+                            <>
+                              <Tr>
+                                <Td>
+                                  {e.name}
+                                  {new Date(Date.now()) >
+                                  new Date(e.end_time) ? (
+                                    <Badge
+                                      marginLeft={"5px"}
+                                      fontSize="xx-small"
+                                      colorScheme="orange"
+                                    >
+                                      Completed
+                                    </Badge>
+                                  ) : (
+                                    <Badge
+                                      marginLeft={"5px"}
+                                      fontSize="xx-small"
+                                      colorScheme="green"
+                                    >
+                                      Upcoming
+                                    </Badge>
+                                  )}
+                                </Td>
+                                <Td>
+                                  <>
+                                    <div style={{ display: "block" }}>
+                                      <Text fontSize="xs">
+                                        {new Date(e.start_time).toDateString()}
+                                      </Text>
+                                    </div>
+                                    <div style={{ display: "block" }}>
+                                      <Text fontSize="md">
+                                        {new Date(
+                                          e.start_time
+                                        ).toLocaleTimeString()}{" "}
+                                        to{" "}
+                                        {new Date(
+                                          e.end_time
+                                        ).toLocaleTimeString()}
+                                      </Text>
+                                    </div>
+                                  </>
+                                </Td>
+                                <Td>{e.description}</Td>
+                                <Td>
+                                  {e.address_street}, {e.address_city},{" "}
+                                  {e.address_state} {e.address_zipcode}
+                                </Td>
+                                <Td>
+                                  <Button
+                                    as={RouterLink}
+                                    variant="solid"
+                                    size={"sm"}
+                                    to={
+                                      "/" + selectedOrganization + "/" + e.name
+                                    }
+                                  >
+                                    View Event
+                                  </Button>
+                                </Td>
+                              </Tr>
+                            </>
+                          );
+                        })}
+                      </Tbody>
+                    </Table>
+                  </TableContainer>
+                )}
+
+                <Stack display={{ base: "initial", md: "none" }}>
+                  {eventData.events.map((e) => (
+                    <Card
+                      backgroundColor={useColorModeValue("white", "#505050")}
+                      color={useColorModeValue("blackAlpha.700", "white")}
+                    >
+                      <CardFooter
+                        width={"100%"}
+                        alignItems={"center"}
+                        justifyContent={"space-between"}
+                      >
+                        <Heading size={"sm"}>{e.name}</Heading>
+                        <Button
+                          colorScheme="purple"
+                          alignSelf={"end"}
+                          variant={"outline"}
+                          justifyContent={"space-between"}
+                          width={"50%"}
+                          as={RouterLink}
+                          to={"/" + selectedOrganization + "/" + e.name}
+                        >
+                          View Event <Icon as={ChevronRightIcon} />
+                        </Button>
+                      </CardFooter>
+                    </Card>
+                  ))}
+                </Stack>
+              </>
+            )}
+        </Stack>
+        <AddOrg isOpen={isAddOrgOpen} onClose={onAddOrgClose} />
         <AddTeam
           orgId={selectedOrganization}
           orgName={
@@ -372,12 +407,10 @@ const MyOrganizationsView: FunctionComponent = () => {
               (org) => org.id === selectedOrganization
             )?.name || ""
           }
-          refetchTeams={refetchTeams}
-          refetchEvents={refetchEvents}
           isOpen={isAddTeamOpen}
           onClose={onAddTeamClose}
         />
-      </Stack>
+      </Flex>
     ),
   };
 
@@ -386,4 +419,4 @@ const MyOrganizationsView: FunctionComponent = () => {
   else if (orgData?.organizations) return renderState.success();
 };
 
-export default MyOrganizationsView;
+export default EventsView;
