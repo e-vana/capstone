@@ -3,7 +3,6 @@ import {
   Flex,
   Heading,
   Select,
-  Spinner,
   Stack,
   Table,
   TableContainer,
@@ -23,13 +22,12 @@ import {
   Alert,
   AlertIcon,
   Skeleton,
-  HStack,
 } from "@chakra-ui/react";
 import { AddIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import { ChangeEvent, FunctionComponent, useEffect, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { useQuery, useQueryClient } from "react-query";
-import { getEvents, getEventsInATeam } from "../api/events.api";
+import { getEventsInATeam } from "../api/events.api";
 import { getOrganizations } from "../api/organizations.api";
 import { getTeams } from "../api/teams.api";
 import ErrorMessage from "../components/Error";
