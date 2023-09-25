@@ -31,8 +31,8 @@ export const OrgFilter: OrgFilterComponent = () => {
     <Stack>
       <Stack>
         <Heading size={"md"}>Organizations</Heading>
-        <Stack alignItems={"center"}>
-          <HStack width={"100%"} justify={"space-between"}>
+        <Stack alignItems={{ base: "start", md: "center" }}>
+          <HStack width={{ base: "50%", md: "100%" }} justify={"space-between"}>
             <Heading size={"xs"} mb={"5px"}>
               Select an Organization
             </Heading>
@@ -45,7 +45,7 @@ export const OrgFilter: OrgFilterComponent = () => {
             />
           </HStack>
           <Select
-            width={"200px"}
+            width={{ base: "50%", md: "200px" }}
             mb={"10px"}
             onChange={(e) => handleSelectOrg(e)}
           >
@@ -58,8 +58,8 @@ export const OrgFilter: OrgFilterComponent = () => {
           </Select>
         </Stack>
       </Stack>
-      <Stack alignItems={"center"}>
-        <HStack width={"100%"} justify={"space-between"}>
+      <Stack alignItems={{ base: "start", md: "center" }}>
+        <HStack width={{ base: "50%", md: "100%" }} justify={"space-between"}>
           <Heading size={"xs"} mb={"5px"}>
             Select a Team
           </Heading>
@@ -72,7 +72,7 @@ export const OrgFilter: OrgFilterComponent = () => {
           />
         </HStack>
         <Select
-          width={"200px"}
+          width={{ base: "50%", md: "200px" }}
           marginBottom={"10px"}
           defaultValue={0}
           onChange={(e) => handleSelectTeam(e)}

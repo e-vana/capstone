@@ -63,7 +63,7 @@ const EventsView = () => {
   }, [selectedTeam, selectedOrg, refetchTeams, refetchEvents]);
 
   return (
-    <Flex gap={8}>
+    <Flex gap={8} flexDir={{ base: "column", md: "row" }}>
       <Stack>
         <OrgFilter />
       </Stack>
