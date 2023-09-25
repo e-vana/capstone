@@ -21,6 +21,8 @@ import { DashNav } from "./components/Nav/DashNav";
 import ToolBar from "./components/Nav/ToolBar";
 import SettingsView from "./views/SettingsView";
 import AuthGuard from "./components/RouteGuard/AuthGuard";
+import { ErrorPage } from "./components/Error";
+import OrganizationPage from "./views/Organizations/OrganizationPage";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -60,7 +62,7 @@ const DashNavOutlet = () => {
       />
       <Stack
         position={"relative"}
-        height={"100vh"}
+        minHeight={"100vh"}
         minH={"100vh"}
         flex={1}
         spacing={0}
@@ -100,13 +102,15 @@ const router = createBrowserRouter([
         element: <Register />,
       },
     ],
+
+    errorElement: <ErrorPage code={404} message="Page Not Found" />,
   },
   {
-    path: "/home",
+    path: "/d",
     element: <DashNavOutlet />,
     children: [
       {
-        path: "/home",
+        path: "/d",
         element: (
           <Stack flex={1}>
             <HomeView />
@@ -114,20 +118,27 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/home/test",
+        path: "/d/test",
         element: <TestView />,
       },
       {
-        path: "/home/qr",
+        path: "/d/qr",
         element: <Stack flex={1}></Stack>,
       },
       {
-        path: "/home/user",
+        path: "/d/user",
         element: <Stack flex={1}></Stack>,
       },
       {
-        path: "/home/settings",
+        path: "/d/settings",
         element: <SettingsView />,
+      },
+      {
+        path: "/d/:organizationId",
+        element: <OrganizationPage />,
+      },
+      {
+        path: "/d/:organizationId/:eventId",
       },
     ],
   },

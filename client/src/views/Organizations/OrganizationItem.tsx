@@ -9,7 +9,6 @@ import {
   Heading,
   useColorModeValue,
   CardHeader,
-  Img,
 } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
 import { OrganizationItemComponent } from "./types";
@@ -22,7 +21,7 @@ export const OrganizationTd: OrganizationItemComponent = ({
     <Tr {...rest}>
       <Td>{organization.name}</Td>
       <Td>
-        <Button as={RouterLink} to={"/" + organization.id}>
+        <Button as={RouterLink} to={"/d" + "/" + organization.id}>
           View More
         </Button>
       </Td>
@@ -37,7 +36,6 @@ export const OrganizationCard: OrganizationItemComponent = ({
   return (
     <Card {...rest} width={"100%"} bg={useColorModeValue("white", "#404040")}>
       <CardHeader>
-        <Img src={""} width={"60%"} height={"100px"} />
         <Heading size={"md"}>{organization.name}</Heading>
       </CardHeader>
       <CardBody>
@@ -45,7 +43,7 @@ export const OrganizationCard: OrganizationItemComponent = ({
           <Stack></Stack>
           <Button
             as={RouterLink}
-            to={"/" + organization.id}
+            to={"/d" + "/" + organization.id}
             bg={useColorModeValue("purple.500", "purple.400")}
           >
             Go to Page

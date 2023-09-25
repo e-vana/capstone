@@ -34,10 +34,9 @@ import { useAppSelector } from "../../app/hooks";
 
 export const DashNav = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const { toggleColorMode } = useColorMode();
   const { user } = useAppSelector((state) => state.user);
   return (
-    <Box position={"sticky"} top={0} left={0}>
+    <Box position={"sticky"} top={0} left={0} zIndex={5}>
       <Flex
         bg={useColorModeValue("white", "#303030")}
         color={useColorModeValue("gray.600", "white")}

@@ -19,6 +19,7 @@ import { HiCog, HiMoon, HiSun } from "react-icons/hi";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 import { TabComponent, ToolBarComponent, iTab } from "./types";
 import UserTile from "../Tile/UserTile";
+import TileModal from "../Tile/TileModal";
 
 const Tab: TabComponent = ({ item }) => {
   const location = useLocation();
@@ -42,12 +43,12 @@ const ToolBar: ToolBarComponent = ({ ...rest }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const TOOL_BAR_ITEMS: iTab[] = [
     {
-      route: "/home",
+      route: "/d",
       icon: HiHome,
     },
 
     {
-      route: "/home/settings",
+      route: "/d/settings",
       icon: HiCog,
     },
   ];
@@ -58,6 +59,7 @@ const ToolBar: ToolBarComponent = ({ ...rest }) => {
       minH={"60px"}
       borderColor={useColorModeValue("gray.200", "gray.900")}
       bg={useColorModeValue("#ffffff", "#303030")}
+      zIndex={5}
     >
       <HStack width={"100%"} px={5} justify={"space-around"} align={"center"}>
         {TOOL_BAR_ITEMS.map((item) => (
@@ -85,38 +87,9 @@ const ToolBar: ToolBarComponent = ({ ...rest }) => {
           />
         </Box>
       </HStack>
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent
-          border={"none"}
-          boxShadow={"none"}
-          bg={useColorModeValue("white", "#303030")}
-        >
-          <ModalCloseButton />
-          <ModalBody py={5}>
-            <Stack
-              width={"100%"}
-              align={"center"}
-              minH={"400px"}
-              justify={"space-between"}
-              spacing={5}
-            >
-              <Heading size={"md"} alignSelf={"start"}>
-                Your Tile
-              </Heading>
-              <UserTile />
-              <Text
-                alignSelf={"center"}
-                background={"gray.200"}
-                padding={2}
-                rounded={"md"}
-              >
-                Check in with this code!
-              </Text>
-            </Stack>
-          </ModalBody>
-        </ModalContent>
-      </Modal>
+      <TileModal isOpen={isOpen} onClose={onClose}>
+        <UserTile />
+      </TileModal>
     </HStack>
   );
 };

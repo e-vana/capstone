@@ -13,3 +13,8 @@ export interface iGetOrganizations {
   success: boolean;
   organizations: iOrganization[];
 }
+
+export interface iGetOrganization {
+  success: boolean;
+  organization: iOrganization;
+}
