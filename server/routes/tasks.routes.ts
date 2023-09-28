@@ -8,7 +8,15 @@ dotenv.config();
 const router: Router = Router();
 router.use(decodeToken);
 
-//GET ALL TASKS ON AN EVENT
+// TODO: Handle event tasks that are assigned to a team within an organization
+
+/**
+ * @route GET /organizations/:organization_id/events/:event_id/tasks
+ * @desc Get all tasks within the given event
+ * @param organization_id - The integer id of the organization
+ * @param event_id - The integer id of the event
+ * @returns { success: boolean, tasks: Task[] }
+ */
 router.get(
   "/:organization_id/events/:event_id/tasks",
   async (req: Request, res: Response) => {
@@ -32,7 +40,15 @@ router.get(
     }
   }
 );
-//GET A TASK ON AN EVENT
+
+/**
+ * @route GET /organizations/:organization_id/events/:event_id/tasks/:task_id
+ * @desc Get a specific task within the given event
+ * @param organization_id - The integer id of the organization
+ * @param event_id - The integer id of the event
+ * @param task_id - The integer id of the task
+ * @returns { success: boolean, tasks: Task[] }
+ */
 router.get(
   "/:organization_id/events/:event_id/tasks/:task_id",
   async (req: Request, res: Response) => {
@@ -56,10 +72,19 @@ router.get(
     }
   }
 );
-//Create a task within an organization
+
+/**
+ * @route POST /organizations/:organization_id/events/:event_id/tasks
+ * @desc Create a task within the given event
+ * @param organization_id - The integer id of the organization
+ * @param event_id - The integer id of the event
+ * @param name - The name of the task
+ * @param description - The description of the task
+ * @returns { success: boolean, task_id: number }
+ */
 router.post(
   "/:organization_id/events/:event_id/tasks",
-  body("name").isString().trim(),
+  body("name").isString().trim().isLength({ min: 1, max: 150 }),
   body("description").isString().trim(),
   async (req: Request, res: Response) => {
     try {
@@ -82,13 +107,60 @@ router.post(
       await connection.end();
       res
         .status(200)
-        .json({ success: true, event_id: resultsInsertTask.insertId });
+        .json({ success: true, task_id: resultsInsertTask.insertId });
     } catch (error) {
       res.status(500).json({ success: false, error });
     }
   }
 );
-//Mark a task complete /incomplete
+
+/**
+ * @route PUT /organizations/:organization_id/events/:event_id/tasks/:task_id
+ * @desc Update a task within the given event
+ * @param organization_id - The integer id of the organization
+ * @param event_id - The integer id of the event
+ * @param task_id - The integer id of the task
+ * @param name - The name of the task
+ * @param description - The description of the task
+ * @access Private (TODO: should only admins/team leaders be able to edit event info, besides completion status?)
+ * @returns { success: boolean, task_id: number }
+ */
+router.put("/:organization_id/events/:event_id/tasks/:task_id",
+  body("name").isString().trim().optional().isLength({ min: 1, max: 150 }),
+  body("description").isString().optional().trim(),
+  async (req: Request, res: Response) => {
+    try {
+      // TODO: Check if the user has permissions to edit this event
+      let validationErrors = validationResult(req);
+      if (!validationErrors.isEmpty()) {
+        throw { validationErrors: validationErrors.array() };
+      }
+      let connection = await mysql.createConnection(
+        process.env.DATABASE_URL as string
+      );
+      let updateTaskQuery = `UPDATE tasks SET ? WHERE id = ?`;
+      const [resultsUpdateTask] = await connection.query<ResultSetHeader>(
+        updateTaskQuery,
+        [req.body, parseInt(req.params.task_id)]
+      );
+      await connection.end();
+      return res.status(200).json({ success: true, tasks: resultsUpdateTask });
+    }
+    catch (error) {
+      return res.status(500).json({ success: false, error });
+    }
+  }
+);
+
+/**
+ * @route POST /organizations/:organization_id/events/:event_id/tasks/:task_id
+ * @desc Toggle a task's completion status
+ * @param organization_id - The integer id of the organization
+ * @param event_id - The integer id of the event
+ * @param task_id - The integer id of the task
+ * @param completed - The completion status of the task
+ * @access Private (TODO: Only members in the team/org should be able to toggle completion status)
+ */
 router.post(
   "/:organization_id/events/:event_id/tasks/:task_id",
   body("completed").isInt({ max: 1, min: 0 }).trim(),
@@ -114,10 +186,14 @@ router.post(
         parseInt(req.params.task_id),
       ]);
       await connection.end();
-      res.status(200).json({ success: true });
+      return res.status(200).json({ success: true, tasks: resultsUpdateTask });
     } catch (error) {
+<<<<<<< HEAD
       console.log(error);
       res.status(500).json({ success: false, error });
+=======
+      return res.status(500).json({ success: false, error });
+>>>>>>> 46929e2 (Added basic JSDoc to backend; added preliminary Update&Delete endpoints for some resources)
     }
   }
 );
