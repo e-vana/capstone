@@ -6,10 +6,11 @@ import bcrypt from "bcrypt";
 
 const router: Router = Router();
 
+// TODO: Should these endpoints be protected by the decodeToken middleware?
+
 /**
  * @route GET /users
  * @desc Get all users
- * @access Public
  */
 router.get("/", async (req: Request, res: Response) => {
   try {
@@ -32,7 +33,6 @@ router.get("/", async (req: Request, res: Response) => {
  * @param first_name - The first name of the user
  * @param last_name - The last name of the user
  * @param password - The password of the user
- * @access Public
  */
 router.post(
   "/",
@@ -82,7 +82,6 @@ router.post(
 /**
  * @route GET /users/:id
  * @desc Get a specific user by id
- * @access Public
  * @param id - The integer id of the user
  * @returns The user with the given id
 */
