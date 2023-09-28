@@ -1,3 +1,4 @@
+import { BoxProps, StackProps } from "@chakra-ui/react";
 import { FunctionComponent } from "react";
 
 export interface iTab {
@@ -9,4 +10,7 @@ interface TabProps {
   item: iTab;
 }
 
+interface ToolBarProps extends StackProps {}
+
 export type TabComponent = FunctionComponent<TabProps>;
+export type ToolBarComponent = FunctionComponent<ToolBarProps>;

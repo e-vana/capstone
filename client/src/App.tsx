@@ -21,6 +21,8 @@ import { DashNav } from "./components/Nav/DashNav";
 import ToolBar from "./components/Nav/ToolBar";
 import SettingsView from "./views/SettingsView";
 import AuthGuard from "./components/RouteGuard/AuthGuard";
+import { ErrorPage } from "./components/Error";
+import OrganizationPage from "./views/Organizations/OrganizationPage";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -33,7 +35,10 @@ export const queryClient = new QueryClient({
 const LandingNavOutlet = () => {
   return (
     <>
-      <Helmet defaultTitle={import.meta.env.VITE_APP_NAME} titleTemplate={"%s | " + import.meta.env.VITE_APP_NAME} />
+      <Helmet
+        defaultTitle={import.meta.env.VITE_APP_NAME}
+        titleTemplate={"%s | " + import.meta.env.VITE_APP_NAME}
+      />
       <Stack
         position={"relative"}
         minH={"100vh"}
@@ -51,10 +56,13 @@ const LandingNavOutlet = () => {
 const DashNavOutlet = () => {
   return (
     <>
-      <Helmet defaultTitle={import.meta.env.VITE_APP_NAME} titleTemplate={"%s | " + import.meta.env.VITE_APP_NAME} />
+      <Helmet
+        defaultTitle={import.meta.env.VITE_APP_NAME}
+        titleTemplate={"%s | " + import.meta.env.VITE_APP_NAME}
+      />
       <Stack
         position={"relative"}
-        height={"100vh"}
+        minHeight={"100vh"}
         minH={"100vh"}
         flex={1}
         spacing={0}
@@ -63,7 +71,13 @@ const DashNavOutlet = () => {
         <AuthGuard>
           <DashNav />
           <Outlet />
-          <ToolBar />
+          <ToolBar
+            display={{ base: "flex", md: "none" }}
+            borderTop={"1px solid"}
+            position={"sticky"}
+            bottom={0}
+            left={0}
+          />
         </AuthGuard>
       </Stack>
     </>
@@ -88,13 +102,15 @@ const router = createBrowserRouter([
         element: <Register />,
       },
     ],
+
+    errorElement: <ErrorPage code={404} message="Page Not Found" />,
   },
   {
-    path: "/home",
+    path: "/d",
     element: <DashNavOutlet />,
     children: [
       {
-        path: "/home",
+        path: "/d",
         element: (
           <Stack flex={1}>
             <HomeView />
@@ -102,20 +118,27 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/home/test",
+        path: "/d/test",
         element: <TestView />,
       },
       {
-        path: "/home/qr",
+        path: "/d/qr",
         element: <Stack flex={1}></Stack>,
       },
       {
-        path: "/home/user",
+        path: "/d/user",
         element: <Stack flex={1}></Stack>,
       },
       {
-        path: "/home/settings",
+        path: "/d/settings",
         element: <SettingsView />,
+      },
+      {
+        path: "/d/:organizationId",
+        element: <OrganizationPage />,
+      },
+      {
+        path: "/d/:organizationId/:eventId",
       },
     ],
   },

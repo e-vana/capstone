@@ -7,13 +7,13 @@ import {
   TabPanels,
   Tab,
 } from "@chakra-ui/react";
-import { FunctionComponent, useEffect, useState } from "react";
+import { FunctionComponent } from "react";
 import { useQuery } from "react-query";
 import { Helmet } from "react-helmet";
-import { getEvents } from "../api/events.api";
 import { getOrganizations } from "../api/organizations.api";
 import ErrorMessage from "../components/Error";
-import MyOrganizationsView from "./MyOrganizationsView";
+import OrganizationView from "./Organizations";
+import EventsView from "./Events";
 
 const HomeView: FunctionComponent = () => {
   const {
@@ -50,11 +50,11 @@ const HomeView: FunctionComponent = () => {
             <TabPanels>
               <TabPanel flex={1}>
                 <Helmet title="Organizations" />
-                <MyOrganizationsView></MyOrganizationsView>
+                <OrganizationView />
               </TabPanel>
               <TabPanel>
                 <Helmet title="Events" />
-                <h1>My Events</h1>
+                <EventsView />
               </TabPanel>
             </TabPanels>
           </Tabs>
