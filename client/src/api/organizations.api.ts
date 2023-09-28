@@ -1,5 +1,6 @@
 import axios from "axios";
 import {
+  iGetOrganization,
   iGetOrganizations,
   iOrganization,
 } from "../interfaces/organization.interface";
@@ -16,6 +17,23 @@ export const getOrganizations = async function (): Promise<iGetOrganizations> {
     }
   );
   return response.data;
+};
+
+// only gets orgs that a user owns -- as per endpoint
+export const getOrganization = async function (
+  organizationId: number
+): Promise<iOrganization> {
+  const token = localStorage.getItem("token");
+  if (!token) throw new Error("no token, please log in");
+  const response = await axios.get<iGetOrganization>(
+    `${import.meta.env.VITE_BASE_URL}/organizations/${organizationId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return response.data.organization;
 };
 
 export const addOrganization = async function (

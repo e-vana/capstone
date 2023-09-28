@@ -20,6 +20,7 @@ import {
   HStack,
   Heading,
   useColorMode,
+  Avatar,
 } from "@chakra-ui/react";
 import {
   HamburgerIcon,
@@ -28,13 +29,14 @@ import {
   MoonIcon,
   SunIcon,
 } from "@chakra-ui/icons";
+import ToolBar from "./ToolBar";
+import { useAppSelector } from "../../app/hooks";
 
 export const DashNav = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const { toggleColorMode } = useColorMode();
-
+  const { user } = useAppSelector((state) => state.user);
   return (
-    <Box position={"sticky"} top={0} left={0}>
+    <Box position={"sticky"} top={0} left={0} zIndex={5}>
       <Flex
         bg={useColorModeValue("white", "#303030")}
         color={useColorModeValue("gray.600", "white")}
@@ -65,17 +67,19 @@ export const DashNav = () => {
             <DesktopNav />
           </Flex>
         </Flex>
-        <Flex display={{ base: "none", md: "flex" }}>
-          <Icon
-            as={useColorModeValue(MoonIcon, SunIcon)}
-            color={useColorModeValue("gray.500", "gray.100")}
-            boxSize={6}
-            cursor={"pointer"}
-            _hover={{
-              color: useColorModeValue("purple.500", "purple.300"),
-            }}
-            onClick={toggleColorMode}
-          />
+        <Flex
+          display={{ base: "none", md: "flex" }}
+          align={"center"}
+          width={{ sm: "30%", md: "30%", lg: "23%" }}
+        >
+          <ToolBar display={{ base: "none", md: "flex" }} />
+          <Box>
+            <Avatar
+              name={user?.first_name + " " + user?.last_name}
+              bg={"gray.400"}
+              size={"md"}
+            />
+          </Box>
         </Flex>
         <Flex display={{ base: "flex", md: "none" }} zIndex={10}>
           <Box zIndex={12}>

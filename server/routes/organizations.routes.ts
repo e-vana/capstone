@@ -54,7 +54,7 @@ router.get("/:organization_id", async (req: Request, res: Response) => {
     await connection.end();
     res
       .status(200)
-      .json({ success: true, organization: getOrganizationsResults });
+      .json({ success: true, organization: getOrganizationsResults[0] });
   } catch (error) {
     res.status(500).json({ success: false, error });
   }
