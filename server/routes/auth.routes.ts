@@ -9,6 +9,16 @@ import decodeToken from "../middleware/token.middleware";
 import { User } from "../interfaces/user.interface";
 const router: Router = Router();
 
+/**
+ * @route POST /auth/register
+ * @desc Register a new user
+ * @param email - The email of the user
+ * @param first_name - The first name of the user
+ * @param last_name - The last name of the user
+ * @param password - The password of the user
+ * @access Public
+ * @returns { success: boolean, jwt: string }
+ */
 router.post(
   "/register",
   body("email").isString().trim(),
@@ -68,6 +78,15 @@ router.post(
     }
   }
 );
+
+/**
+ * @route POST /auth/login
+ * @desc Login a user with email and password, returning a JWT
+ * @param email - The email of the user
+ * @param password - The password of the user
+ * @access Public
+ * @returns { success: boolean, jwt: string }
+ */
 router.post(
   "/login",
   body("email").isString().trim(),
@@ -125,7 +144,12 @@ router.post(
   }
 );
 
-// call middleware function -> protect
+/**
+ * @route GET /auth/me
+ * @desc Get the user associated with the passed JWT (currently logged in user)
+ * @access Protected
+ * @returns { success: boolean, data: Omit<User, "password"> }
+ */
 router.get("/me", decodeToken, async (req: Request, res: Response) => {
   try {
     // check if user exists on req object

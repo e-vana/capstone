@@ -8,6 +8,7 @@ dotenv.config();
 const router: Router = Router();
 router.use(decodeToken);
 
+// TODO: Is this needed since events must be tied to a team?
 //Create an event within an organization
 router.post(
   "/:organization_id/events",
@@ -60,7 +61,13 @@ router.post(
     }
   }
 );
-//GET ALL EVENTS IN AN ORGANIZATION
+
+/**
+ * @route GET /organizations/:organization_id/events
+ * @desc Get all events within the given organization, regardless of team association
+ * @param organization_id - The integer id of the organization
+ * @returns { success: boolean, events: Event[] }
+ */
 router.get("/:organization_id/events", async (req: Request, res: Response) => {
   try {
     let connection = await mysql.createConnection(
@@ -77,7 +84,14 @@ router.get("/:organization_id/events", async (req: Request, res: Response) => {
     res.status(500).json({ success: false, error });
   }
 });
-//GET AN EVENT IN AN ORGANIZATION
+
+/**
+ * @route GET /organizations/:organization_id/events/:event_id
+ * @desc Get a specific event within the given organization, regardless of team association
+ * @param organization_id - The integer id of the organization
+ * @param event_id - The integer id of the event
+ * @returns The event with the given id
+ */
 router.get(
   "/:organization_id/events/:event_id",
   async (req: Request, res: Response) => {
@@ -101,7 +115,13 @@ router.get(
   }
 );
 
-//GET EVENTS IN A TEAM
+/**
+ * @route GET /organizations/:organization_id/teams/:team_id/events
+ * @desc Get all events within the given team
+ * @param organization_id - The integer id of the organization
+ * @param team_id - The integer id of the team
+ * @returns { success: boolean, events: Event[] }
+ */
 router.get(
   "/:organization_id/teams/:team_id/events",
   async (req: Request, res: Response) => {
@@ -121,7 +141,15 @@ router.get(
     }
   }
 );
-//GET AN EVENT IN A TEAM
+
+/**
+ * @route GET /organizations/:organization_id/teams/:team_id/events/:event_id
+ * @desc Get a specific event within the given team
+ * @param organization_id - The integer id of the organization
+ * @param team_id - The integer id of the team
+ * @param event_id - The integer id of the event
+ * @returns The event with the given id
+ */
 router.get(
   "/:organization_id/teams/:team_id/events/:event_id",
   async (req: Request, res: Response) => {
@@ -141,4 +169,5 @@ router.get(
     }
   }
 );
+
 export { router as eventsRouter };
