@@ -5,6 +5,7 @@ import {
   iOrganization,
 } from "../interfaces/organization.interface";
 
+// GET ALL ORGANIZATIONS
 export const getOrganizations = async function (): Promise<iGetOrganizations> {
   const token = localStorage.getItem("token");
   if (!token) throw new Error("no token, please log in");
@@ -36,6 +37,7 @@ export const getOrganization = async function (
   return response.data.organization;
 };
 
+// POSTS A NEW ORGANIZATION
 export const addOrganization = async function (
   data: Pick<
     iOrganization,

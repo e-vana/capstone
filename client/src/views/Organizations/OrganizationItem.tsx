@@ -45,6 +45,7 @@ export const OrganizationCard: OrganizationItemComponent = ({
             as={RouterLink}
             to={"/d" + "/" + organization.id}
             bg={useColorModeValue("purple.500", "purple.400")}
+            color={"white"}
           >
             Go to Page
           </Button>

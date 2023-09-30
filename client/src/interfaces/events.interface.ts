@@ -18,3 +18,8 @@ export interface iGetEvents {
   success: boolean;
   events: iEvent[];
 }
+
+export interface iGetEvent {
+  success: boolean;
+  event: iEvent;
+}

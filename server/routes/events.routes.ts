@@ -69,7 +69,7 @@ router.get("/:organization_id/events", async (req: Request, res: Response) => {
     let getEventsQuery = `SELECT * FROM events WHERE organization_id = ?`;
     const [getEventsResults] = await connection.query<RowDataPacket[]>(
       getEventsQuery,
-      parseInt(req.params.organization_id)
+      [parseInt(req.params.organization_id)]
     );
     await connection.end();
     res.status(200).json({ success: true, events: getEventsResults });
