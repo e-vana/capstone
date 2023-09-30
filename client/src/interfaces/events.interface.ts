@@ -45,7 +45,6 @@ export interface iGetEventsJoinTeamJoinOrg {
   success: boolean;
   events: iEventJoinTeamJoinOrg[];
 }
-
 export interface iGetEvent {
   success: boolean;
   event: iEvent;
