@@ -1,5 +1,9 @@
 import axios from "axios";
-import { iGetEvent, iGetEvents } from "../interfaces/events.interface";
+import {
+  iGetEvent,
+  iGetEvents,
+  iGetEventsJoinTeamJoinOrg,
+} from "../interfaces/events.interface";
 
 // GET EVENTS IN A ORG
 export const getEvents = async function (orgId: number): Promise<iGetEvents> {
@@ -72,6 +76,33 @@ export const getEventsInATeam = async function (
     {
       headers: {
         Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return response.data;
+};
+export const getEventsInAnOrganization = async function (
+  orgId: number
+): Promise<iGetEventsJoinTeamJoinOrg> {
+  const response = await axios.get<iGetEventsJoinTeamJoinOrg>(
+    `${import.meta.env.VITE_BASE_URL}/organizations/${orgId}/events`,
+    {
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    }
+  );
+  return response.data;
+};
+export const getAnEventInAnOrganization = async function (
+  orgId: number,
+  eventId: number
+): Promise<iGetEventsJoinTeamJoinOrg> {
+  const response = await axios.get<iGetEventsJoinTeamJoinOrg>(
+    `${import.meta.env.VITE_BASE_URL}/organizations/${orgId}/events/${eventId}`,
+    {
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     }
   );
