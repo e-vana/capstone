@@ -95,7 +95,7 @@ router.get(
         throw { message: "No event found." };
       }
       await connection.end();
-      res.status(200).json({ success: true, event: getEventsResults });
+      res.status(200).json({ success: true, event: getEventsResults[0] });
     } catch (error) {
       res.status(500).json({ success: false, error });
     }
