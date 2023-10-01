@@ -7,6 +7,8 @@ dotenv.config();
 const router: Router = Router();
 router.use(decodeToken);
 
+// TODO: Update to allow getting organizations a user is a member of but does not own
+
 //Get all organizations a user owns
 router.get("/", async (req: Request, res: Response) => {
   try {
@@ -58,7 +60,15 @@ router.get("/:organization_id", async (req: Request, res: Response) => {
   }
 });
 
-//Create an organization
+/**
+ * @route POST /organizations
+ * @desc Create a new organization
+ * @param name - The name of the organization
+ * @param website_url - The website url of the organization
+ * @param phone_number - The phone number of the organization
+ * @param logo_url - The logo url of the organization
+ * @returns { success: boolean }
+ */
 router.post(
   "/",
   body("name").isString().trim(),
@@ -71,11 +81,13 @@ router.post(
       if (!validationErrors.isEmpty()) {
         throw { validationErrors: validationErrors.array() };
       }
+      // Mark the owner_user_id as the user who created the organization
       req.body = { ...req.body, owner_user_id: req.userId };
       let connection = await mysql.createConnection(
         process.env.DATABASE_URL as string
       );
       await connection.beginTransaction();
+      // TODO: Check if organization name already exists
       let insertQuery = `INSERT INTO organizations SET ?`;
       const [resultsInsertOrganization] =
         await connection.query<ResultSetHeader>(insertQuery, req.body);
