@@ -23,6 +23,7 @@ import SettingsView from "./views/SettingsView";
 import AuthGuard from "./components/RouteGuard/AuthGuard";
 import { ErrorPage } from "./components/Error";
 import OrganizationPage from "./views/Organizations/OrganizationPage";
+import EventPage from "./views/Events/EventPage";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -139,6 +140,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/d/:organizationId/:eventId",
+        element: <EventPage />,
       },
     ],
   },

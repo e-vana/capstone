@@ -44,7 +44,7 @@ const Login: LoginComponent = () => {
       status: "success",
       title: "Logging in",
     });
-    navigate("/home");
+    navigate("/d");
     mutation.reset();
   }
 

@@ -15,8 +15,10 @@ import { EventTableComponent } from "./types";
 import { useAppSelector } from "../../app/hooks";
 
 export const EventTable: EventTableComponent = ({ ...rest }) => {
-  const { events } = useAppSelector((state) => state.organizations);
-
+  const { events, selectedOrg } = useAppSelector(
+    (state) => state.organizations
+  );
+  console.log(events[0]);
   return (
     <TableContainer
       {...rest}
@@ -83,7 +85,7 @@ export const EventTable: EventTableComponent = ({ ...rest }) => {
                     as={RouterLink}
                     variant="solid"
                     size={"sm"}
-                    to={"/" + e.organization_id + "/" + e.name}
+                    to={"/d" + "/" + selectedOrg + "/" + e.id}
                   >
                     View Event
                   </Button>

@@ -77,7 +77,7 @@ router.get("/:organization_id/events", async (req: Request, res: Response) => {
     let getEventsQuery = `SELECT t.id as team_id, t.name as team_name, e.id as event_id, e.name as event_name, e.description as event_description, e.address_street, e.address_city, e.address_state, e.address_zipcode, o.name as organization_name, o.id as organization_id FROM events e JOIN teams t ON e.team_id = t.id JOIN organizations o ON t.organization_id WHERE o.id = ?`;
     const [getEventsResults] = await connection.query<RowDataPacket[]>(
       getEventsQuery,
-      parseInt(req.params.organization_id)
+      [parseInt(req.params.organization_id)]
     );
     await connection.end();
     res.status(200).json({ success: true, events: getEventsResults });

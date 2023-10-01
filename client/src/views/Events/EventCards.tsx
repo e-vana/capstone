@@ -37,7 +37,7 @@ const EventCards: EventCardsComponent = () => {
               justifyContent={"space-between"}
               width={"50%"}
               as={RouterLink}
-              to={"/" + selectedOrg + "/" + e.name}
+              to={"/d" + "/" + selectedOrg + "/" + e.id}
             >
               View Event <Icon as={ChevronRightIcon} />
             </Button>

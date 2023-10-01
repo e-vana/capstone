@@ -39,7 +39,7 @@ const Register: RegisterComponent = () => {
   const navigate = useNavigate();
 
   const mutation = useMutation(
-    (data: Omit<iUser, "created_at" | "updated_at">) => {
+    (data: Omit<iUser, "id" | "created_at" | "updated_at">) => {
       return registerUser(data);
     }
   );
@@ -74,7 +74,7 @@ const Register: RegisterComponent = () => {
   }
 
   const handleSubmit = (): void => {
-    const data: Omit<iUser, "created_at" | "updated_at"> = {
+    const data: Omit<iUser, "id" | "created_at" | "updated_at"> = {
       first_name: firstName,
       last_name: lastName,
       email: email,
@@ -88,7 +88,7 @@ const Register: RegisterComponent = () => {
       status: "success",
       title: "Created Account!",
     });
-    navigate("/home");
+    navigate("/d");
     mutation.reset();
   }
 
@@ -189,7 +189,10 @@ const Register: RegisterComponent = () => {
                   />
                 </FormControl>
                 <Stack spacing={10} pt={2}>
-                  <List fontSize={"sm"} color={useColorModeValue("red", "red.400")}>
+                  <List
+                    fontSize={"sm"}
+                    color={useColorModeValue("red", "red.400")}
+                  >
                     {passwordErrors.length > 0 && password !== "" && (
                       <>
                         <Text>Password needs the following: </Text>

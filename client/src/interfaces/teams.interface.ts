@@ -11,3 +11,8 @@ export interface iGetTeams {
   success: boolean;
   teams: iTeam[];
 }
+
+export interface iGetTeam {
+  success: boolean;
+  team: iTeam;
+}

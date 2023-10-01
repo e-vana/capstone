@@ -21,6 +21,10 @@ import {
   Heading,
   useColorMode,
   Avatar,
+  Menu,
+  MenuList,
+  MenuButton,
+  MenuItem,
 } from "@chakra-ui/react";
 import {
   HamburgerIcon,
@@ -31,10 +35,12 @@ import {
 } from "@chakra-ui/icons";
 import ToolBar from "./ToolBar";
 import { useAppSelector } from "../../app/hooks";
+import { useNavigate } from "react-router-dom";
 
 export const DashNav = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { user } = useAppSelector((state) => state.user);
+  const navigate = useNavigate();
   return (
     <Box position={"sticky"} top={0} left={0} zIndex={5}>
       <Flex
@@ -74,11 +80,34 @@ export const DashNav = () => {
         >
           <ToolBar display={{ base: "none", md: "flex" }} />
           <Box>
-            <Avatar
-              name={user?.first_name + " " + user?.last_name}
-              bg={"gray.400"}
-              size={"md"}
-            />
+            <Menu>
+              <MenuButton
+                border="1px solid"
+                borderColor={"gray.300"}
+                padding={2}
+                rounded={"full"}
+                width={"90px"}
+              >
+                <HStack width={"100%"} justify={"space-evenly"}>
+                  <Avatar
+                    name={user?.first_name + " " + user?.last_name}
+                    bg={"gray.400"}
+                    size={"sm"}
+                  />
+                  <Icon as={ChevronDownIcon} boxSize={5} />
+                </HStack>
+              </MenuButton>
+              <MenuList>
+                <MenuItem
+                  onClick={() => {
+                    localStorage.removeItem("token");
+                    navigate("/");
+                  }}
+                >
+                  Sign Out
+                </MenuItem>
+              </MenuList>
+            </Menu>
           </Box>
         </Flex>
         <Flex display={{ base: "flex", md: "none" }} zIndex={10}>

@@ -18,7 +18,7 @@ export const loginUser = async function (
 };
 
 export const registerUser = async function (
-  newUser: Omit<iUser, "created_at" | "updated_at">
+  newUser: Omit<iUser, "id" | "created_at" | "updated_at">
 ): Promise<string> {
   const response = await axios.post(
     `${import.meta.env.VITE_BASE_URL}/auth/register`,

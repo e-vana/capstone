@@ -33,6 +33,11 @@ export interface iGetEvents {
   events: iEvent[];
 }
 
+export interface iGetEvent {
+  success: boolean;
+  event: iEvent;
+}
+
 export interface iGetEventsJoinTeamJoinOrg {
   success: boolean;
   events: iEventJoinTeamJoinOrg[];
