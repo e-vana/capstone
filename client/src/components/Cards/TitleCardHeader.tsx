@@ -1,4 +1,4 @@
-import { CardHeader, Heading, Skeleton } from "@chakra-ui/react";
+import { CardHeader, Skeleton } from "@chakra-ui/react";
 import { TitleCardHeaderComponent } from "./types";
 
 const TitleCardHeader: TitleCardHeaderComponent = ({ isLoading, children }) => {

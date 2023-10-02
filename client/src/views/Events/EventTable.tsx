@@ -41,7 +41,7 @@ export const EventTable: EventTableComponent = ({ ...rest }) => {
             <>
               <Tr>
                 <Td>
-                  {e.name}
+                  {e.event_name}
                   {new Date(Date.now()) > new Date(e.end_time) ? (
                     <Badge
                       marginLeft={"5px"}
@@ -75,7 +75,7 @@ export const EventTable: EventTableComponent = ({ ...rest }) => {
                     </div>
                   </>
                 </Td>
-                <Td>{e.description}</Td>
+                <Td>{e.event_description}</Td>
                 <Td>
                   {e.address_street}, {e.address_city}, {e.address_state}{" "}
                   {e.address_zipcode}
@@ -85,7 +85,7 @@ export const EventTable: EventTableComponent = ({ ...rest }) => {
                     as={RouterLink}
                     variant="solid"
                     size={"sm"}
-                    to={"/d" + "/" + selectedOrg + "/" + e.id}
+                    to={"/d" + "/" + selectedOrg + "/" + e.event_id}
                   >
                     View Event
                   </Button>

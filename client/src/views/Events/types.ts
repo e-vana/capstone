@@ -30,6 +30,11 @@ interface EventHeaderProps {
   children: ReactNode;
 }
 
+interface EventTasksProps {
+  orgId: number;
+  eventId: number;
+}
+
 export type OrgFilterComponent = FunctionComponent<OrgFilterProps>;
 export type TeamFilterComponent = FunctionComponent<TeamFilterProps>;
 export type EventsComponent = FunctionComponent<EventsProps>;
@@ -37,3 +42,4 @@ export type EventsListComponent = FunctionComponent<EventListProps>;
 export type EventTableComponent = FunctionComponent<EventTableProps>;
 export type EventCardsComponent = FunctionComponent<EventCardsProps>;
 export type EventHeaderComponent = FunctionComponent<EventHeaderProps>;
+export type EventTasksComponent = FunctionComponent<EventTasksProps>;

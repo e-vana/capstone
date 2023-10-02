@@ -1,7 +1,7 @@
 import { FunctionComponent } from "react";
 import { iOrganization } from "../../interfaces/organization.interface";
 import { BoxProps } from "@chakra-ui/react";
-import { iGetTeams, iTeam } from "../../interfaces/teams.interface";
+import { iGetTeams } from "../../interfaces/teams.interface";
 import { iGetEvents } from "../../interfaces/events.interface";
 
 // for now

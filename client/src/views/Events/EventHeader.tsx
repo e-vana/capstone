@@ -11,10 +11,12 @@ import { EventHeaderComponent } from "./types";
 import EventContext from "./EventContext";
 import TileModal from "../../components/Tile/TileModal";
 import EventTile from "../../components/Tile/EventTile";
+import { useLocation } from "react-router-dom";
 
 const EventHeader: EventHeaderComponent = ({ children }) => {
   const { eventLoading, eventData } = useContext(EventContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const location = useLocation();
   return (
     <TitleCardContainer>
       <TitleCardHeader isLoading={eventLoading}>
@@ -43,7 +45,12 @@ const EventHeader: EventHeaderComponent = ({ children }) => {
             <Icon as={HiQrCode} />
           </Button>
           <TileModal isOpen={isOpen} onClose={onClose}>
-            {eventData !== undefined && <EventTile event={eventData} />}
+            {eventData !== undefined && (
+              <EventTile
+                event={eventData}
+                eventURL={`${window.location.href}/join/${eventData.event_id}`}
+              />
+            )}
           </TileModal>
         </TitleCardFooter>
       </TitleCardHeader>
