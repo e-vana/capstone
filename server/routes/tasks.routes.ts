@@ -188,12 +188,7 @@ router.post(
       await connection.end();
       return res.status(200).json({ success: true, tasks: resultsUpdateTask });
     } catch (error) {
-<<<<<<< HEAD
-      console.log(error);
-      res.status(500).json({ success: false, error });
-=======
       return res.status(500).json({ success: false, error });
->>>>>>> 46929e2 (Added basic JSDoc to backend; added preliminary Update&Delete endpoints for some resources)
     }
   }
 );
