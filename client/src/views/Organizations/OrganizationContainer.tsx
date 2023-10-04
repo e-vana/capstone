@@ -1,5 +1,5 @@
 import { Stack } from "@chakra-ui/react";
-import { OrganizationContainerComponent, iOrgContext } from "./types";
+import { OrganizationContainerComponent } from "./types";
 
 const OrganizationContainer: OrganizationContainerComponent = ({
   children,

@@ -29,7 +29,7 @@ const EventCards: EventCardsComponent = () => {
             alignItems={"center"}
             justifyContent={"space-between"}
           >
-            <Heading size={"sm"}>{e.name}</Heading>
+            <Heading size={"sm"}>{e.event_name}</Heading>
             <Button
               colorScheme="purple"
               alignSelf={"end"}
@@ -37,7 +37,7 @@ const EventCards: EventCardsComponent = () => {
               justifyContent={"space-between"}
               width={"50%"}
               as={RouterLink}
-              to={"/d" + "/" + selectedOrg + "/" + e.id}
+              to={"/d" + "/" + selectedOrg + "/" + e.event_id}
             >
               View Event <Icon as={ChevronRightIcon} />
             </Button>
