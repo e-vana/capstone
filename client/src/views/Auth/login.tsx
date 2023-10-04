@@ -20,12 +20,15 @@ import { Helmet } from "react-helmet";
 import { iUser } from "../../interfaces/user.interface";
 import { loginUser } from "../../api/users.api";
 import { LoginComponent } from "./types";
+import { useAppSelector } from "../../app/hooks";
 
 const Login: LoginComponent = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const toast = useToast();
   const navigate = useNavigate();
+
+  const { joinURL } = useAppSelector((state) => state.user);
 
   const mutation = useMutation((data: Pick<iUser, "email" | "password">) => {
     return loginUser(data);
@@ -44,7 +47,11 @@ const Login: LoginComponent = () => {
       status: "success",
       title: "Logging in",
     });
-    navigate("/d");
+    if (!joinURL) {
+      navigate("/d");
+    } else {
+      navigate(joinURL);
+    }
     mutation.reset();
   }
 

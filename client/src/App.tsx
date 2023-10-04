@@ -24,6 +24,7 @@ import AuthGuard from "./components/RouteGuard/AuthGuard";
 import { ErrorPage } from "./components/Error";
 import OrganizationPage from "./views/Organizations/OrganizationPage";
 import EventPage from "./views/Events/EventPage";
+import JoinPage from "./views/Join/JoinPage";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -141,6 +142,16 @@ const router = createBrowserRouter([
       {
         path: "/d/:organizationId/:eventId",
         element: <EventPage />,
+      },
+    ],
+  },
+  {
+    path: "/join",
+    element: <LandingNavOutlet />,
+    children: [
+      {
+        path: "/join/:joinId",
+        element: <JoinPage />,
       },
     ],
   },

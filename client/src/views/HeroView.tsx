@@ -50,7 +50,7 @@ const HeroView = () => {
                   color: "purple.400",
                 }}
               >
-                Larbster.io streamlines and empowers non-profits to effectively
+                VillageHours streamlines and empowers non-profits to effectively
                 manage their workforce, optimize productivity, and enhance their
                 mission-driven initiatives.
               </Highlight>

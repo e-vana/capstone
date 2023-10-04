@@ -26,8 +26,11 @@ import { Helmet } from "react-helmet";
 import { iUser } from "../../interfaces/user.interface";
 import { registerUser } from "../../api/users.api";
 import { RegisterComponent } from "./types";
+import { useAppSelector } from "../../app/hooks";
 
 const Register: RegisterComponent = () => {
+  const { joinURL } = useAppSelector((state) => state.user);
+
   const [email, setEmail] = useState<string>("");
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
@@ -88,7 +91,12 @@ const Register: RegisterComponent = () => {
       status: "success",
       title: "Created Account!",
     });
-    navigate("/d");
+
+    if (!joinURL) {
+      navigate("/d");
+    } else {
+      navigate(joinURL);
+    }
     mutation.reset();
   }
 

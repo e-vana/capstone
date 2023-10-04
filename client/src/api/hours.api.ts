@@ -7,6 +7,7 @@ import {
   iGetHoursByOrganizationResponse,
   iGetHoursByTeamResponse,
 } from "../interfaces/hours.interface";
+import { formatSQLDate } from "../hooks/formatDate";
 
 // GET HOURS FOR A PARTICULAR EVENT
 export const getHoursForAnEvent = async function (
@@ -66,7 +67,7 @@ export const getExpensesForAnOrganization = async function (
 };
 
 // CREATE HOURS FOR AN EVENT
-export const createMilesForAnEvent = async function (
+export const createHoursForAnEvent = async function (
   orgId: number,
   teamId: number,
   eventId: number,
@@ -74,11 +75,14 @@ export const createMilesForAnEvent = async function (
 ): Promise<iCreateHoursResponse> {
   const token = localStorage.getItem("token");
   if (!token) throw new Error("no token, please log in");
+  const hoursISO = {
+    start_time: formatSQLDate(hours.start_time),
+  };
   const response = await axios.post<iCreateHoursResponse>(
     `${
       import.meta.env.VITE_BASE_URL
     }/organizations/${orgId}/teams/${teamId}/events/${eventId}/hours`,
-    hours,
+    hoursISO,
     {
       headers: {
         Authorization: `Bearer ${token}`,
