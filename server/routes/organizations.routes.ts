@@ -94,6 +94,7 @@ router.post(
       if (!resultsInsertOrganization) {
         throw { message: "Error creating organization." };
       }
+
       let createPermissionsQuery = `INSERT INTO permissions (user_id, organization_id, level) VALUES (?, ?, 1)`;
       const [resultsCreatePermissions] =
         await connection.query<ResultSetHeader>(createPermissionsQuery, [
@@ -103,10 +104,23 @@ router.post(
       if (!resultsCreatePermissions) {
         throw { message: "Error creating permissions." };
       }
+
+      // Create the organization-wide team
+      let createGlobalTeamQuery = `INSERT INTO teams (organization_id, name, created_by_user_id) VALUES (?, 'Organization-wide Team', ?)`;
+      const [resultsCreateGlobalTeam] =
+        await connection.query<ResultSetHeader>(createGlobalTeamQuery, [
+          resultsInsertOrganization.insertId,
+          req.userId, // This should be the owner of the organization
+        ]);
+
       await connection.commit();
       await connection.end();
+      
+      // TODO: We need to update the user's token with the new permissions
+
       res.status(200).json({ success: true });
     } catch (error) {
+      console.log("POST /organizations error: ", error);
       res.status(500).json({ success: false, error });
     }
   }

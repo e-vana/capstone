@@ -23,7 +23,7 @@ const EventCards: EventCardsComponent = () => {
   return (
     <Stack display={{ base: "initial", md: "none" }}>
       {events.map((e) => (
-        <Card backgroundColor={bgCardColor} color={textCardColor}>
+        <Card backgroundColor={bgCardColor} color={textCardColor} key={e.event_id}>
           <CardFooter
             width={"100%"}
             alignItems={"center"}

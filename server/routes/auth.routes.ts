@@ -137,9 +137,10 @@ router.post(
       await connection.end();
 
       // return token
-      res.status(200).json({ success: true, jwt: token });
+      return res.status(200).json({ success: true, jwt: token });
     } catch (error) {
-      res.status(500).json({ success: false });
+      console.log("POST /auth/login error: ", error);
+      return res.status(500).json({ success: false });
     }
   }
 );

@@ -14,11 +14,13 @@ import { Link as RouterLink } from "react-router-dom";
 import { EventTableComponent } from "./types";
 import { useAppSelector } from "../../app/hooks";
 
-export const EventTable: EventTableComponent = ({ ...rest }) => {
+export const EventTable: EventTableComponent = ({ showTeamName = false, ...rest }) => {
   const { events, selectedOrg } = useAppSelector(
     (state) => state.organizations
   );
-  console.log(events[0]);
+
+  console.log("Events pulled from Redux in EventsTable: ", events);
+
   return (
     <TableContainer
       {...rest}
@@ -30,6 +32,7 @@ export const EventTable: EventTableComponent = ({ ...rest }) => {
         <Thead>
           <Tr>
             <Th>Name</Th>
+            {showTeamName && <Th>Team</Th>}
             <Th>Date & Time</Th>
             <Th>Description</Th>
             <Th>Location</Th>
@@ -41,7 +44,8 @@ export const EventTable: EventTableComponent = ({ ...rest }) => {
             <>
               <Tr>
                 <Td>
-                  {e.event_name}
+                  {/* TODO: For some reason the events have a .name instead of .event_name here */}
+                  {e.event_name || "Unnamed Event"}
                   {new Date(Date.now()) > new Date(e.end_time) ? (
                     <Badge
                       marginLeft={"5px"}
@@ -60,8 +64,10 @@ export const EventTable: EventTableComponent = ({ ...rest }) => {
                     </Badge>
                   )}
                 </Td>
+                {showTeamName && <Td>{e.team_name}</Td>}
                 <Td>
                   <>
+                    {/* TODO: For some reason the events don't have date keys here */}
                     <div style={{ display: "block" }}>
                       <Text fontSize="xs">
                         {new Date(e.start_time).toDateString()}
@@ -85,7 +91,7 @@ export const EventTable: EventTableComponent = ({ ...rest }) => {
                     as={RouterLink}
                     variant="solid"
                     size={"sm"}
-                    to={"/d" + "/" + selectedOrg + "/" + e.event_id}
+                    to={"/d" + "/" + selectedOrg + "/" + e?.event_id}
                   >
                     View Event
                   </Button>
