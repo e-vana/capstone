@@ -3,12 +3,12 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import { getOrganization } from "../../api/organizations.api";
 import { getTeams } from "../../api/teams.api";
+import { getEvents } from "../../api/events.api";
 import OrganizationContainer from "./OrganizationContainer";
 import OrganizationHeader from "./OrganizationHeader";
 import OrganizationTeams from "./OrganizationTeams";
 import OrganizationMembers from "./OrganizationMembers";
 import OrganizationContext from "./OrganizationContext";
-import { getEventInAnOrg, getEvents } from "../../api/events.api";
 import OrganizationEvents from "./OrganizationEvents";
 
 const FAKE_MEMBERS = [
