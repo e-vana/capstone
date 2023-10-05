@@ -66,7 +66,7 @@ export const OrgFilter: OrgFilterComponent = () => {
           >
             {organizations &&
               organizations.map((org) => (
-                <option key={org.id} value={org.id}>
+                <option key={"EventFiltersOrgId" + org.id} value={org.id}>
                   {org.name}
                 </option>
               ))}
@@ -96,7 +96,7 @@ export const OrgFilter: OrgFilterComponent = () => {
           <option value={0}>No team selected</option>
           {teams &&
             teams.map((team) => (
-              <option key={team.id} value={team.id}>
+              <option key={"EventFiltersTeamId" + team.id} value={team.id}>
                 {team.name}
               </option>
             ))}

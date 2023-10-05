@@ -41,63 +41,61 @@ export const EventTable: EventTableComponent = ({ showTeamName = false, ...rest 
         </Thead>
         <Tbody>
           {events.map((e) => (
-            <>
-              <Tr>
-                <Td>
-                  {/* TODO: For some reason the events have a .name instead of .event_name here */}
-                  {e.event_name || "Unnamed Event"}
-                  {new Date(Date.now()) > new Date(e.end_time) ? (
-                    <Badge
-                      marginLeft={"5px"}
-                      fontSize="xx-small"
-                      colorScheme="orange"
-                    >
-                      Completed
-                    </Badge>
-                  ) : (
-                    <Badge
-                      marginLeft={"5px"}
-                      fontSize="xx-small"
-                      colorScheme="green"
-                    >
-                      Upcoming
-                    </Badge>
-                  )}
-                </Td>
-                {showTeamName && <Td>{e.team_name}</Td>}
-                <Td>
-                  <>
-                    {/* TODO: For some reason the events don't have date keys here */}
-                    <div style={{ display: "block" }}>
-                      <Text fontSize="xs">
-                        {new Date(e.start_time).toDateString()}
-                      </Text>
-                    </div>
-                    <div style={{ display: "block" }}>
-                      <Text fontSize="md">
-                        {new Date(e.start_time).toLocaleTimeString()} to{" "}
-                        {new Date(e.end_time).toLocaleTimeString()}
-                      </Text>
-                    </div>
-                  </>
-                </Td>
-                <Td>{e.event_description}</Td>
-                <Td>
-                  {e.address_street}, {e.address_city}, {e.address_state}{" "}
-                  {e.address_zipcode}
-                </Td>
-                <Td>
-                  <Button
-                    as={RouterLink}
-                    variant="solid"
-                    size={"sm"}
-                    to={"/d" + "/" + selectedOrg + "/" + e?.event_id}
+            <Tr key={"EventTableTd" + e.event_id}>
+              <Td>
+                {/* TODO: For some reason the events have a .name instead of .event_name here */}
+                {e.event_name || "Unnamed Event"}
+                {new Date(Date.now()) > new Date(e.end_time) ? (
+                  <Badge
+                    marginLeft={"5px"}
+                    fontSize="xx-small"
+                    colorScheme="orange"
                   >
-                    View Event
-                  </Button>
-                </Td>
-              </Tr>
-            </>
+                    Completed
+                  </Badge>
+                ) : (
+                  <Badge
+                    marginLeft={"5px"}
+                    fontSize="xx-small"
+                    colorScheme="green"
+                  >
+                    Upcoming
+                  </Badge>
+                )}
+              </Td>
+              {showTeamName && <Td>{e.team_name}</Td>}
+              <Td>
+                <>
+                  {/* TODO: For some reason the events don't have date keys here */}
+                  <div style={{ display: "block" }}>
+                    <Text fontSize="xs">
+                      {new Date(e.start_time).toDateString()}
+                    </Text>
+                  </div>
+                  <div style={{ display: "block" }}>
+                    <Text fontSize="md">
+                      {new Date(e.start_time).toLocaleTimeString()} to{" "}
+                      {new Date(e.end_time).toLocaleTimeString()}
+                    </Text>
+                  </div>
+                </>
+              </Td>
+              <Td>{e.event_description}</Td>
+              <Td>
+                {e.address_street}, {e.address_city}, {e.address_state}{" "}
+                {e.address_zipcode}
+              </Td>
+              <Td>
+                <Button
+                  as={RouterLink}
+                  variant="solid"
+                  size={"sm"}
+                  to={"/d" + "/" + selectedOrg + "/" + e?.event_id}
+                >
+                  View Event
+                </Button>
+              </Td>
+            </Tr>
           ))}
         </Tbody>
       </Table>

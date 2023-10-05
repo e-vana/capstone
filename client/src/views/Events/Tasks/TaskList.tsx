@@ -9,7 +9,7 @@ const TaskList: TaskListComponent = ({ tasks, isLoading }) => {
         <SimpleGrid columns={1} gap={5}>
           {[1, 2, 3].map((index) => (
             <Skeleton
-              key={index}
+              key={"TaskGridIdx" + index}
               width={"400px"}
               height={"60px"}
               isLoaded={isLoading}
@@ -18,7 +18,7 @@ const TaskList: TaskListComponent = ({ tasks, isLoading }) => {
         </SimpleGrid>
       ) : (
         <SimpleGrid columns={1} gap={3}>
-          {tasks && tasks.map((task) => <TaskCard key={task.id} task={task} />)}
+          {tasks && tasks.map((task) => <TaskCard key={"TaskGridId" + task.id} task={task} />)}
         </SimpleGrid>
       )}
     </Stack>

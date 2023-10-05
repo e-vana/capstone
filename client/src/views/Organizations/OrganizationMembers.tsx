@@ -20,7 +20,7 @@ const OrganizationMembers = () => {
     <Stack width={"100%"} alignSelf={"start"}>
       <Heading size={"sm"}>Members: </Heading>
       {members?.map((member) => (
-        <Card bg={cardBg}>
+        <Card bg={cardBg} key={"OrgMemberCardName" + member.name}>
           <CardBody width={"100%"}>
             <HStack width={"100%"} justifyContent={"space-between"}>
               <HStack gap={5}>
