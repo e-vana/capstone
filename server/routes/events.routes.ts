@@ -73,8 +73,9 @@ router.get("/:organization_id/events", async (req: Request, res: Response) => {
     let connection = await mysql.createConnection(
       process.env.DATABASE_URL as string
     );
+    console.log(req.params);
     // let getEventsQuery = `SELECT * FROM events WHERE organization_id = ?`;
-    let getEventsQuery = `SELECT t.id as team_id, t.name as team_name, e.id as event_id, e.name as event_name, e.description as event_description, e.address_street, e.address_city, e.address_state, e.address_zipcode, o.name as organization_name, o.id as organization_id FROM events e JOIN teams t ON e.team_id = t.id JOIN organizations o ON t.organization_id WHERE o.id = ?`;
+    let getEventsQuery = `SELECT t.id as team_id, t.name as team_name, e.id as event_id, e.name as event_name, e.description as event_description, e.address_street, e.address_city, e.address_state, e.address_zipcode, o.name as organization_name, o.id as organization_id FROM events e JOIN teams t ON e.team_id = t.id JOIN organizations o ON t.organization_id = o.id WHERE o.id = ?`;
     const [getEventsResults] = await connection.query<RowDataPacket[]>(
       getEventsQuery,
       [parseInt(req.params.organization_id)]
@@ -100,7 +101,7 @@ router.get(
       let connection = await mysql.createConnection(
         process.env.DATABASE_URL as string
       );
-      let getEventsQuery = `SELECT t.id as team_id, t.name as team_name, e.id as event_id, e.name as event_name, e.description as event_description, e.address_street, e.address_city, e.address_state, e.address_zipcode, o.name as organization_name, o.id as organization_id FROM events e JOIN teams t ON e.team_id = t.id JOIN organizations o ON t.organization_id WHERE o.id = ? AND e.id = ?`;
+      let getEventsQuery = `SELECT t.id as team_id, t.name as team_name, e.id as event_id, e.name as event_name, e.description as event_description, e.address_street, e.address_city, e.address_state, e.address_zipcode, o.name as organization_name, o.id as organization_id FROM events e JOIN teams t ON e.team_id = t.id JOIN organizations o ON t.organization_id = o.id WHERE o.id = ? AND e.id = ?`;
       const [getEventsResults] = await connection.query<RowDataPacket[]>(
         getEventsQuery,
         [parseInt(req.params.organization_id), parseInt(req.params.event_id)]
