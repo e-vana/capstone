@@ -12,6 +12,7 @@ interface UserTileProps {}
 
 interface EventTileProps {
   event: iEvent;
+  eventURL: string;
 }
 
 interface OrganizationTileProps {

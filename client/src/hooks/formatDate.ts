@@ -14,3 +14,16 @@ export const formatDate = (date: Date) => {
 
   return formattedDate;
 };
+
+export const formatSQLDate = (date: Date) => {
+  const year = date.getFullYear().toString();
+  const month = ("0" + (date.getMonth() + 1)).slice(-2);
+  const day = ("0" + date.getDate()).slice(-2);
+  const hours = date.getHours();
+  const minutes = ("0" + date.getMinutes()).slice(-2);
+  const seconds = date.getSeconds();
+
+  const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+
+  return formattedDate;
+};

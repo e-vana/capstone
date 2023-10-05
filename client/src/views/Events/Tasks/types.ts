@@ -8,7 +8,6 @@ interface TaskListProps {
 
 interface TaskCardProps {
   task: iTask;
-  eventName: string;
 }
 
 interface AddTaskPopoverProps {

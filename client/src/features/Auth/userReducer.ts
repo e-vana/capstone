@@ -3,10 +3,12 @@ import { iUser } from "../../interfaces/user.interface";
 
 interface iInitialState {
   user: Omit<iUser, "password"> | undefined;
+  joinURL: string | undefined;
 }
 
 const initialState: iInitialState = {
   user: undefined,
+  joinURL: undefined,
 };
 
 const userSlice = createSlice({
@@ -16,8 +18,14 @@ const userSlice = createSlice({
     setUser: (state, action: PayloadAction<Omit<iUser, "password">>) => {
       state.user = action.payload;
     },
+    addEventToJoin: (state, action: PayloadAction<string>) => {
+      state.joinURL = action.payload;
+    },
+    clearJoinURL: (state) => {
+      state.joinURL = undefined;
+    },
   },
 });
 
-export const { setUser } = userSlice.actions;
+export const { setUser, addEventToJoin, clearJoinURL } = userSlice.actions;
 export default userSlice.reducer;

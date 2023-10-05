@@ -16,7 +16,6 @@ import { useLocation } from "react-router-dom";
 const EventHeader: EventHeaderComponent = ({ children }) => {
   const { eventLoading, eventData } = useContext(EventContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const location = useLocation();
   return (
     <TitleCardContainer>
       <TitleCardHeader isLoading={eventLoading}>
@@ -48,7 +47,7 @@ const EventHeader: EventHeaderComponent = ({ children }) => {
             {eventData !== undefined && (
               <EventTile
                 event={eventData}
-                eventURL={`${window.location.href}/join/${eventData.event_id}`}
+                eventURL={`${window.location.origin}/join/${eventData.organization_id}-${eventData.event_id}`}
               />
             )}
           </TileModal>
