@@ -14,7 +14,7 @@ import { useAppSelector } from "../../app/hooks";
 
 const EventList: EventsListComponent = () => {
   const { events } = useAppSelector((state) => state.organizations);
-
+  console.log(events);
   return (
     <>
       <Stack>

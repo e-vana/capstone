@@ -25,6 +25,7 @@ import { ErrorPage } from "./components/Error";
 import OrganizationPage from "./views/Organizations/OrganizationPage";
 import EventPage from "./views/Events/EventPage";
 import JoinPage from "./views/Join/JoinPage";
+import TeamPage from "./views/Teams/TeamPage";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -142,6 +143,10 @@ const router = createBrowserRouter([
       {
         path: "/d/:organizationId/:eventId",
         element: <EventPage />,
+      },
+      {
+        path: "/d/:organizationId/teams/:teamId",
+        element: <TeamPage />,
       },
     ],
   },

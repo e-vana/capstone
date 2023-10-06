@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import { useContext } from "react";
+import { Link as RouterLink } from "react-router-dom";
 import OrganizationContext from "./OrganizationContext";
 
 const OrganizationTeams = () => {
@@ -41,8 +42,12 @@ const OrganizationTeams = () => {
               <CardBody width={"100%"}>
                 <HStack width={"100%"} justifyContent={"space-between"}>
                   <Heading size={"sm"}>{team.name}</Heading>
-
-                  <Button gap={3} alignSelf={"end"}>
+                  <Button
+                    gap={3}
+                    alignSelf={"end"}
+                    as={RouterLink}
+                    to={"teams/" + team.id}
+                  >
                     Go to Team Page
                     <Icon as={ChevronRightIcon} />
                   </Button>

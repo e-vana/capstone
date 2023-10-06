@@ -94,7 +94,7 @@ router.get(
         throw { message: "No team found." };
       }
       await connection.end();
-      res.status(200).json({ success: true, team: getTeamResults });
+      res.status(200).json({ success: true, team: getTeamResults[0] });
     } catch (error) {
       res.status(500).json({ success: false, error });
     }
@@ -110,7 +110,8 @@ router.get(
  * @param name - The name of the team
  * @returns The updated team info with the given id
  */
-router.put("/:organization_id/teams/:team_id",
+router.put(
+  "/:organization_id/teams/:team_id",
   body("name").isString().trim().isLength({ min: 1, max: 100 }),
   async (req: Request, res: Response) => {
     try {
@@ -144,22 +145,25 @@ router.put("/:organization_id/teams/:team_id",
  * @returns 200 OK if successful
  * @returns 500 Internal Server Error if unsuccessful
  */
-router.delete("/:organization_id/teams/:team_id", async (req: Request, res: Response) => {
-  try {
-    let connection = await mysql.createConnection(
-      process.env.DATABASE_URL as string
-    );
-    // TODO: Check if the user is an admin of the organization
-    let deleteTeamQuery = `DELETE FROM teams WHERE id = ?`;
-    const [deleteTeamResults] = await connection.query<ResultSetHeader>(
-      deleteTeamQuery,
-      [parseInt(req.params.team_id)]
-    );
-    await connection.end();
-    return res.status(200).json({ success: true, team: deleteTeamResults });
-  } catch (error) {
-    return res.status(500).json({ success: false, error });
+router.delete(
+  "/:organization_id/teams/:team_id",
+  async (req: Request, res: Response) => {
+    try {
+      let connection = await mysql.createConnection(
+        process.env.DATABASE_URL as string
+      );
+      // TODO: Check if the user is an admin of the organization
+      let deleteTeamQuery = `DELETE FROM teams WHERE id = ?`;
+      const [deleteTeamResults] = await connection.query<ResultSetHeader>(
+        deleteTeamQuery,
+        [parseInt(req.params.team_id)]
+      );
+      await connection.end();
+      return res.status(200).json({ success: true, team: deleteTeamResults });
+    } catch (error) {
+      return res.status(500).json({ success: false, error });
+    }
   }
-});
+);
 
 export { router as teamsRouter };
