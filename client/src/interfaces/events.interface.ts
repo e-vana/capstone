@@ -58,3 +58,8 @@ export interface iGetEventsJoinTeamJoinOrg {
   success: boolean;
   events: iEventJoinTeamJoinOrg[];
 }
+
+export interface iCreateEventInATeam {
+  success: boolean;
+  event_id: number;
+}

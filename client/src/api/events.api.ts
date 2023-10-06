@@ -1,7 +1,10 @@
 import axios from "axios";
 import {
+  iEvent,
+  iGetEvent,
   iGetEvents,
   iGetEventsJoinTeamJoinOrg,
+  iCreateEventInATeam
   iEventJoinOrg,
 } from "../interfaces/events.interface";
 
@@ -21,6 +24,25 @@ export const getEventsInAnOrg = async function (
   );
   return response.data;
 };
+
+// Create an event within a team
+export const createEventInATeam = async function (
+  data: Omit<iEvent, "created_by_user_id" | "event_id" | "organization_name" | "team_name" | "created_at" | "updated_at">,
+): Promise<iCreateEventInATeam> {
+  const token = localStorage.getItem("token");
+  if (!token) throw new Error("no token, please log in");
+  const response = await axios.post<iCreateEventInATeam>(
+    `${import.meta.env.VITE_BASE_URL}/organizations/${data.organization_id}/teams/${data.team_id}/events`,
+    data,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return response.data;
+}
+
 // GET A SINGLE EVENT IN A ORG
 export const getEventInAnOrg = async function (
   orgId: number,
@@ -80,6 +102,7 @@ export const getEventsInATeam = async function (
   );
   return response.data;
 };
+
 export const getEventsInAnOrganization = async function (
   orgId: number
 ): Promise<iGetEventsJoinTeamJoinOrg> {
@@ -87,12 +110,13 @@ export const getEventsInAnOrganization = async function (
     `${import.meta.env.VITE_BASE_URL}/organizations/${orgId}/events`,
     {
       headers: {
-        authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     }
   );
   return response.data;
 };
+
 export const getAnEventInAnOrganization = async function (
   orgId: number,
   eventId: number
@@ -101,7 +125,7 @@ export const getAnEventInAnOrganization = async function (
     `${import.meta.env.VITE_BASE_URL}/organizations/${orgId}/events/${eventId}`,
     {
       headers: {
-        authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     }
   );

@@ -10,6 +10,9 @@ import OrganizationTeams from "./OrganizationTeams";
 import OrganizationMembers from "./OrganizationMembers";
 import OrganizationContext from "./OrganizationContext";
 import OrganizationEvents from "./OrganizationEvents";
+import { setOrg, setTeam, setTeams, setEvents } from "../../features/Organizations/organizationSlice";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useEffect } from "react";
 
 const FAKE_MEMBERS = [
   {
@@ -32,6 +35,8 @@ const FAKE_MEMBERS = [
 const OrganizationPage = () => {
   const { organizationId } = useParams();
 
+  const dispatch = useAppDispatch();
+
   const { data: orgData, isLoading: orgLoading } = useQuery(
     "getOrganization",
     () => getOrganization(+organizationId!)
@@ -47,7 +52,23 @@ const OrganizationPage = () => {
     () => getEvents(+organizationId!)
   );
 
-  console.log(eventsData);
+  // Determine the currently active team, if one hasn't been chosen, use the organization-wide team
+  const { selectedTeam } = useAppSelector((state) => state.organizations);
+
+  // When the teams data is loaded, set the active team to the organization-wide team
+  useEffect(() => {
+    // Add organization teams to redux store
+    dispatch(setTeams(teamsData?.teams || []));
+    // Set the active organization in the redux store
+    dispatch(setOrg(+organizationId!));
+    // By default, set the active team to the organization-wide team
+    if (selectedTeam === 0 && teamsData && teamsData.teams.length > 0) {
+      console.log("Teams in this org: " + JSON.stringify(teamsData.teams));
+      // Searching for the name here because I'm not sure if the first element in the array is always the org-wide team
+      // TODO: This doesn't seem to be the most ideal way - what if the org-wide team name changes or something?
+      dispatch(setTeam(teamsData.teams.find((team) => team.name.includes("Organization-wide Team"))!.id));
+    }
+  }, [orgData, teamsData]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>

@@ -8,13 +8,26 @@ import {
   setTeam,
 } from "../../features/Organizations/organizationSlice";
 import { useQueryClient } from "react-query";
+import AddOrg from "../../components/AddModal/AddOrg";
+import AddTeam from "../../components/AddModal/AddTeam";
+import { useDisclosure } from "@chakra-ui/react";
 
 export const OrgFilter: OrgFilterComponent = () => {
-  const { organizations, teams } = useAppSelector(
+  const { organizations, teams, selectedOrg, selectedTeam } = useAppSelector(
     (state) => state.organizations
   );
+
+  const selectedOrgName = useAppSelector((state) =>
+    state.organizations.organizations.find(
+      (org) => org.id === state.organizations.selectedOrg
+    )?.name
+  );
+
   const dispatch = useAppDispatch();
   const queryClient = useQueryClient();
+
+  const { isOpen: isAddOrgOpen, onOpen: onAddOrgOpen, onClose: onAddOrgClose } = useDisclosure();
+  const { isOpen: isAddTeamOpen, onOpen: onAddTeamOpen, onClose: onAddTeamClose } = useDisclosure();
 
   function handleSelectOrg(e: ChangeEvent<HTMLSelectElement>) {
     dispatch(setOrg(+e.target.value));
@@ -42,16 +55,18 @@ export const OrgFilter: OrgFilterComponent = () => {
               marginLeft={"5px"}
               marginBottom={"6px"}
               size="xs"
+              onClick={onAddOrgOpen}
             />
           </HStack>
           <Select
             width={{ base: "50%", md: "200px" }}
             mb={"10px"}
             onChange={(e) => handleSelectOrg(e)}
+            defaultValue={selectedOrg}
           >
             {organizations &&
               organizations.map((org) => (
-                <option key={org.id} value={org.id}>
+                <option key={"EventFiltersOrgId" + org.id} value={org.id}>
                   {org.name}
                 </option>
               ))}
@@ -69,23 +84,30 @@ export const OrgFilter: OrgFilterComponent = () => {
             marginLeft={"5px"}
             marginBottom={"10px"}
             size="xs"
+            onClick={onAddTeamOpen}
           />
         </HStack>
         <Select
           width={{ base: "50%", md: "200px" }}
           marginBottom={"10px"}
-          defaultValue={0}
+          defaultValue={selectedTeam || 0}
           onChange={(e) => handleSelectTeam(e)}
         >
           <option value={0}>No team selected</option>
           {teams &&
             teams.map((team) => (
-              <option key={team.id} value={team.id}>
+              <option key={"EventFiltersTeamId" + team.id} value={team.id}>
                 {team.name}
               </option>
             ))}
         </Select>
       </Stack>
+      {/* TODO: Adding an org here does not refresh the list of orgs in the dropdown */}
+      <AddOrg isOpen={isAddOrgOpen} onClose={onAddOrgClose} />
+      {selectedOrg && organizations.length > 0 &&
+        <AddTeam isOpen={isAddTeamOpen} onClose={onAddTeamClose}
+          orgId={selectedOrg} orgName={selectedOrgName || ""} />
+      }
     </Stack>
   );
 };

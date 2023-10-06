@@ -22,12 +22,25 @@ import {
 } from "../../features/Organizations/organizationSlice";
 import { EventTable } from "./EventTable";
 import EventCards from "./EventCards";
+import AddEvent from "../../components/AddModal/AddEvent";
+import { useDisclosure } from "@chakra-ui/hooks";
 
 const EventsView = () => {
   const { events, selectedOrg, selectedTeam } = useAppSelector(
     (state) => state.organizations
   );
+
+  const selectedOrgName = useAppSelector((state) =>
+    state.organizations.organizations.find((org) => org.id === state.organizations.selectedOrg)?.name
+  );
+
+  const selectedTeamName = useAppSelector((state) =>
+    state.organizations.teams.find((team) => team.id === state.organizations.selectedTeam)?.name
+  );
+
   const dispatch = useAppDispatch();
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   useQuery({
     queryKey: ["getOrgs"],
@@ -60,7 +73,7 @@ const EventsView = () => {
       refetchTeams();
       refetchEvents();
     }
-  }, [selectedTeam, selectedOrg, refetchTeams, refetchEvents]);
+  }, [selectedTeam, selectedOrg]);
 
   return (
     <Flex gap={8} flexDir={{ base: "column", md: "row" }}>
@@ -71,6 +84,7 @@ const EventsView = () => {
         <Stack>
           <Heading size={"md"}>Events</Heading>
           <Stack alignItems={"center"}>
+          {selectedTeam !== 0 && (
             <HStack width={"100%"} alignItems={"center"}>
               <Heading size={"xs"} mb={"5px"}>
                 Add an Event
@@ -81,11 +95,13 @@ const EventsView = () => {
                 marginLeft={"5px"}
                 marginBottom={"6px"}
                 size="xs"
+                onClick={onOpen}
               />
             </HStack>
+            )}
           </Stack>
         </Stack>
-        {events && events.length == 0 && (
+        {selectedTeam !== 0 && events && events.length == 0 && (
           <Stack spacing={3}>
             <Alert status="info">
               <AlertIcon />
@@ -110,6 +126,9 @@ const EventsView = () => {
           </>
         )}
       </Stack>
+      <AddEvent orgId={selectedOrg} orgName={selectedOrgName || ""}
+        teamId={selectedTeam} teamName={selectedTeamName || ""}
+        isOpen={isOpen} onClose={onClose} />
     </Flex>
   );
 };

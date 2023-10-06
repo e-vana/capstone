@@ -125,7 +125,7 @@ INSERT INTO organizations (owner_user_id, name, website_url, phone_number, logo_
   (1, 'test_org', 'https://testorg.com', '+123456789', 'https://testorg.com/logo.png');
 
 INSERT INTO permissions (user_id, organization_id, level) VALUES (1, 1, 0);
-INSERT INTO teams (organization_id, created_by_user_id, name) VALUES (1, 1, "Soup Kitchen");
+INSERT INTO teams (organization_id, created_by_user_id, name) VALUES (1, 1, "Organization-wide Team");
 INSERT INTO events (team_id, created_by_user_id, name, description, address_street, address_city, address_state, address_zipcode, start_time, end_time) VALUES
   (1, 1, 'test_event', 'Description for test_event', '1234 Test Street', 'test_city', 'test_state', '12345', '2023-08-28 10:00:00', '2023-08-28 15:00:00');
 INSERT INTO users_orgs (user_id, organization_id) VALUES (1, 1);
