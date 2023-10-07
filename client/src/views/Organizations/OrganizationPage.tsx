@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import { getOrganization } from "../../api/organizations.api";
 import { getTeams } from "../../api/teams.api";
-import { getEvents } from "../../api/events.api";
+import { getEventsInAnOrg } from "../../api/events.api";
 import OrganizationContainer from "./OrganizationContainer";
 import OrganizationHeader from "./OrganizationHeader";
 import OrganizationTeams from "./OrganizationTeams";
@@ -49,7 +49,7 @@ const OrganizationPage = () => {
 
   const { data: eventsData, isLoading: eventsLoading } = useQuery(
     "getEvents",
-    () => getEvents(+organizationId!)
+    () => getEventsInAnOrg(+organizationId!)
   );
 
   // Determine the currently active team, if one hasn't been chosen, use the organization-wide team
@@ -66,7 +66,9 @@ const OrganizationPage = () => {
       console.log("Teams in this org: " + JSON.stringify(teamsData.teams));
       // Searching for the name here because I'm not sure if the first element in the array is always the org-wide team
       // TODO: This doesn't seem to be the most ideal way - what if the org-wide team name changes or something?
-      dispatch(setTeam(teamsData.teams.find((team) => team.name.includes("Organization-wide Team"))!.id));
+      // Ideally, the org-wide team would have a flag or something that we could use to identify it, but it should
+      // also be the first element in the array (with the lowest ID)
+      dispatch(setTeam(teamsData.teams.find((team) => team.name.includes("Organization-wide Team"))!.id) || teamsData.teams[0].id);
     }
   }, [orgData, teamsData]); // eslint-disable-line react-hooks/exhaustive-deps
 

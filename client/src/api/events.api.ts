@@ -1,20 +1,19 @@
 import axios from "axios";
 import {
-  iEvent,
-  iGetEvent,
   iGetEvents,
   iGetEventsJoinTeamJoinOrg,
-  iCreateEventInATeam
+  iCreateEventInATeam,
   iEventJoinOrg,
+  iGetEventsByOrg,
 } from "../interfaces/events.interface";
 
 // GET EVENTS IN AN ORG
 export const getEventsInAnOrg = async function (
   orgId: number
-): Promise<iEventJoinOrg> {
+): Promise<iGetEventsByOrg> {
   const token = localStorage.getItem("token");
   if (!token) throw new Error("no token, please log in");
-  const response = await axios.get<iEventJoinOrg>(
+  const response = await axios.get<iGetEventsByOrg>(
     `${import.meta.env.VITE_BASE_URL}/organizations/${orgId}/events`,
     {
       headers: {
@@ -27,7 +26,7 @@ export const getEventsInAnOrg = async function (
 
 // Create an event within a team
 export const createEventInATeam = async function (
-  data: Omit<iEvent, "created_by_user_id" | "event_id" | "organization_name" | "team_name" | "created_at" | "updated_at">,
+  data: Omit<iEventJoinOrg, "created_by_user_id" | "event_id" | "organization_name" | "team_name" | "created_at" | "updated_at">,
 ): Promise<iCreateEventInATeam> {
   const token = localStorage.getItem("token");
   if (!token) throw new Error("no token, please log in");

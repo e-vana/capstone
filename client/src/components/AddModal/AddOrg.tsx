@@ -70,6 +70,8 @@ const AddOrg: AddOrgComponent = ({ isOpen, onClose }) => {
     });
     mutation.reset();
     queryClient.invalidateQueries(["getOrganizations"]);
+    queryClient.invalidateQueries(["getTeams"]);
+    queryClient.invalidateQueries(["getEvents"]);
   }
 
   if (mutation.isError) {

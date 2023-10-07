@@ -44,7 +44,7 @@ export const EventTable: EventTableComponent = ({ showTeamName = false, ...rest 
             <Tr key={"EventTableTd" + e.event_id}>
               <Td>
                 {/* TODO: For some reason the events have a .name instead of .event_name here */}
-                {e.event_name || "Unnamed Event"}
+                {e?.event_name || e?.name || "Unnamed Event"}
                 {new Date(Date.now()) > new Date(e.end_time) ? (
                   <Badge
                     marginLeft={"5px"}
@@ -80,7 +80,7 @@ export const EventTable: EventTableComponent = ({ showTeamName = false, ...rest 
                   </div>
                 </>
               </Td>
-              <Td>{e.event_description}</Td>
+              <Td>{e.event_description || e?.description || ""}</Td>
               <Td>
                 {e.address_street}, {e.address_city}, {e.address_state}{" "}
                 {e.address_zipcode}
