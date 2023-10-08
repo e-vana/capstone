@@ -60,15 +60,12 @@ router.post(
 
       //Perform the query
       let query = `INSERT INTO users SET ?`;
-      const [results, fields] = await connection.query<ResultSetHeader>(
-        query,
-        {
-          email: req.body.email,
-          first_name: req.body.first_name,
-          last_name: req.body.last_name,
-          password: hashedPassword,
-        }
-      );
+      const [results, fields] = await connection.query<ResultSetHeader>(query, {
+        email: req.body.email,
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
+        password: hashedPassword,
+      });
 
       //Tear down the database connection
       await connection.end();
@@ -80,11 +77,93 @@ router.post(
 );
 
 /**
+ * @route GET /users/search
+ * @desc Get an array of users by approximate email value
+ * @returns user array with potential matched users
+ */
+router.get("/search", async (req: Request, res: Response) => {
+  try {
+    let connection = await mysql.createConnection(
+      process.env.DATABASE_URL as string
+    );
+    let query = `SELECT u.id, u.email FROM users u WHERE u.email LIKE ?`;
+    const [results, fields] = await connection.query(query, [
+      `${req.body.email}%`,
+    ]);
+    res.status(200).json({ success: true, users: results });
+  } catch (error) {
+    res.status(500).json({ success: false, error });
+  }
+});
+
+//Invites a user to an organization.
+/**
+ * @route GET /users/search
+ * @desc Get a specific user by id
+ * @returns The user with the given id
+ */
+router.post("/invite", async (req: Request, res: Response) => {
+  try {
+    let connection = await mysql.createConnection(
+      process.env.DATABASE_URL as string
+    );
+    //write some permissions logic for this, if userToken.permissions contains same org id as body request id && has permission level
+    let query = `INSERT INTO users_orgs (user_id, organization_id) VALUES (?, ?)`;
+    const [results, fields] = await connection.query(query, [
+      req.body.userId,
+      req.body.organization_id,
+    ]);
+    res.status(200).json({ success: true });
+  } catch (error) {
+    res.status(500).json({ success: false, error });
+  }
+});
+//Get a list of invites to an organization
+/**
+ * @route GET /users/invites
+ * @desc Get a specific user by id
+ * @returns The user with the given id
+ */
+router.get("/invites", async (req: Request, res: Response) => {
+  try {
+    let connection = await mysql.createConnection(
+      process.env.DATABASE_URL as string
+    );
+    let query = `SELECT * FROM users_orgs WHERE user_id = ? AND accepted = 0`;
+    const [results, fields] = await connection.query(query, [req.userId]);
+    res.status(200).json({ success: true });
+  } catch (error) {
+    res.status(500).json({ success: false, error });
+  }
+});
+//Accept an invitation to an organization
+/**
+ * @route GET /users/invites
+ * @desc Get a specific user by id
+ * @returns The user with the given id
+ */
+router.post("/accept-invite", async (req: Request, res: Response) => {
+  try {
+    let connection = await mysql.createConnection(
+      process.env.DATABASE_URL as string
+    );
+    let query = `UPDATE users_orgs SET accepted=1 WHERE user_id = ? AND organization_id = ?`;
+    const [results, fields] = await connection.query(query, [
+      req.userId,
+      req.body.organization_id,
+    ]);
+    res.status(200).json({ success: true });
+  } catch (error) {
+    res.status(500).json({ success: false, error });
+  }
+});
+
+/**
  * @route GET /users/:id
  * @desc Get a specific user by id
  * @param id - The integer id of the user
  * @returns The user with the given id
-*/
+ */
 router.get("/:id", async (req: Request, res: Response) => {
   try {
     let connection = await mysql.createConnection(
@@ -104,7 +183,7 @@ router.get("/:id", async (req: Request, res: Response) => {
  * @access Private (only the user with the given id can update their own user, or an admin)
  * @param id - The id of the user
  * @returns The updated user info with the given id
-*/
+ */
 router.put("/:id", decodeToken, async (req: Request, res: Response) => {
   try {
     // TODO: Check if the user is an admin or the user with the given id
@@ -112,7 +191,10 @@ router.put("/:id", decodeToken, async (req: Request, res: Response) => {
       process.env.DATABASE_URL as string
     );
     let query = `UPDATE users SET ? WHERE id = ?`;
-    const [results, fields] = await connection.query(query, [req.body, req.params.id]);
+    const [results, fields] = await connection.query(query, [
+      req.body,
+      req.params.id,
+    ]);
     res.status(200).json({ success: true, users: results });
   } catch (error) {
     res.status(500).json({ success: false, error });
@@ -126,19 +208,18 @@ router.put("/:id", decodeToken, async (req: Request, res: Response) => {
  * @param id - The id of the user
  */
 router.delete("/:id", decodeToken, async (req: Request, res: Response) => {
-    try {
-      // TODO: Check if the user is an admin or the user with the given id
-      // If the user isn't an admin, should they have to enter their password to delete their account?
-      let connection = await mysql.createConnection(
-        process.env.DATABASE_URL as string
-      );
-      let query = `DELETE FROM users WHERE id = ?`;
-      const [results, fields] = await connection.query(query, [req.params.id]);
-      res.status(200).json({ success: true, users: results });
-    } catch (error) {
-      res.status(500).json({ success: false, error });
-    }
+  try {
+    // TODO: Check if the user is an admin or the user with the given id
+    // If the user isn't an admin, should they have to enter their password to delete their account?
+    let connection = await mysql.createConnection(
+      process.env.DATABASE_URL as string
+    );
+    let query = `DELETE FROM users WHERE id = ?`;
+    const [results, fields] = await connection.query(query, [req.params.id]);
+    res.status(200).json({ success: true, users: results });
+  } catch (error) {
+    res.status(500).json({ success: false, error });
   }
-);
+});
 
 export { router as userRouter };
