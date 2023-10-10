@@ -90,7 +90,7 @@ export const EventTable: EventTableComponent = ({ showTeamName = false, ...rest 
                   as={RouterLink}
                   variant="solid"
                   size={"sm"}
-                  to={"/d" + "/" + selectedOrg + "/" + e?.event_id}
+                  to={"/d" + "/" + selectedOrg + "/" + (e?.event_id || e?.id)}
                 >
                   View Event
                 </Button>
