@@ -16,3 +16,6 @@ client/node_modules
 # For Windows
 **/Thumbs.db 
 **/$RECYCLE.BIN/
+
+# IDE-specfic configs and files
+.vscode
