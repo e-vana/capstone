@@ -1,3 +1,5 @@
+server/.env.production
+server/.env.development
 server/.env
 server/node_modules
 server/dist
@@ -14,3 +16,6 @@ client/node_modules
 # For Windows
 **/Thumbs.db 
 **/$RECYCLE.BIN/
+
+# IDE-specfic configs and files
+.vscode

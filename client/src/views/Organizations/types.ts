@@ -2,7 +2,7 @@ import { FunctionComponent } from "react";
 import { iOrganization } from "../../interfaces/organization.interface";
 import { BoxProps } from "@chakra-ui/react";
 import { iGetTeams } from "../../interfaces/teams.interface";
-import { iGetEvents } from "../../interfaces/events.interface";
+import { iGetEventsByOrg } from "../../interfaces/events.interface";
 
 // for now
 export interface iMember {
@@ -12,7 +12,7 @@ export interface iMember {
 export interface iOrgContext {
   orgData: iOrganization | undefined;
   teamsData: iGetTeams | undefined;
-  eventsData: iGetEvents | undefined;
+  eventsData: iGetEventsByOrg | undefined;
   members: iMember[] | undefined;
   orgLoading: boolean;
   teamsLoading: boolean;

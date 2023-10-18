@@ -87,7 +87,7 @@ const TaskCard: TaskCardComponent = ({ task }) => {
   return (
     <>
       <Card
-        key={task.id}
+        key={"EventTaskId" + task.id}
         height={"100%"}
         direction={"row"}
         align={"center"}

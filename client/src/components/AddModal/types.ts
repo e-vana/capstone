@@ -12,5 +12,15 @@ interface AddTeamProps {
   onClose: () => void;
 }
 
+interface AddEventProps {
+  isOpen: boolean;
+  orgId: number;
+  orgName: string;
+  teamId: number;
+  teamName: string;
+  onClose: () => void;
+}
+
 export type AddOrgComponent = FunctionComponent<AddOrgProps>;
 export type AddTeamComponent = FunctionComponent<AddTeamProps>;
+export type AddEventComponent = FunctionComponent<AddEventProps>;

@@ -11,7 +11,18 @@ import { organizationsRouter } from "./routes/organizations.routes";
 import { tasksRouter } from "./routes/tasks.routes";
 import { teamsRouter } from "./routes/teams.routes";
 import { userRouter } from "./routes/users.routes";
-dotenv.config();
+
+// Use the .env.development file in development
+if (process.env.NODE_ENV !== "production") {
+  // If a .env.development file exists, use it
+  dotenv.config({ path: ".env.development" });
+  // If there's no .env.development file, use .env
+  dotenv.config();
+} else {
+  dotenv.config({ path: ".env.production" });
+  // If there's .env but not .env.production, use .env
+  dotenv.config();
+}
 
 const app: Express = express();
 const port = process.env.PORT;
