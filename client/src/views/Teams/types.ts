@@ -4,6 +4,9 @@ import { iTeam } from "../../interfaces/teams.interface";
 export interface iTeamContext {
   teamData: iTeam | undefined;
   teamLoading: boolean;
+  members: {
+    name: string;
+  }[];
 }
 
 interface TeamHeaderProps {

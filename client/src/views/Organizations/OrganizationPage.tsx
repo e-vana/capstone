@@ -10,11 +10,16 @@ import OrganizationTeams from "./OrganizationTeams";
 import OrganizationMembers from "./OrganizationMembers";
 import OrganizationContext from "./OrganizationContext";
 import OrganizationEvents from "./OrganizationEvents";
-import { setOrg, setTeam, setTeams, setEvents } from "../../features/Organizations/organizationSlice";
+import {
+  setOrg,
+  setTeam,
+  setTeams,
+  setEvents,
+} from "../../features/Organizations/organizationSlice";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { useEffect } from "react";
 
-const FAKE_MEMBERS = [
+export const FAKE_MEMBERS = [
   {
     name: "Tony Pizza",
   },
@@ -68,7 +73,13 @@ const OrganizationPage = () => {
       // TODO: This doesn't seem to be the most ideal way - what if the org-wide team name changes or something?
       // Ideally, the org-wide team would have a flag or something that we could use to identify it, but it should
       // also be the first element in the array (with the lowest ID)
-      dispatch(setTeam(teamsData.teams.find((team) => team.name.includes("Organization-wide Team"))!.id) || teamsData.teams[0].id);
+      dispatch(
+        setTeam(
+          teamsData.teams.find((team) =>
+            team.name.includes("Organization-wide Team")
+          )!.id
+        ) || teamsData.teams[0].id
+      );
     }
   }, [orgData, teamsData]); // eslint-disable-line react-hooks/exhaustive-deps
 

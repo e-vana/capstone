@@ -32,7 +32,8 @@ const OrganizationTeams = () => {
       {/* will add table for desktop later */}
       {teamsData &&
         teamsData.teams.map((team) => (
-          <Card key={"OrgTeamCardId" + team.id}
+          <Card
+            key={"OrgTeamCardId" + team.id}
             width={"100%"}
             align={"center"}
             justifyContent={"space-between"}
@@ -42,7 +43,12 @@ const OrganizationTeams = () => {
             <CardBody width={"100%"}>
               <HStack width={"100%"} justifyContent={"space-between"}>
                 <Heading size={"sm"}>{team.name}</Heading>
-                <Button gap={3} alignSelf={"end"}>
+                <Button
+                  as={RouterLink}
+                  gap={3}
+                  alignSelf={"end"}
+                  to={"teams/" + team.id}
+                >
                   Go to Team Page
                   <Icon as={ChevronRightIcon} />
                 </Button>
