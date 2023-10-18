@@ -1,15 +1,19 @@
 import axios from "axios";
 import {
-  iGetEvent,
   iGetEvents,
   iGetEventsJoinTeamJoinOrg,
+  iCreateEventInATeam,
+  iEventJoinOrg,
+  iGetEventsByOrg,
 } from "../interfaces/events.interface";
 
-// GET EVENTS IN A ORG
-export const getEvents = async function (orgId: number): Promise<iGetEvents> {
+// GET EVENTS IN AN ORG
+export const getEventsInAnOrg = async function (
+  orgId: number
+): Promise<iGetEventsByOrg> {
   const token = localStorage.getItem("token");
   if (!token) throw new Error("no token, please log in");
-  const response = await axios.get<iGetEvents>(
+  const response = await axios.get<iGetEventsByOrg>(
     `${import.meta.env.VITE_BASE_URL}/organizations/${orgId}/events`,
     {
       headers: {
@@ -20,16 +24,32 @@ export const getEvents = async function (orgId: number): Promise<iGetEvents> {
   return response.data;
 };
 
-// CREATE AN EVENT IN A ORG
+// Create an event within a team
+export const createEventInATeam = async function (
+  data: Omit<iEventJoinOrg, "created_by_user_id" | "event_id" | "organization_name" | "team_name" | "created_at" | "updated_at">,
+): Promise<iCreateEventInATeam> {
+  const token = localStorage.getItem("token");
+  if (!token) throw new Error("no token, please log in");
+  const response = await axios.post<iCreateEventInATeam>(
+    `${import.meta.env.VITE_BASE_URL}/organizations/${data.organization_id}/teams/${data.team_id}/events`,
+    data,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return response.data;
+}
 
 // GET A SINGLE EVENT IN A ORG
 export const getEventInAnOrg = async function (
   orgId: number,
   eventId: number
-): Promise<iGetEvent> {
+): Promise<iEventJoinOrg> {
   const token = localStorage.getItem("token");
   if (!token) throw new Error("no token, please log in");
-  const response = await axios.get<iGetEvent>(
+  const response = await axios.get<iEventJoinOrg>(
     `${import.meta.env.VITE_BASE_URL}/organizations/${orgId}/events/${eventId}`,
     {
       headers: {
@@ -45,10 +65,10 @@ export const getEventInATeam = async function (
   orgId: number,
   teamId: number,
   eventId: number
-): Promise<iGetEvent> {
+): Promise<iGetEvents> {
   const token = localStorage.getItem("token");
   if (!token) throw new Error("no token, please log in");
-  const response = await axios.get<iGetEvent>(
+  const response = await axios.get<iGetEvents>(
     `${
       import.meta.env.VITE_BASE_URL
     }/organizations/${orgId}/teams/${teamId}/events/${eventId}`,
@@ -81,6 +101,7 @@ export const getEventsInATeam = async function (
   );
   return response.data;
 };
+
 export const getEventsInAnOrganization = async function (
   orgId: number
 ): Promise<iGetEventsJoinTeamJoinOrg> {
@@ -88,12 +109,13 @@ export const getEventsInAnOrganization = async function (
     `${import.meta.env.VITE_BASE_URL}/organizations/${orgId}/events`,
     {
       headers: {
-        authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     }
   );
   return response.data;
 };
+
 export const getAnEventInAnOrganization = async function (
   orgId: number,
   eventId: number
@@ -102,7 +124,7 @@ export const getAnEventInAnOrganization = async function (
     `${import.meta.env.VITE_BASE_URL}/organizations/${orgId}/events/${eventId}`,
     {
       headers: {
-        authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     }
   );

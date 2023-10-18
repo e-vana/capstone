@@ -1,4 +1,19 @@
 export interface iEvent {
+  id: number;
+  team_id: number;
+  created_by_user_id: number;
+  name: string;
+  description: string;
+  address_street: string;
+  address_city: string;
+  address_state: string;
+  address_zipcode: number;
+  start_time: Date;
+  end_time: Date;
+  created_at: Date;
+  updated_at: Date;
+}
+export interface iEventJoinOrg {
   team_id: number;
   team_name: string;
   event_id: number;
@@ -10,11 +25,9 @@ export interface iEvent {
   address_zipcode: string;
   organization_name: string;
   organization_id: number;
-  created_by_user_id: number;
+  created_by_user_id?: number;
   start_time: Date;
   end_time: Date;
-  created_at: Date;
-  updated_at: Date;
 }
 
 export interface iEventJoinTeamJoinOrg {
@@ -36,16 +49,17 @@ export interface iGetEvents {
   events: iEvent[];
 }
 
-export interface iGetEvent {
+export interface iGetEventsByOrg {
   success: boolean;
-  event: iEvent;
+  events: iEventJoinOrg[];
 }
 
 export interface iGetEventsJoinTeamJoinOrg {
   success: boolean;
   events: iEventJoinTeamJoinOrg[];
 }
-export interface iGetEvent {
+
+export interface iCreateEventInATeam {
   success: boolean;
-  event: iEvent;
+  event_id: number;
 }

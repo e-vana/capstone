@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { iOrganization } from "../../interfaces/organization.interface";
 import { iTeam } from "../../interfaces/teams.interface";
-import { iEvent } from "../../interfaces/events.interface";
+import { iEvent, iEventJoinOrg } from "../../interfaces/events.interface";
 import Organizations from "../../views/Organizations/Organizations";
 
 interface iInitialState {
@@ -9,7 +9,7 @@ interface iInitialState {
   selectedOrg: number;
   selectedTeam: number;
   teams: iTeam[];
-  events: iEvent[];
+  events: iEventJoinOrg[]; 
 }
 
 const initialState: iInitialState = {

@@ -20,9 +20,13 @@ interface EventsProps {
   onTeamChange: (e: ChangeEvent<HTMLSelectElement>) => void;
 }
 
-interface EventListProps {}
+interface EventListProps {
+  teamId?: number; // If we pass in a teamId, we want to only show events for that team
+}
 
-interface EventTableProps extends TableContainerProps {}
+interface EventTableProps extends TableContainerProps {
+  showTeamName?: boolean; // If true, show the team name in the table
+}
 
 interface EventCardsProps extends CardProps {}
 

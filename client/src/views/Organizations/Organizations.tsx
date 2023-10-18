@@ -54,16 +54,14 @@ const Organizations: OrganizationsComponent = ({ organizations }) => {
                 </Thead>
                 <Tbody>
                   {organizations.map((org) => (
-                    <>
-                      <OrganizationTd organization={org} key={org.id} />
-                    </>
+                    <OrganizationTd organization={org} key={"OrgTdId" + org.id} />
                   ))}
                 </Tbody>
               </Table>
             </TableContainer>
             <Stack display={{ base: "flex", md: "none" }} gap={5}>
               {organizations.map((org) => (
-                <OrganizationCard organization={org} key={org.id} />
+                <OrganizationCard organization={org} key={"OrgCardId" + org.id} />
               ))}
             </Stack>
           </>
