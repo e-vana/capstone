@@ -14,7 +14,6 @@ import {
   setOrg,
   setTeam,
   setTeams,
-  setEvents,
 } from "../../features/Organizations/organizationSlice";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { useEffect } from "react";
@@ -40,7 +39,7 @@ export const FAKE_MEMBERS = [
 const OrganizationPage = () => {
   const { organizationId } = useParams();
 
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
 
   const { data: orgData, isLoading: orgLoading } = useQuery(
     "getOrganization",
@@ -58,8 +57,8 @@ const OrganizationPage = () => {
   );
 
   // Determine the currently active team, if one hasn't been chosen, use the organization-wide team
-  const { selectedTeam } = useAppSelector((state) => state.organizations);
-
+  // const { selectedTeam } = useAppSelector((state) => state.organizations);
+  /*
   // When the teams data is loaded, set the active team to the organization-wide team
   useEffect(() => {
     // Add organization teams to redux store
@@ -77,12 +76,12 @@ const OrganizationPage = () => {
         setTeam(
           teamsData.teams.find((team) =>
             team.name.includes("Organization-wide Team")
-          )!.id
+          ).id
         ) || teamsData.teams[0].id
       );
     }
   }, [orgData, teamsData]); // eslint-disable-line react-hooks/exhaustive-deps
-
+  */
   return (
     <>
       <OrganizationContext.Provider

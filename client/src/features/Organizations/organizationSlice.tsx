@@ -2,14 +2,13 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { iOrganization } from "../../interfaces/organization.interface";
 import { iTeam } from "../../interfaces/teams.interface";
 import { iEvent, iEventJoinOrg } from "../../interfaces/events.interface";
-import Organizations from "../../views/Organizations/Organizations";
 
 interface iInitialState {
   organizations: iOrganization[];
   selectedOrg: number;
   selectedTeam: number;
   teams: iTeam[];
-  events: iEventJoinOrg[]; 
+  events: iEventJoinOrg[] | iEvent[];
 }
 
 const initialState: iInitialState = {
@@ -36,7 +35,7 @@ const organizationSlice = createSlice({
     setTeam: (state, action: PayloadAction<number>) => {
       state.selectedTeam = action.payload;
     },
-    setEvents: (state, action: PayloadAction<iEvent[]>) => {
+    setEvents: (state, action: PayloadAction<iEventJoinOrg[] | iEvent[]>) => {
       state.events = action.payload;
     },
   },
