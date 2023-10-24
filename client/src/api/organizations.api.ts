@@ -45,9 +45,31 @@ export const addOrganization = async function (
   >
 ): Promise<iOrganization> {
   const token = localStorage.getItem("token");
-  if (!token) throw new Error("non token, please log in");
+  if (!token) throw new Error("no token, please log in");
   const response = await axios.post(
     `${import.meta.env.VITE_BASE_URL}/organizations`,
+    data,
+    {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    }
+  );
+
+  return response.data;
+};
+
+export const editOrganization = async function (
+  organizationId: number,
+  data: Pick<
+    iOrganization,
+    "name" | "website_url" | "logo_url" | "phone_number"
+  >
+): Promise<iOrganization> {
+  const token = localStorage.getItem("token");
+  if (!token) throw new Error("no token, please log in");
+  const response = await axios.put(
+    `${import.meta.env.VITE_BASE_URL}/organizations/${organizationId}`,
     data,
     {
       headers: {

@@ -21,6 +21,7 @@ import { useState } from "react";
 import { createEventInATeam } from "../../api/events.api";
 import { iEventJoinOrg } from "../../interfaces/events.interface";
 
+
 // TODO: We currently get the target org and team from props but maybe we should get them from the redux store?
 // To avoid having to pass them down from the parent component in various places.
 const AddEvent: AddEventComponent = ({ orgId, orgName, teamId, teamName = "", isOpen, onClose }) => {
@@ -150,7 +151,7 @@ const AddEvent: AddEventComponent = ({ orgId, orgName, teamId, teamName = "", is
                             value={addressCity}
                             min={1}
                             max={100}
-                            placeholder={"Event Address - Ctiy"}
+                            placeholder={"Event Address - City"}
                             pattern={encodeURIComponent("[A-Za-z.,-]{1,100}")}
                             onChange={(e) => setAddressCity(e.target.value)}
                         />

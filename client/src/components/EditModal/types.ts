@@ -1,9 +1,10 @@
 import { FunctionComponent } from "react";
 import { iEventJoinOrg } from "../../interfaces/events.interface";
+import { iOrganization } from "../../interfaces/organization.interface";
 
 interface EditOrgProps {
+  org: iOrganization;
   isOpen: boolean;
-  orgId: number;
   onClose: () => void;
 }
 

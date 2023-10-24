@@ -11,9 +11,12 @@ import {
   TitleCardFooter,
   TitleCardHeader,
 } from "../../components/Cards";
+import EditOrgModal from "../../components/EditModal/EditOrg";
 
 const OrganizationHeader: OrganizationHeaderComponent = ({ children }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen: isQRCodeOpen, onOpen: onQRCodeOpen, onClose: onQRCodeClose } = useDisclosure();
+  const { isOpen: isEditOrgOpen, onOpen: onEditOrgOpen, onClose: onEditOrgClose } = useDisclosure();
+
   const { orgData, orgLoading } = useContext<iOrgContext>(OrganizationContext);
 
   return (
@@ -32,6 +35,7 @@ const OrganizationHeader: OrganizationHeaderComponent = ({ children }) => {
           rounded={"md"}
           gap={3}
           colorScheme="blue"
+          onClick={onEditOrgOpen}
         >
           Manage
           <Icon as={SettingsIcon} />
@@ -42,15 +46,17 @@ const OrganizationHeader: OrganizationHeaderComponent = ({ children }) => {
           rounded={"md"}
           gap={3}
           colorScheme="green"
-          onClick={onOpen}
+          onClick={onQRCodeOpen}
         >
           View QR Code
           <Icon as={HiQrCode} />
         </Button>
       </TitleCardFooter>
-      <TileModal isOpen={isOpen} onClose={onClose}>
+      <TileModal isOpen={isQRCodeOpen} onClose={onQRCodeClose}>
         {orgData !== undefined && <OrganizationTile organization={orgData} />}
       </TileModal>
+      <EditOrgModal org={orgData!}
+        isOpen={isEditOrgOpen} onClose={onEditOrgClose} />
     </TitleCardContainer>
   );
 };
