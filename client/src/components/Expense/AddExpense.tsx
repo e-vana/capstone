@@ -76,6 +76,7 @@ const AddExpense: AddExpenseComponent = ({ isOpen, onClose }) => {
       status: "success",
       title: "Successfully added expense!",
     });
+    mutation.reset();
   }
 
   if (mutation.status === "error") {
@@ -83,6 +84,7 @@ const AddExpense: AddExpenseComponent = ({ isOpen, onClose }) => {
       status: "error",
       title: "Error adding expense, please try again",
     });
+    mutation.reset();
   }
 
   const handleStepForward = () => {
