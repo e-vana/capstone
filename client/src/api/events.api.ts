@@ -97,10 +97,13 @@ export const getEventInATeam = async function (
 // GET EVENTS IN A TEAM
 export const getEventsInATeam = async function (
   orgId: number,
-  teamId: number
+  teamId: number | undefined
 ): Promise<iGetEvents> {
   const token = localStorage.getItem("token");
   if (!token) throw new Error("no token, please log in");
+  if (teamId == undefined) {
+    return { success: true, events: [] };
+  }
   const response = await axios.get<iGetEvents>(
     `${
       import.meta.env.VITE_BASE_URL

@@ -7,7 +7,11 @@ import { TeamHeader } from "./TeamHeader";
 import EventList from "../Events/EventList";
 import { getEventsInATeam } from "../../api/events.api";
 import { useAppDispatch } from "../../app/hooks";
-import { setEvents, setOrg, setTeam } from "../../features/Organizations/organizationSlice";
+import {
+  setEvents,
+  setOrg,
+  setTeam,
+} from "../../features/Organizations/organizationSlice";
 import { FAKE_MEMBERS } from "../Organizations/OrganizationPage";
 import TeamMembers from "./TeamMembers";
 import { useEffect } from "react";
@@ -22,6 +26,11 @@ const TeamPage = () => {
   
   // When the team data is loaded, set the team (and parent org) in the redux store
   useEffect(() => {
+    console.log("Team Page: Render");
+    if (!teamId) {
+      throw new Error("No team ID was passed to Team page");
+      // TODO: Redirect back to organization-page
+    }
     dispatch(setTeam(+teamId!));
     dispatch(setOrg(+organizationId!));
   }, [teamId, data]);

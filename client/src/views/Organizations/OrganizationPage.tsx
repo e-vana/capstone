@@ -23,22 +23,21 @@ export const FAKE_MEMBERS = [
     name: "Tony Pizza",
   },
   {
-    name: "Megatron",
+    name: "John Davis",
   },
   {
-    name: "Walter White",
+    name: "Nicol Bolas",
   },
   {
-    name: "Johnny Bravo",
+    name: "Alice Watkins",
   },
   {
-    name: "Shrek",
+    name: "Jessie Santarino",
   },
 ];
 
 const OrganizationPage = () => {
   const { organizationId } = useParams();
-
   const dispatch = useAppDispatch();
 
   const { data: orgData, isLoading: orgLoading } = useQuery(
@@ -55,9 +54,16 @@ const OrganizationPage = () => {
     "getEvents",
     () => getEventsInAnOrg(+organizationId!)
   );
-  
+
   // When the teams data is loaded, set the active team to the organization-wide team
   useEffect(() => {
+    if (!organizationId) {
+      throw new Error("No Organization ID was passed to OrganizationPage");
+      // TODO: Redirect back to all Orgs. view
+    }
+    console.log("Organization Page: Render");
+    // Ensure the currently selected org. is set in the redux store
+    dispatch(setOrg(+organizationId));
     // Add organization teams to redux store
     dispatch(setTeams(teamsData?.teams || []));
     // Set the active organization in the redux store
@@ -82,7 +88,7 @@ const OrganizationPage = () => {
         || -1
       )
     );
-  }, [orgData, teamsData]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [orgData, teamsData, organizationId]); // eslint-disable-line react-hooks/exhaustive-deps
   
   return (
     <>

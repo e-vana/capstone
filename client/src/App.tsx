@@ -3,7 +3,6 @@ import { ReactQueryDevtools } from "react-query/devtools";
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import { Provider } from "react-redux";
 import {
-  ChakraProvider,
   ColorModeScript,
   Stack,
   theme,
@@ -19,13 +18,14 @@ import { LandingNav } from "./components/Nav/landingNav";
 import HeroView from "./views/HeroView";
 import { DashNav } from "./components/Nav/DashNav";
 import ToolBar from "./components/Nav/ToolBar";
-import SettingsView from "./views/SettingsView";
 import AuthGuard from "./components/RouteGuard/AuthGuard";
 import { ErrorPage } from "./components/Error";
 import OrganizationPage from "./views/Organizations/OrganizationPage";
 import EventPage from "./views/Events/EventPage";
 import JoinPage from "./views/Join/JoinPage";
 import TeamPage from "./views/Teams/TeamPage";
+import ExpenseView from "./views/Expenses/ExpenseView";
+import SettingsPage from "./views/Settings/SettingsPage";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -134,7 +134,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/d/settings",
-        element: <SettingsView />,
+        element: <SettingsPage />,
       },
       {
         path: "/d/:organizationId",
@@ -147,6 +147,10 @@ const router = createBrowserRouter([
       {
         path: "/d/:organizationId/teams/:teamId",
         element: <TeamPage />,
+      },
+      {
+        path: "/d/expenses",
+        element: <ExpenseView />,
       },
     ],
   },

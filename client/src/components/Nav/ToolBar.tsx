@@ -1,25 +1,22 @@
 import {
   Box,
-  Text,
-  Heading,
   HStack,
   Icon,
   useColorModeValue,
   useColorMode,
   useDisclosure,
-  Modal,
-  ModalContent,
-  ModalOverlay,
-  ModalCloseButton,
-  ModalBody,
-  Stack,
 } from "@chakra-ui/react";
-import { HiQrCode, HiHome } from "react-icons/hi2";
-import { HiCog, HiMoon, HiSun } from "react-icons/hi";
+import { HiHome } from "react-icons/hi2";
+import {
+  HiCog,
+  HiMoon,
+  HiSun,
+  HiCurrencyDollar,
+  HiClock,
+} from "react-icons/hi";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 import { TabComponent, ToolBarComponent, iTab } from "./types";
-import UserTile from "../Tile/UserTile";
-import TileModal from "../Tile/TileModal";
+import AddExpense from "../Expense/AddExpense";
 
 const Tab: TabComponent = ({ item }) => {
   const location = useLocation();
@@ -40,16 +37,19 @@ const Tab: TabComponent = ({ item }) => {
 
 const ToolBar: ToolBarComponent = ({ ...rest }) => {
   const { toggleColorMode } = useColorMode();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { onOpen, isOpen, onClose } = useDisclosure();
   const TOOL_BAR_ITEMS: iTab[] = [
     {
       route: "/d",
       icon: HiHome,
     },
-
     {
       route: "/d/settings",
       icon: HiCog,
+    },
+    {
+      route: "/d/expenses",
+      icon: HiClock,
     },
   ];
   return (
@@ -67,7 +67,7 @@ const ToolBar: ToolBarComponent = ({ ...rest }) => {
         ))}
         <Box>
           <Icon
-            as={HiQrCode}
+            as={HiCurrencyDollar}
             boxSize={7}
             color={useColorModeValue("gray.500", "gray.400")}
             cursor={"pointer"}
@@ -86,10 +86,8 @@ const ToolBar: ToolBarComponent = ({ ...rest }) => {
             onClick={toggleColorMode}
           />
         </Box>
+        <AddExpense isOpen={isOpen} onClose={onClose} />
       </HStack>
-      <TileModal isOpen={isOpen} onClose={onClose}>
-        <UserTile />
-      </TileModal>
     </HStack>
   );
 };

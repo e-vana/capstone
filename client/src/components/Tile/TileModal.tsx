@@ -8,18 +8,24 @@ import {
 } from "@chakra-ui/react";
 import { TileModalComponent } from "./types";
 
-const TileModal: TileModalComponent = ({ isOpen, onClose, children }) => {
+const TileModal: TileModalComponent = ({
+  isOpen,
+  onClose,
+  children,
+  ...rest
+}) => {
   return (
     <Modal
       isOpen={isOpen}
       onClose={onClose}
       isCentered
-      size={{ base: "md", md: "lg" }}
+      size={{ base: "full", md: "lg" }}
+      {...rest}
     >
       <ModalOverlay />
       <ModalContent
-        bg={useColorModeValue("purple.500", "purple.400")}
-        color={"white"}
+        bg={useColorModeValue("white", "#151515")}
+        color={useColorModeValue("#303030", "whiteAlpha.900")}
       >
         <ModalCloseButton onClick={onClose} />
         <ModalBody>{children}</ModalBody>

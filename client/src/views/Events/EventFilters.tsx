@@ -17,17 +17,26 @@ export const OrgFilter: OrgFilterComponent = () => {
     (state) => state.organizations
   );
 
-  const selectedOrgName = useAppSelector((state) =>
-    state.organizations.organizations.find(
-      (org) => org.id === state.organizations.selectedOrg
-    )?.name
+  const selectedOrgName = useAppSelector(
+    (state) =>
+      state.organizations.organizations.find(
+        (org) => org.id === state.organizations.selectedOrg
+      )?.name
   );
 
   const dispatch = useAppDispatch();
   const queryClient = useQueryClient();
 
-  const { isOpen: isAddOrgOpen, onOpen: onAddOrgOpen, onClose: onAddOrgClose } = useDisclosure();
-  const { isOpen: isAddTeamOpen, onOpen: onAddTeamOpen, onClose: onAddTeamClose } = useDisclosure();
+  const {
+    isOpen: isAddOrgOpen,
+    onOpen: onAddOrgOpen,
+    onClose: onAddOrgClose,
+  } = useDisclosure();
+  const {
+    isOpen: isAddTeamOpen,
+    onOpen: onAddTeamOpen,
+    onClose: onAddTeamClose,
+  } = useDisclosure();
 
   function handleSelectOrg(e: ChangeEvent<HTMLSelectElement>) {
     dispatch(setOrg(+e.target.value));
@@ -45,7 +54,10 @@ export const OrgFilter: OrgFilterComponent = () => {
       <Stack>
         <Heading size={"md"}>Organizations</Heading>
         <Stack alignItems={{ base: "start", md: "center" }}>
-          <HStack width={{ base: "50%", md: "100%" }} justify={"space-between"}>
+          <HStack
+            width={{ base: "100%", md: "100%" }}
+            justify={"space-between"}
+          >
             <Heading size={"xs"} mb={"5px"}>
               Select an Organization
             </Heading>
@@ -59,7 +71,7 @@ export const OrgFilter: OrgFilterComponent = () => {
             />
           </HStack>
           <Select
-            width={{ base: "50%", md: "200px" }}
+            width={{ base: "100%", md: "200px" }}
             mb={"10px"}
             onChange={(e) => handleSelectOrg(e)}
             defaultValue={selectedOrg}
@@ -74,7 +86,7 @@ export const OrgFilter: OrgFilterComponent = () => {
         </Stack>
       </Stack>
       <Stack alignItems={{ base: "start", md: "center" }}>
-        <HStack width={{ base: "50%", md: "100%" }} justify={"space-between"}>
+        <HStack width={{ base: "100%", md: "100%" }} justify={"space-between"}>
           <Heading size={"xs"} mb={"5px"}>
             Select a Team
           </Heading>
@@ -88,7 +100,7 @@ export const OrgFilter: OrgFilterComponent = () => {
           />
         </HStack>
         <Select
-          width={{ base: "50%", md: "200px" }}
+          width={{ base: "100%", md: "200px" }}
           marginBottom={"10px"}
           defaultValue={selectedTeam || 0}
           onChange={(e) => handleSelectTeam(e)}
@@ -104,10 +116,14 @@ export const OrgFilter: OrgFilterComponent = () => {
       </Stack>
       {/* TODO: Adding an org here does not refresh the list of orgs in the dropdown */}
       <AddOrg isOpen={isAddOrgOpen} onClose={onAddOrgClose} />
-      {selectedOrg && organizations.length > 0 &&
-        <AddTeam isOpen={isAddTeamOpen} onClose={onAddTeamClose}
-          orgId={selectedOrg} orgName={selectedOrgName || ""} />
-      }
+      {selectedOrg && organizations.length > 0 && (
+        <AddTeam
+          isOpen={isAddTeamOpen}
+          onClose={onAddTeamClose}
+          orgId={selectedOrg}
+          orgName={selectedOrgName || ""}
+        />
+      )}
     </Stack>
   );
 };
