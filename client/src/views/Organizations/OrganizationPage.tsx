@@ -66,8 +66,6 @@ const OrganizationPage = () => {
     dispatch(setOrg(+organizationId));
     // Add organization teams to redux store
     dispatch(setTeams(teamsData?.teams || []));
-    // Set the active organization in the redux store
-    dispatch(setOrg(+organizationId!));
     // When a user is on this screen, adding events will be put into the global team
     // so set the active team to the organization-wide team
     dispatch(

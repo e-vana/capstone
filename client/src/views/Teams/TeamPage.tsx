@@ -33,7 +33,7 @@ const TeamPage = () => {
     }
     dispatch(setTeam(+teamId!));
     dispatch(setOrg(+organizationId!));
-  }, [teamId, data]);
+  }, [teamId, data]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const { data: eventData } = useQuery(
     "getEventsByTeam",
