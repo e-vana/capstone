@@ -7,12 +7,13 @@ export interface iEvent {
   address_street: string;
   address_city: string;
   address_state: string;
-  address_zipcode: number;
+  address_zipcode: string; // Zipcodes can be in the format of 12345 or 12345-6789
   start_time: Date;
   end_time: Date;
   created_at: Date;
   updated_at: Date;
 }
+
 export interface iEventJoinOrg {
   team_id: number;
   team_name: string;
@@ -60,6 +61,16 @@ export interface iGetEventsJoinTeamJoinOrg {
 }
 
 export interface iCreateEventInATeam {
+  success: boolean;
+  event_id: number;
+}
+
+export interface iUpdateEventInATeam {
+  success: boolean;
+  event_id: number;
+}
+
+export interface iDeleteEventInATeam {
   success: boolean;
   event_id: number;
 }

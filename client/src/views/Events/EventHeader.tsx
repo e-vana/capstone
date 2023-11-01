@@ -6,16 +6,19 @@ import {
   TitleCardFooter,
   TitleCardHeader,
 } from "../../components/Cards";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { EventHeaderComponent } from "./types";
 import EventContext from "./EventContext";
 import TileModal from "../../components/Tile/TileModal";
 import EventTile from "../../components/Tile/EventTile";
+import EditEventModal from "../../components/EditModal/EditEvent";
 import { useLocation } from "react-router-dom";
 
 const EventHeader: EventHeaderComponent = ({ children }) => {
   const { eventLoading, eventData } = useContext(EventContext);
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen: qrCodeIsOpen, onOpen: qrCodeOnOpen, onClose: qrCodeOnClose } = useDisclosure();
+  const { isOpen: manageEventIsOpen, onOpen: manageEventOnOpen, onClose: manageEventOnClose } = useDisclosure();
+  
   return (
     <TitleCardContainer>
       <TitleCardHeader isLoading={eventLoading}>
@@ -28,9 +31,9 @@ const EventHeader: EventHeaderComponent = ({ children }) => {
             rounded={"md"}
             gap={3}
             colorScheme="blue"
+            onClick={manageEventOnOpen}
           >
-            Manage
-            <Icon as={SettingsIcon} />
+            Manage <Icon as={SettingsIcon} />
           </Button>
           <Button
             width={"100%"}
@@ -38,12 +41,12 @@ const EventHeader: EventHeaderComponent = ({ children }) => {
             rounded={"md"}
             gap={3}
             colorScheme="green"
-            onClick={onOpen}
+            onClick={qrCodeOnOpen}
           >
             View QR Code
             <Icon as={HiQrCode} />
           </Button>
-          <TileModal isOpen={isOpen} onClose={onClose}>
+          <TileModal isOpen={qrCodeIsOpen} onClose={qrCodeOnClose}>
             {eventData !== undefined && (
               <EventTile
                 event={eventData}
@@ -53,6 +56,7 @@ const EventHeader: EventHeaderComponent = ({ children }) => {
           </TileModal>
         </TitleCardFooter>
       </TitleCardHeader>
+      <EditEventModal isOpen={manageEventIsOpen} onClose={manageEventOnClose} event={eventData} />
     </TitleCardContainer>
   );
 };

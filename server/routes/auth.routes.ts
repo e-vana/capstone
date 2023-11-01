@@ -3,8 +3,6 @@ import { body, validationResult } from "express-validator";
 import mysql, { ResultSetHeader, RowDataPacket } from "mysql2/promise";
 import jwt, { decode } from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import dotenv from "dotenv";
-dotenv.config();
 import decodeToken from "../middleware/token.middleware";
 import { User } from "../interfaces/user.interface";
 const router: Router = Router();

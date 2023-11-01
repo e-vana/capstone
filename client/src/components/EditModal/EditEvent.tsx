@@ -13,35 +13,49 @@ import {
     ModalHeader,
     ModalOverlay,
     useToast,
+    useDisclosure,
 } from "@chakra-ui/react";
 import { AiOutlineClose, AiOutlineCheckCircle } from "react-icons/ai";
 import { useMutation, useQueryClient } from "react-query";
-import { AddEventComponent } from "./types";
-import { useState } from "react";
-import { createEventInATeam } from "../../api/events.api";
+import { EditEventComponent } from "./types";
+import DeleteEventAlert from "./DeleteEvent";
+import { useEffect, useState } from "react";
+import { updateATeamEvent } from "../../api/events.api";
 import { iEventJoinOrg } from "../../interfaces/events.interface";
 
-// TODO: We currently get the target org and team from props but maybe we should get them from the redux store?
-// To avoid having to pass them down from the parent component in various places.
-const AddEvent: AddEventComponent = ({ orgId, orgName, teamId, teamName = "", isOpen, onClose }) => {
-    const [name, setName] = useState<string>("");
-    const [description, setDescription] = useState<string>("");
-    const [startDateTime, setStartDateTime] = useState<string>("1970-01-01T00:00:00");
-    const [endDateTime, setEndDateTime] = useState<string>("1970-01-01T00:00:00");
-    const [addressStreet, setAddressStreet] = useState<string>("");
-    const [addressCity, setAddressCity] = useState<string>("");
-    const [addressState, setAddressState] = useState<string>("");
-    const [addressZip, setAddressZip] = useState<string>("");
+const EditEventModal: EditEventComponent = ({ isOpen, onClose, event }) => {
+    const [name, setName] = useState<string>(event?.event_name || event?.name || "");
+    const [description, setDescription] = useState<string>(event?.event_description || event?.description || "");
+    const [startDateTime, setStartDateTime] = useState<string>(new Date(event?.start_time || "1970-01-01T00:00:00")?.toISOString().slice(0, 16));
+    const [endDateTime, setEndDateTime] = useState<string>(new Date(event?.end_time || "1970-01-01T00:00:00")?.toISOString().slice(0, 16));
+    const [addressStreet, setAddressStreet] = useState<string>(event?.address_street || "");
+    const [addressCity, setAddressCity] = useState<string>(event?.address_city || "");
+    const [addressState, setAddressState] = useState<string>(event?.address_state || "");
+    const [addressZip, setAddressZip] = useState<string>(event?.address_zipcode || "");
+
+    // On props 'event' change, update the state so the modal has the new values
+    useEffect(() => {
+        setName(event?.event_name || event?.name || "");
+        setDescription(event?.event_description || event?.description || "");
+        setStartDateTime(new Date(event?.start_time || "1970-01-01T00:00:00")?.toISOString().slice(0, 16));
+        setEndDateTime(new Date(event?.end_time || "1970-01-01T00:00:00")?.toISOString().slice(0, 16));
+        setAddressStreet(event?.address_street || "");
+        setAddressCity(event?.address_city || "");
+        setAddressState(event?.address_state || "");
+        setAddressZip(event?.address_zipcode || "");
+    }, [event]);
 
     const toast = useToast();
     const queryClient = useQueryClient();
+    const { isOpen: isDeleteEventOpen, onOpen: onOpenDeleteEvent, onClose: onCloseDeleteEvent } = useDisclosure();
 
-    const handleAdd = () => {
-        const data: Omit<iEventJoinOrg, "created_by_user_id" | "event_id" | "organization_name" | "team_name" | "created_at" | "updated_at"> = {
+    const handleUpdate = () => {
+        const data: Omit<iEventJoinOrg, "created_by_user_id" | "organization_name" | "team_name" | "created_at" | "updated_at"> = {
+            event_id: event.event_id,
             event_name: name,
             event_description: description,
-            organization_id: orgId || -1,
-            team_id: teamId || -1,
+            organization_id: event.organization_id,
+            team_id: event.team_id,
             start_time: new Date(startDateTime),
             end_time: new Date(endDateTime),
             address_street: addressStreet,
@@ -55,24 +69,26 @@ const AddEvent: AddEventComponent = ({ orgId, orgName, teamId, teamName = "", is
 
     const mutation = useMutation({
         mutationFn: (
-            data: Omit<iEventJoinOrg, "created_by_user_id" | "event_id" | "organization_name" | "team_name" | "created_at" | "updated_at">
+            data: Omit<iEventJoinOrg, "created_by_user_id" | "organization_name" | "team_name" | "created_at" | "updated_at">
         ) => {
-            return createEventInATeam(data);
+            return updateATeamEvent(data);
         },
         onSuccess: () => {
             toast({
                 status: "success",
-                title: "Added Event!",
+                title: "Updated event successfully",
             });
             queryClient.invalidateQueries({ queryKey: "getEvents" });
             mutation.reset();
+            cleanUp()
         },
         onError: (err: Error) => {
             toast({
                 status: "error",
-                title: "Error adding the event, please try again.",
+                title: "Error updating the event, please try again.",
                 description: err.message,
             });
+            mutation.reset();
         }
     });
 
@@ -102,8 +118,7 @@ const AddEvent: AddEventComponent = ({ orgId, orgName, teamId, teamName = "", is
             <ModalOverlay />
             <ModalContent>
                 <ModalCloseButton />
-                <ModalHeader>Add Event to {teamName ?
-                    `${orgName} - ${teamName}` : orgName}</ModalHeader>
+                <ModalHeader>Edit Event Details - {event?.event_name || event?.name}</ModalHeader>
                 <ModalBody>
                     {/* TODO: Add form validation and error messages */}
                     <FormControl isRequired>
@@ -199,14 +214,15 @@ const AddEvent: AddEventComponent = ({ orgId, orgName, teamId, teamName = "", is
                     </FormControl>
                 </ModalBody>
                 <ModalFooter>
-                    <HStack
-                        width={{ base: "100%", md: "50%" }}
-                        justifyContent={"space-between"}
-                    >
+                    <HStack width={{ base: "100%", md: "50%" }} justifyContent={"flex-start"}>
+                        <Button colorScheme="red" width={"35%"} onClick={onOpenDeleteEvent}>
+                            Delete <Icon as={AiOutlineClose} />
+                        </Button>
+                    </HStack>
+                    <HStack width={{ base: "100%", md: "50%" }} justifyContent={"flex-end"}>
                         <Button
                             colorScheme="gray"
                             width={"100%"}
-                            justifyContent={"space-between"}
                             variant={"outline"}
                             onClick={onClose}
                         >
@@ -216,15 +232,16 @@ const AddEvent: AddEventComponent = ({ orgId, orgName, teamId, teamName = "", is
                             colorScheme="purple"
                             justifyContent={"space-between"}
                             width={"100%"}
-                            onClick={handleAdd}
+                            onClick={handleUpdate}
                         >
-                            Add <Icon as={AiOutlineCheckCircle} />
+                            Update <Icon as={AiOutlineCheckCircle} />
                         </Button>
                     </HStack>
                 </ModalFooter>
             </ModalContent>
+            <DeleteEventAlert isOpen={isDeleteEventOpen} onClose={onCloseDeleteEvent} event={event} />
         </Modal>
     );
 };
 
-export default AddEvent;
+export default EditEventModal;

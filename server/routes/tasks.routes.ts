@@ -1,10 +1,8 @@
-import dotenv from "dotenv";
 import { Request, Response, Router } from "express";
 import { body, validationResult } from "express-validator";
 import mysql, { RowDataPacket, ResultSetHeader } from "mysql2/promise";
 import decodeToken from "../middleware/token.middleware";
 
-dotenv.config();
 const router: Router = Router();
 router.use(decodeToken);
 

@@ -1,6 +1,10 @@
 import { FunctionComponent } from "react";
 import { iOrganization } from "../../interfaces/organization.interface";
+<<<<<<< HEAD
+import { iEvent } from "../../interfaces/events.interface";
+=======
 import { iEventJoinOrg } from "../../interfaces/events.interface";
+>>>>>>> feature/EditDeleteEvents
 import { ModalProps } from "@chakra-ui/react";
 
 interface TileModalProps extends ModalProps {
