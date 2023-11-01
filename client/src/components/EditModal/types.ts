@@ -1,6 +1,7 @@
 import { FunctionComponent } from "react";
 import { iEventJoinOrg } from "../../interfaces/events.interface";
 import { iOrganization } from "../../interfaces/organization.interface";
+import { iTeam } from "../../interfaces/teams.interface";
 
 interface EditOrgProps {
   org: iOrganization;
@@ -9,10 +10,8 @@ interface EditOrgProps {
 }
 
 interface EditTeamProps {
+  team: iTeam;
   isOpen: boolean;
-  orgId: number;
-  teamId: number;
-  orgName: string;
   onClose: () => void;
 }
 

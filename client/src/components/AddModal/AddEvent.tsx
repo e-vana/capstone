@@ -41,8 +41,8 @@ const AddEvent: AddEventComponent = ({ orgId, orgName, teamId, teamName = "", is
         const data: Omit<iEventJoinOrg, "created_by_user_id" | "event_id" | "organization_name" | "team_name" | "created_at" | "updated_at"> = {
             event_name: name,
             event_description: description,
-            organization_id: orgId || -1,
-            team_id: teamId || -1,
+            organization_id: orgId,
+            team_id: teamId,
             start_time: new Date(startDateTime),
             end_time: new Date(endDateTime),
             address_street: addressStreet,
@@ -63,7 +63,7 @@ const AddEvent: AddEventComponent = ({ orgId, orgName, teamId, teamName = "", is
         onSuccess: () => {
             toast({
                 status: "success",
-                title: "Added Event!",
+                title: "Added event successfully.",
             });
             queryClient.invalidateQueries({ queryKey: "getEvents" });
             mutation.reset();
@@ -126,7 +126,7 @@ const AddEvent: AddEventComponent = ({ orgId, orgName, teamId, teamName = "", is
                             value={description}
                             min={1}
                             max={65535} // mysql TEXT field upper limit: 65,535 characters
-                            placeholder={"Event Name"}
+                            placeholder={"Event Description"}
                             pattern={encodeURIComponent("[A-Za-z0-9!.,-]{1,65535}")}
                             onChange={(e) => setDescription(e.target.value)}
                         />

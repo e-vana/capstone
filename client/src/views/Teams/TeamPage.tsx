@@ -10,6 +10,9 @@ import { useAppDispatch } from "../../app/hooks";
 import { setEvents } from "../../features/Organizations/organizationSlice";
 import { FAKE_MEMBERS } from "../Organizations/OrganizationPage";
 import TeamMembers from "./TeamMembers";
+import { setTeam } from "../../features/Organizations/organizationSlice";
+import { useEffect } from "react";
+import { useAppSelector } from "../../app/hooks";
 
 const TeamPage = () => {
   const { organizationId, teamId } = useParams();
@@ -18,6 +21,11 @@ const TeamPage = () => {
   const { data, isLoading } = useQuery("getTeam", () =>
     getTeam(+organizationId!, +teamId!)
   );
+  
+  // When the team data is loaded, set the team in the redux store
+  useEffect(() => {
+    dispatch(setTeam(+teamId!));
+  }, [teamId, data]);
 
   const { data: eventData } = useQuery(
     "getEventsByTeam",

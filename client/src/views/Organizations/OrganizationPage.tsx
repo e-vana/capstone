@@ -39,7 +39,7 @@ export const FAKE_MEMBERS = [
 const OrganizationPage = () => {
   const { organizationId } = useParams();
 
-  // const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
 
   const { data: orgData, isLoading: orgLoading } = useQuery(
     "getOrganization",
@@ -55,10 +55,10 @@ const OrganizationPage = () => {
     "getEvents",
     () => getEventsInAnOrg(+organizationId!)
   );
-
+  
   // Determine the currently active team, if one hasn't been chosen, use the organization-wide team
-  // const { selectedTeam } = useAppSelector((state) => state.organizations);
-  /*
+  const { selectedTeam } = useAppSelector((state) => state.organizations);
+
   // When the teams data is loaded, set the active team to the organization-wide team
   useEffect(() => {
     // Add organization teams to redux store
@@ -67,21 +67,28 @@ const OrganizationPage = () => {
     dispatch(setOrg(+organizationId!));
     // By default, set the active team to the organization-wide team
     if (selectedTeam === 0 && teamsData && teamsData.teams.length > 0) {
-      console.log("Teams in this org: " + JSON.stringify(teamsData.teams));
-      // Searching for the name here because I'm not sure if the first element in the array is always the org-wide team
-      // TODO: This doesn't seem to be the most ideal way - what if the org-wide team name changes or something?
-      // Ideally, the org-wide team would have a flag or something that we could use to identify it, but it should
-      // also be the first element in the array (with the lowest ID)
       dispatch(
         setTeam(
-          teamsData.teams.find((team) =>
+          // The "global" team is initially named "Organization-wide Team"
+          teamsData?.teams?.find((team) =>
             team.name.includes("Organization-wide Team")
-          ).id
-        ) || teamsData.teams[0].id
+          )?.id
+          ||
+          // If the name's been changed, we can search for the lowest ID, since it'll have been
+          // created first. Ideally, the org-wide team would have a flag that we could use to identify it,
+          (teamsData?.teams?.reduce((acc, team) => {
+            if (team.id < acc.id) {
+              return team;
+            }
+            return acc;
+          }))?.id
+          || -1
+          // || teamsData?.teams[0]?.id || -1
+        )
       );
     }
   }, [orgData, teamsData]); // eslint-disable-line react-hooks/exhaustive-deps
-  */
+  
   return (
     <>
       <OrganizationContext.Provider

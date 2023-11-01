@@ -15,7 +15,6 @@ import { useDisclosure } from "@chakra-ui/hooks";
 import AddEvent from "../../components/AddModal/AddEvent";
 import OrganizationContext from "../Organizations/OrganizationContext";
 import { useContext } from "react";
-
 import { iTeam } from "../../interfaces/teams.interface";
 
 const EventList: EventsListComponent = () => {

@@ -64,3 +64,27 @@ export const getTeam = async function (
 
   return response.data;
 };
+
+// Edit/update a team within an organization
+export const editTeam = async function (
+  orgId: number,
+  teamId: number,
+  data: Pick<iTeam, "name">
+): Promise<iGetTeam> {
+  const token = localStorage.getItem("token");
+  if (!token)
+    throw new Error(
+      "No token found in teams.api@editTeam. Please login and try again."
+    );
+  const response = await axios.put<iGetTeam>(
+    `${import.meta.env.VITE_BASE_URL}/organizations/${orgId}/teams/${teamId}`,
+    data,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return response.data;
+};
