@@ -18,7 +18,6 @@ import { LandingNav } from "./components/Nav/landingNav";
 import HeroView from "./views/HeroView";
 import { DashNav } from "./components/Nav/DashNav";
 import ToolBar from "./components/Nav/ToolBar";
-import SettingsView from "./views/SettingsView";
 import AuthGuard from "./components/RouteGuard/AuthGuard";
 import { ErrorPage } from "./components/Error";
 import OrganizationPage from "./views/Organizations/OrganizationPage";
