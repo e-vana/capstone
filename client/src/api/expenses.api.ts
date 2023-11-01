@@ -2,9 +2,11 @@ import axios from "axios";
 import {
   iCreateExpense,
   iCreateExpenseResponse,
+  iGetExpenseByUser,
   iGetExpensesByEventResponse,
   iGetExpensesByOrganizationResponse,
   iGetExpensesByTeamResponse,
+  iGetUserExpenseBreakdown,
 } from "../interfaces/expenses.interface";
 
 // GET EXPENSES FOR A PARTICULAR EVENT
@@ -86,3 +88,33 @@ export const createExpenseForAnEvent = async function (
   );
   return response.data;
 };
+
+export const getUserExpenses = async function (): Promise<iGetExpenseByUser> {
+  const token = localStorage.getItem("token");
+  if (!token) throw new Error("no token, please log in");
+  const res = await axios.get<iGetExpenseByUser>(
+    `${import.meta.env.VITE_BASE_URL}/auth/my-expenses`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return res.data;
+};
+
+export const getUserExpenseBreakdown =
+  async function (): Promise<iGetUserExpenseBreakdown> {
+    const token = localStorage.getItem("token");
+    if (!token) throw new Error("no token, please log in");
+    const res = await axios.get<iGetUserExpenseBreakdown>(
+      `${import.meta.env.VITE_BASE_URL}/auth/my-expense-breakdown`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return res.data;
+  };

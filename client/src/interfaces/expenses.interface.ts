@@ -1,3 +1,21 @@
+interface iExpense {
+  id: number;
+  event_id: number;
+  user_id: number;
+  expense_name: string;
+  expense_type: string;
+  amount: string;
+  description: string;
+  receipt_url: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface iExpenseBreakdown {
+  organization_name: string;
+  total_expenses: string;
+}
+
 export interface iExpenseJoinEventJoinTeamJoinOrgJoinUser {
   user_email: string;
   user_first_name: string;
@@ -14,6 +32,7 @@ export interface iExpenseJoinEventJoinTeamJoinOrgJoinUser {
   event_start_time: Date;
   event_end_time: Date;
 }
+
 export interface iGetExpensesByEventResponse {
   success: boolean;
   expenses: iExpenseJoinEventJoinTeamJoinOrgJoinUser[];
@@ -36,4 +55,14 @@ export interface iCreateExpense {
   amount: number;
   description: string;
   receipt_url: string;
+}
+
+export interface iGetExpenseByUser {
+  success: boolean;
+  expenses: iExpenseJoinEventJoinTeamJoinOrgJoinUser[];
+}
+
+export interface iGetUserExpenseBreakdown {
+  success: boolean;
+  expense_breakdown: iExpenseBreakdown[];
 }
