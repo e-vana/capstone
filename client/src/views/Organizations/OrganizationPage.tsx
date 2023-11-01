@@ -38,6 +38,7 @@ export const FAKE_MEMBERS = [
 
 const OrganizationPage = () => {
   const { organizationId } = useParams();
+  const dispatch = useAppDispatch();
 
   // const dispatch = useAppDispatch();
 
@@ -56,6 +57,12 @@ const OrganizationPage = () => {
     () => getEventsInAnOrg(+organizationId!)
   );
 
+  useEffect(() => {
+    if (organizationId) {
+      dispatch(setOrg(+organizationId));
+    }
+  }, [dispatch, organizationId]);
+  console.log("Organization Page: Render");
   // Determine the currently active team, if one hasn't been chosen, use the organization-wide team
   // const { selectedTeam } = useAppSelector((state) => state.organizations);
 

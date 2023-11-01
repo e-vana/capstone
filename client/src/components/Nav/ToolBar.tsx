@@ -6,14 +6,17 @@ import {
   useColorMode,
   useDisclosure,
 } from "@chakra-ui/react";
-import { HiQrCode, HiHome } from "react-icons/hi2";
-import { HiCog, HiMoon, HiSun, HiCurrencyDollar } from "react-icons/hi";
+import { HiHome } from "react-icons/hi2";
+import {
+  HiCog,
+  HiMoon,
+  HiSun,
+  HiCurrencyDollar,
+  HiClock,
+} from "react-icons/hi";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 import { TabComponent, ToolBarComponent, iTab } from "./types";
-import UserTile from "../Tile/UserTile";
-import TileModal from "../Tile/TileModal";
 import AddExpense from "../Expense/AddExpense";
-import MultiStepForm from "../Form/MultiStepForm";
 
 const Tab: TabComponent = ({ item }) => {
   const location = useLocation();
@@ -43,6 +46,10 @@ const ToolBar: ToolBarComponent = ({ ...rest }) => {
     {
       route: "/d/settings",
       icon: HiCog,
+    },
+    {
+      route: "/d/expenses",
+      icon: HiClock,
     },
   ];
   return (
