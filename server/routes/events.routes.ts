@@ -5,7 +5,6 @@ import mysql, { RowDataPacket, ResultSetHeader } from "mysql2/promise";
 import decodeToken from "../middleware/token.middleware";
 import dateToMySQLTimestamp from "../utils/formatMySQLTimestamp";
 
-dotenv.config();
 const router: Router = Router();
 router.use(decodeToken);
 
@@ -277,15 +276,24 @@ router.put("/:organization_id/teams/:team_id/events/:event_id", async (req: Requ
         message: "You do not have permission to write to this resource.",
       };
     }
-    // Remove the organization_id from the body, since it's not stored in the Events table
-    delete req.body.organization_id;
     req.body = {
       ...req.body,
+      id: parseInt(req.params.event_id),
+      name: req.body.event_name,
+      description: req.body.event_description,
       created_by_user_id: req.userId,
       // Convert JS style Dates to MySQL style timestamps
       start_time: dateToMySQLTimestamp(new Date(req.body.start_time)),
       end_time: dateToMySQLTimestamp(new Date(req.body.end_time)),
     };
+    
+    // Remove the organization_id from the body, since it's not stored in the Events table
+    delete req.body.organization_id;
+    // Likewise the Events table has columns for name and description, not event_name and event_description
+    delete req.body.event_name;
+    delete req.body.event_description;
+    delete req.body.event_id; // The table expects `id`, not event_id
+
     let connection = await mysql.createConnection(
       process.env.DATABASE_URL as string
     );

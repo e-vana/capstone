@@ -3,6 +3,8 @@ import {
   iGetEvents,
   iGetEventsJoinTeamJoinOrg,
   iCreateEventInATeam,
+  iUpdateEventInATeam,
+  iDeleteEventInATeam,
   iEventJoinOrg,
   iGetEventsByOrg,
 } from "../interfaces/events.interface";
@@ -140,3 +142,43 @@ export const getAnEventInAnOrganization = async function (
   );
   return response.data;
 };
+
+// Update an event within a team
+export const updateATeamEvent = async function (
+  event: Omit<iEventJoinOrg,
+    "created_by_user_id"
+    | "organization_name"
+    | "team_name"
+    | "created_at"
+    | "updated_at">
+): Promise<iUpdateEventInATeam> {
+  const response = await axios.put<iUpdateEventInATeam>(
+    `${import.meta.env.VITE_BASE_URL}/organizations/${event.organization_id}/teams/${event.team_id}/events/${event.event_id}`,
+    event,
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    }
+  );
+  return response.data;
+}
+
+// Delete an event within a team
+export const deleteATeamEvent = async function (
+  data: {
+    orgId: number,
+    teamId: number,
+    eventId: number
+  }
+): Promise<iDeleteEventInATeam> {
+  const response = await axios.delete<iDeleteEventInATeam>(
+    `${import.meta.env.VITE_BASE_URL}/organizations/${data.orgId}/teams/${data.teamId}/events/${data.eventId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    }
+  );
+  return response.data;
+}

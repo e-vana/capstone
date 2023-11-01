@@ -1,6 +1,6 @@
 import { FunctionComponent } from "react";
 import { iOrganization } from "../../interfaces/organization.interface";
-import { iEvent } from "../../interfaces/events.interface";
+import { iEventJoinOrg } from "../../interfaces/events.interface";
 
 interface TileModalProps {
   isOpen: boolean;
@@ -11,7 +11,7 @@ interface TileModalProps {
 interface UserTileProps {}
 
 interface EventTileProps {
-  event: iEvent;
+  event: iEventJoinOrg;
   eventURL: string;
 }
 
