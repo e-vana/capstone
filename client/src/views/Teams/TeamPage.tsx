@@ -9,6 +9,7 @@ import { getEventsInATeam } from "../../api/events.api";
 import { useAppDispatch } from "../../app/hooks";
 import {
   setEvents,
+  setOrg,
   setTeam,
 } from "../../features/Organizations/organizationSlice";
 import { FAKE_MEMBERS } from "../Organizations/OrganizationPage";
@@ -22,6 +23,17 @@ const TeamPage = () => {
   const { data, isLoading } = useQuery("getTeam", () =>
     getTeam(+organizationId!, +teamId!)
   );
+  
+  // When the team data is loaded, set the team (and parent org) in the redux store
+  useEffect(() => {
+    console.log("Team Page: Render");
+    if (!teamId) {
+      throw new Error("No team ID was passed to Team page");
+      // TODO: Redirect back to organization-page
+    }
+    dispatch(setTeam(+teamId!));
+    dispatch(setOrg(+organizationId!));
+  }, [teamId, data]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const { data: eventData } = useQuery(
     "getEventsByTeam",
@@ -30,14 +42,6 @@ const TeamPage = () => {
       onSuccess: (data) => dispatch(setEvents(data.events)),
     }
   );
-
-  useEffect(() => {
-    if (teamId) {
-      dispatch(setTeam(+teamId));
-    }
-  }, [dispatch, teamId]);
-
-  console.log("Team Page: Render");
 
   return (
     <TeamContext.Provider

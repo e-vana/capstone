@@ -43,7 +43,7 @@ const EventsView = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   useQuery({
-    queryKey: ["getOrgs"],
+    queryKey: ["getOrganizations"],
     queryFn: getOrganizations,
     onSuccess: (data) => dispatch(setOrgs(data.organizations)),
   });

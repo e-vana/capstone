@@ -2,6 +2,7 @@ import { Request, Response, Router } from "express";
 import { body, validationResult } from "express-validator";
 import mysql, { ResultSetHeader, RowDataPacket } from "mysql2/promise";
 import decodeToken from "../middleware/token.middleware";
+import dateToMySQLTimestamp from "../utils/formatMySQLTimestamp";
 
 const router: Router = Router();
 router.use(decodeToken);
@@ -120,6 +121,46 @@ router.post(
       res.status(200).json({ success: true });
     } catch (error) {
       console.log("POST /organizations error: ", error);
+      res.status(500).json({ success: false, error });
+    }
+  }
+);
+
+/**
+ * @route PUT /organizations/:organization_id
+ * @desc Update an organization
+ * @param name - The name of the organization
+ * @param website_url - The website url of the organization
+ * @param phone_number - The phone number of the organization
+ * @param logo_url - The logo url of the organization
+ * @returns { success: boolean }
+ */
+router.put(
+  "/:organization_id",
+  body("name").isString().trim(),
+  body("website_url").isString().trim(),
+  body("phone_number").isString().trim(),
+  body("logo_url").isString().trim(),
+  async (req: Request, res: Response) => {
+    try {
+      let validationErrors = validationResult(req);
+      if (!validationErrors.isEmpty()) {
+        throw { validationErrors: validationErrors.array() };
+      }
+      let connection = await mysql.createConnection(
+        process.env.DATABASE_URL as string
+      );
+      req.body = {
+        ...req.body,
+        updated_at: dateToMySQLTimestamp(new Date()),
+      }
+      await connection.query<ResultSetHeader>(`UPDATE organizations SET ? WHERE id = ?`, [
+        req.body,
+        req.params.organization_id,
+      ]);
+      await connection.end();
+      res.status(200).json({ success: true });
+    } catch (error) {
       res.status(500).json({ success: false, error });
     }
   }

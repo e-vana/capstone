@@ -8,19 +8,27 @@ import {
   Button,
   Icon,
   useColorModeValue,
+  useDisclosure
 } from "@chakra-ui/react";
-import { ChevronRightIcon } from "@chakra-ui/icons";
+import { ChevronRightIcon, PlusSquareIcon } from "@chakra-ui/icons";
 import { useContext } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import OrganizationContext from "./OrganizationContext";
+import AddTeam from "../../components/AddModal/AddTeam";
 
 const OrganizationTeams = () => {
-  const { teamsData, teamsLoading } = useContext(OrganizationContext);
+  const { orgData, teamsData, teamsLoading } = useContext(OrganizationContext);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   const cardBg = useColorModeValue("white", "#505050");
   return (
     <Stack alignSelf={"start"} width={"100%"}>
-      <Heading size={"sm"}>Teams: </Heading>
-      {/* TODO: 'Add Team' button here? */}
+      <HStack width={"100%"} justifyContent={"flex-start"}>
+        <Heading size={"sm"}>Teams: </Heading>
+        <Button colorScheme={"gray"} size={"sm"} onClick={onOpen}>
+          <Icon as={PlusSquareIcon} />
+        </Button>
+      </HStack>
       {teamsLoading && (
         <Skeleton
           width={"100%"}
@@ -56,6 +64,9 @@ const OrganizationTeams = () => {
             </CardBody>
           </Card>
         ))}
+      <AddTeam isOpen={isOpen} onClose={onClose}
+        orgId={orgData?.id || -1} orgName={orgData?.name || ""}
+      />
     </Stack>
   );
 };

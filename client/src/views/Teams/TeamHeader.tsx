@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Text, Button, Icon } from "@chakra-ui/react";
+import { Text, Button, Icon, useDisclosure } from "@chakra-ui/react";
 import { SettingsIcon } from "@chakra-ui/icons";
 import {
   TitleCardContainer,
@@ -8,9 +8,12 @@ import {
 } from "../../components/Cards";
 import { TeamContext } from "./TeamContext";
 import { TeamHeaderComponent } from "./types";
+import EditTeam from "../../components/EditModal/EditTeam";
 
 export const TeamHeader: TeamHeaderComponent = ({ children }) => {
   const { teamData, teamLoading } = useContext(TeamContext);
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <TitleCardContainer>
@@ -23,11 +26,13 @@ export const TeamHeader: TeamHeaderComponent = ({ children }) => {
           rounded={"md"}
           gap={3}
           colorScheme="blue"
+          onClick={onOpen}
         >
           Manage
           <Icon as={SettingsIcon} />
         </Button>
       </TitleCardFooter>
+      <EditTeam team={teamData} isOpen={isOpen} onClose={onClose} />
     </TitleCardContainer>
   );
 };

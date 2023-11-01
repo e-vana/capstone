@@ -45,29 +45,16 @@ const AddTeam: AddTeamComponent = ({ orgId, orgName, isOpen, onClose }) => {
     onSuccess: () => {
       toast({
         status: "success",
-        title: "Added Team!",
+        title: "Added team successfully.",
       });
-      console.log("Trying to refetch since we added a team")
-      // queryClient.invalidateQueries([
-      //   "getOrganizations",
-      //   "getEvents",
-      //   "getTeams",
-      // ]);
       queryClient.invalidateQueries({ queryKey: "getTeams" });
-      queryClient.invalidateQueries({ queryKey: "getOrganizations" });
       queryClient.invalidateQueries({ queryKey: "getEvents" });
-      // For some reason I couldn't get invalidateQueries to work with the array syntax,
-      // and also wasn't having success invalidating the getTeams query. Passing the refetch
-      // functions in via props from the parent component works, but I'm not sure if that's ideal.
-      // refetchEvents();
-      // refetchOrganizations();
-      // refetchTeams();
       mutation.reset();
     },
     onError: (err: Error) => {
       toast({
         status: "error",
-        title: "Error adding team",
+        title: "Error adding team, please try again.",
         description: err.message,
       });
     }
