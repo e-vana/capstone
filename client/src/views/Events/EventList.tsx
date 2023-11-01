@@ -24,10 +24,17 @@ const EventList: EventsListComponent = () => {
 
   const { events, selectedOrg, selectedTeam } = useAppSelector((state) => state.organizations);
 
-  // Get the selected team's name to display in the header
-  const selectedTeamName = teamsData?.teams.find(
+  // Get the selected team's name to display in the header, and to pass to the AddEvent modal
+  const selectedTeamName = useAppSelector((state) => state.organizations.teams.find(
+    (team) => team.id === state.organizations.selectedTeam
+  )?.name) || teamsData?.teams.find(
     (team: iTeam) => team.id === selectedTeam
-  )?.name;
+  )?.name || "";
+
+  // Likewise for the Organization name
+  const selectedOrgName = useAppSelector((state) => state.organizations.organizations.find(
+    (org) => org.id === state.organizations.selectedOrg
+  )?.name) || orgData?.name || "";
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   
@@ -64,8 +71,8 @@ const EventList: EventsListComponent = () => {
         </>
       )}
       {/* TODO: Don't show the Add Event option for unauthorized users */}
-      <AddEvent orgId={selectedOrg} orgName={orgData?.name || ""}
-        teamId={selectedTeam} teamName={selectedTeamName || ""}
+      <AddEvent orgId={selectedOrg} orgName={selectedOrgName}
+        teamId={selectedTeam} teamName={selectedTeamName}
         isOpen={isOpen} onClose={onClose} />
     </>
   );

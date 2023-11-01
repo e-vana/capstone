@@ -7,12 +7,10 @@ import { TeamHeader } from "./TeamHeader";
 import EventList from "../Events/EventList";
 import { getEventsInATeam } from "../../api/events.api";
 import { useAppDispatch } from "../../app/hooks";
-import { setEvents } from "../../features/Organizations/organizationSlice";
+import { setEvents, setOrg, setTeam } from "../../features/Organizations/organizationSlice";
 import { FAKE_MEMBERS } from "../Organizations/OrganizationPage";
 import TeamMembers from "./TeamMembers";
-import { setTeam } from "../../features/Organizations/organizationSlice";
 import { useEffect } from "react";
-import { useAppSelector } from "../../app/hooks";
 
 const TeamPage = () => {
   const { organizationId, teamId } = useParams();
@@ -22,9 +20,10 @@ const TeamPage = () => {
     getTeam(+organizationId!, +teamId!)
   );
   
-  // When the team data is loaded, set the team in the redux store
+  // When the team data is loaded, set the team (and parent org) in the redux store
   useEffect(() => {
     dispatch(setTeam(+teamId!));
+    dispatch(setOrg(+organizationId!));
   }, [teamId, data]);
 
   const { data: eventData } = useQuery(
@@ -34,8 +33,6 @@ const TeamPage = () => {
       onSuccess: (data) => dispatch(setEvents(data.events)),
     }
   );
-
-  console.log(eventData?.events);
 
   return (
     <TeamContext.Provider

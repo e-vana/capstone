@@ -4,8 +4,12 @@ import { getOrganizations } from "../../api/organizations.api";
 import ErrorMessage from "../../components/Error";
 import { LoadingComponent } from "../../components/Loading";
 import Organizations from "./Organizations";
+import { useAppDispatch } from "../../app/hooks";
+import { setOrgs } from "../../features/Organizations/organizationSlice";
 
 const OrganizationView: FunctionComponent = () => {
+  const dispatch = useAppDispatch();
+  
   const {
     data: orgData,
     isLoading: orgIsLoading,
@@ -20,7 +24,7 @@ const OrganizationView: FunctionComponent = () => {
     error: (
       <ErrorMessage
         code={404}
-        message="Cant find organizations. Make sure you start the server!"
+        message="There's been an error locating your organizations. Please try again."
         flex={1}
       />
     ),
@@ -30,7 +34,10 @@ const OrganizationView: FunctionComponent = () => {
 
   if (orgIsLoading) return renderState.loading;
   else if (orgIsError) return renderState.error;
-  else if (orgData?.organizations) return renderState.success;
+  else if (orgData?.organizations) {
+    dispatch(setOrgs(orgData.organizations));
+    return renderState.success;
+  } 
 };
 
 export default OrganizationView;
