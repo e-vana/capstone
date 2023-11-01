@@ -1,8 +1,9 @@
 import { FunctionComponent } from "react";
 import { iOrganization } from "../../interfaces/organization.interface";
 import { iEventJoinOrg } from "../../interfaces/events.interface";
+import { ModalProps } from "@chakra-ui/react";
 
-interface TileModalProps {
+interface TileModalProps extends ModalProps {
   isOpen: boolean;
   onClose: () => void;
   children: React.ReactNode;

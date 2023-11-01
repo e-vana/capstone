@@ -7,9 +7,13 @@ import { TeamHeader } from "./TeamHeader";
 import EventList from "../Events/EventList";
 import { getEventsInATeam } from "../../api/events.api";
 import { useAppDispatch } from "../../app/hooks";
-import { setEvents } from "../../features/Organizations/organizationSlice";
+import {
+  setEvents,
+  setTeam,
+} from "../../features/Organizations/organizationSlice";
 import { FAKE_MEMBERS } from "../Organizations/OrganizationPage";
 import TeamMembers from "./TeamMembers";
+import { useEffect } from "react";
 
 const TeamPage = () => {
   const { organizationId, teamId } = useParams();
@@ -27,7 +31,13 @@ const TeamPage = () => {
     }
   );
 
-  console.log(eventData?.events);
+  useEffect(() => {
+    if (teamId) {
+      dispatch(setTeam(+teamId));
+    }
+  }, [dispatch, teamId]);
+
+  console.log("Team Page: Render");
 
   return (
     <TeamContext.Provider

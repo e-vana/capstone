@@ -5,6 +5,7 @@ import {
   Heading,
   IconButton,
   Stack,
+  Flex,
 } from "@chakra-ui/react";
 import { EventsListComponent } from "./types";
 import { AddIcon } from "@chakra-ui/icons";
@@ -23,7 +24,9 @@ const EventList: EventsListComponent = () => {
   // TODO: This information could be retrieved from the redux store, context or props?
   const { orgData, teamsData } = useContext(OrganizationContext);
 
-  const { events, selectedOrg, selectedTeam } = useAppSelector((state) => state.organizations);
+  const { events, selectedOrg, selectedTeam } = useAppSelector(
+    (state) => state.organizations
+  );
 
   // Get the selected team's name to display in the header
   const selectedTeamName = teamsData?.teams.find(
@@ -31,7 +34,7 @@ const EventList: EventsListComponent = () => {
   )?.name;
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-  
+
   return (
     <>
       <Stack>
@@ -41,14 +44,16 @@ const EventList: EventsListComponent = () => {
           </Heading>
         </HStack>
         {/* TODO: Limit this to admins/authorized users */}
-        <Heading size={"sm"}>Add an Event</Heading>
-        <IconButton
-          aria-label="Create new event"
-          icon={<AddIcon />}
-          marginLeft={"5px"}
-          size="md"
-          onClick={onOpen}
-        />
+        <Flex height={"100%"} alignItems={"center"}>
+          <Heading size={"sm"}>Add an Event</Heading>
+          <IconButton
+            aria-label="Create new event"
+            icon={<AddIcon />}
+            marginLeft={"5px"}
+            size="xs"
+            onClick={onOpen}
+          />
+        </Flex>
       </Stack>
       {events && events.length == 0 && (
         <Stack spacing={3}>
@@ -65,9 +70,14 @@ const EventList: EventsListComponent = () => {
         </>
       )}
       {/* TODO: Don't show the Add Event option for unauthorized users */}
-      <AddEvent orgId={selectedOrg} orgName={orgData?.name || ""}
-        teamId={selectedTeam} teamName={selectedTeamName || ""}
-        isOpen={isOpen} onClose={onClose} />
+      <AddEvent
+        orgId={selectedOrg}
+        orgName={orgData?.name || ""}
+        teamId={selectedTeam}
+        teamName={selectedTeamName || ""}
+        isOpen={isOpen}
+        onClose={onClose}
+      />
     </>
   );
 };

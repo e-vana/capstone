@@ -23,21 +23,22 @@ export const FAKE_MEMBERS = [
     name: "Tony Pizza",
   },
   {
-    name: "Megatron",
+    name: "John Davis",
   },
   {
-    name: "Walter White",
+    name: "Nicol Bolas",
   },
   {
-    name: "Johnny Bravo",
+    name: "Alice Watkins",
   },
   {
-    name: "Shrek",
+    name: "Jessie Santarino",
   },
 ];
 
 const OrganizationPage = () => {
   const { organizationId } = useParams();
+  const dispatch = useAppDispatch();
 
   // const dispatch = useAppDispatch();
 
@@ -56,10 +57,18 @@ const OrganizationPage = () => {
     () => getEventsInAnOrg(+organizationId!)
   );
 
+  useEffect(() => {
+    if (organizationId) {
+      dispatch(setOrg(+organizationId));
+    }
+  }, [dispatch, organizationId]);
+  console.log("Organization Page: Render");
   // Determine the currently active team, if one hasn't been chosen, use the organization-wide team
   // const { selectedTeam } = useAppSelector((state) => state.organizations);
-  /*
+
   // When the teams data is loaded, set the active team to the organization-wide team
+  //
+  /*
   useEffect(() => {
     // Add organization teams to redux store
     dispatch(setTeams(teamsData?.teams || []));

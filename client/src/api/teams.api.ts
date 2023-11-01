@@ -2,12 +2,19 @@ import axios from "axios";
 import { iTeam, iGetTeams, iGetTeam } from "../interfaces/teams.interface";
 
 // GET TEAMS IN A ORG
-export const getTeams = async function (orgId: number): Promise<iGetTeams> {
+export const getTeams = async function (
+  orgId: number | undefined
+): Promise<iGetTeams> {
   const token = localStorage.getItem("token");
   if (!token)
     throw new Error(
       "No token found in teams.api@getTeams. Please log in and try again."
     );
+
+  if (orgId == undefined) {
+    return { success: true, teams: [] };
+  }
+
   const response = await axios.get<iGetTeams>(
     `${import.meta.env.VITE_BASE_URL}/organizations/${orgId}/teams`,
     {
