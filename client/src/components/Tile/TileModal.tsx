@@ -24,7 +24,7 @@ const TileModal: TileModalComponent = ({
     >
       <ModalOverlay />
       <ModalContent
-        bg={useColorModeValue("white", "#151515")}
+        bg={useColorModeValue("white", "gray.900")}
         color={useColorModeValue("#303030", "whiteAlpha.900")}
       >
         <ModalCloseButton onClick={onClose} />

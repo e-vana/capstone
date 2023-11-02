@@ -58,7 +58,7 @@ const ToolBar: ToolBarComponent = ({ ...rest }) => {
       width={"100%"}
       minH={"60px"}
       borderColor={useColorModeValue("gray.200", "gray.900")}
-      bg={useColorModeValue("#ffffff", "#303030")}
+      bg={useColorModeValue("#ffffff", "#121212")}
       zIndex={5}
     >
       <HStack width={"100%"} px={5} justify={"space-around"} align={"center"}>

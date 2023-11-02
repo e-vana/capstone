@@ -8,7 +8,7 @@ import {
   Button,
   Icon,
   useColorModeValue,
-  useDisclosure
+  useDisclosure,
 } from "@chakra-ui/react";
 import { ChevronRightIcon, PlusSquareIcon } from "@chakra-ui/icons";
 import { useContext } from "react";
@@ -20,7 +20,7 @@ const OrganizationTeams = () => {
   const { orgData, teamsData, teamsLoading } = useContext(OrganizationContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const cardBg = useColorModeValue("white", "#505050");
+  const cardBg = useColorModeValue("white", "#121212");
   return (
     <Stack alignSelf={"start"} width={"100%"}>
       <HStack width={"100%"} justifyContent={"flex-start"}>
@@ -47,6 +47,8 @@ const OrganizationTeams = () => {
             justifyContent={"space-between"}
             display={{ base: "flex", md: "flex" }}
             bg={cardBg}
+            border={"1px solid"}
+            borderColor={"whiteAlpha.300"}
           >
             <CardBody width={"100%"}>
               <HStack width={"100%"} justifyContent={"space-between"}>
@@ -64,8 +66,11 @@ const OrganizationTeams = () => {
             </CardBody>
           </Card>
         ))}
-      <AddTeam isOpen={isOpen} onClose={onClose}
-        orgId={orgData?.id || -1} orgName={orgData?.name || ""}
+      <AddTeam
+        isOpen={isOpen}
+        onClose={onClose}
+        orgId={orgData?.id || -1}
+        orgName={orgData?.name || ""}
       />
     </Stack>
   );

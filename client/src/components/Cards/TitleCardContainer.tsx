@@ -6,8 +6,10 @@ const TitleCardContainer: TitleCardComponent = ({ children }) => {
     <Card
       width={"100%"}
       minH={"30%"}
-      bg={useColorModeValue("white", "#505050")}
+      bg={useColorModeValue("white", "#121212")}
       alignSelf={"start"}
+      border={"1px solid"}
+      borderColor={"whiteAlpha.300"}
     >
       {children}
     </Card>
