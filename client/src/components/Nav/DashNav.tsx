@@ -44,7 +44,7 @@ export const DashNav = () => {
   return (
     <Box position={"sticky"} top={0} left={0} zIndex={5}>
       <Flex
-        bg={useColorModeValue("white", "#303030")}
+        bg={useColorModeValue("white", "#121212")}
         color={useColorModeValue("gray.600", "white")}
         minH={"60px"}
         py={{ base: 2 }}

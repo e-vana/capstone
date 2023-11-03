@@ -1,15 +1,9 @@
-import { Stack, Heading, Text, useBreakpointValue } from "@chakra-ui/react";
+import { Stack, Heading, Text, useColorModeValue } from "@chakra-ui/react";
 import { useQuery } from "react-query";
 import { getUserExpenseBreakdown } from "../../api/expenses.api";
 import { ExpenseTotalComponent } from "./types";
-import {
-  PieChart,
-  Pie,
-  Cell,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
+import { ResponsivePie } from "@nivo/pie";
+import { Theme } from "@nivo/core";
 
 const ExpenseTotal: ExpenseTotalComponent = () => {
   const { data: ExpenseBreakdown } = useQuery({
@@ -18,17 +12,28 @@ const ExpenseTotal: ExpenseTotalComponent = () => {
   });
 
   const convertedData = ExpenseBreakdown?.expense_breakdown.map((expense) => ({
-    ...expense,
-    total_expenses: parseFloat(expense.total_expenses),
+    id: expense.organization_name,
+    label: expense.organization_name,
+    value: parseFloat(expense.total_expenses),
   }));
 
   const COLORS = ["#9F7AEA", "#ED64A6", "#38B2AC"];
 
-  const variant = useBreakpointValue({
-    base: 350,
-    md: 400,
-    "2xl": 550,
-  });
+  const textColor = useColorModeValue("#303030", "#ffffff");
+  const bgColor = useColorModeValue("#ffffff", "#303030");
+  const theme: Theme = {
+    tooltip: {
+      container: {
+        backgroundColor: bgColor,
+      },
+    },
+    textColor: textColor,
+    labels: {
+      text: {
+        fontSize: 13,
+      },
+    },
+  };
 
   if (!ExpenseBreakdown || !convertedData) {
     return <Text>No Expenses Found</Text>;
@@ -36,30 +41,34 @@ const ExpenseTotal: ExpenseTotalComponent = () => {
     return (
       <Stack width={"100%"} height={"100%"}>
         <Heading size={"sm"}>Total Expense in Dollars: $</Heading>
-        <Stack width={"50%"}>
-          <ResponsiveContainer width={variant} height={variant}>
-            <PieChart>
-              <Pie
-                data={convertedData}
-                dataKey={"total_expenses"}
-                nameKey={"organization_name"}
-                cx={"50%"}
-                cy={"50%"}
-                outerRadius={80}
-                fill="#303030"
-                label
-              >
-                {convertedData.map((_, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={COLORS[index % COLORS.length]}
-                  />
-                ))}
-              </Pie>
-              <Tooltip />
-              <Legend />
-            </PieChart>
-          </ResponsiveContainer>
+        <Stack width={"100%"} height={400} rounded={"lg"} overflowX={"hidden"}>
+          <ResponsivePie
+            data={convertedData}
+            margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
+            colors={COLORS}
+            innerRadius={0.5}
+            padAngle={0.7}
+            cornerRadius={3}
+            enableArcLabels={true}
+            arcLabelsTextColor={textColor}
+            arcLinkLabelsColor={textColor}
+            valueFormat={"$"}
+            motionConfig={"gentle"}
+            activeOuterRadiusOffset={8}
+            theme={theme}
+            legends={[
+              {
+                anchor: "bottom",
+                direction: "row",
+                translateY: 56,
+                itemWidth: 100,
+                itemHeight: 18,
+                itemTextColor: textColor,
+                symbolShape: "circle",
+                symbolSize: 18,
+              },
+            ]}
+          />
         </Stack>
       </Stack>
     );

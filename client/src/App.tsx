@@ -47,7 +47,7 @@ const LandingNavOutlet = () => {
         minH={"100vh"}
         flex={1}
         spacing={0}
-        bg={useColorModeValue("#ffffff", "#303030")}
+        bg={useColorModeValue("#ffffff", "#101010")}
       >
         <LandingNav />
         <Outlet />
@@ -69,7 +69,7 @@ const DashNavOutlet = () => {
         minH={"100vh"}
         flex={1}
         spacing={0}
-        bg={useColorModeValue("#ffffff", "#303030")}
+        bg={useColorModeValue("#ffffff", "#121212")}
       >
         <AuthGuard>
           <DashNav />
