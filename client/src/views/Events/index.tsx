@@ -126,9 +126,14 @@ const EventsView = () => {
           </>
         )}
       </Stack>
-      <AddEvent orgId={selectedOrg} orgName={selectedOrgName || ""}
-        teamId={selectedTeam} teamName={selectedTeamName || ""}
-        isOpen={isOpen} onClose={onClose} />
+      <AddEvent
+        orgId={selectedOrg}
+        orgName={selectedOrgName || ""}
+        teamId={selectedTeam}
+        teamName={selectedTeamName || ""}
+        isOpen={isOpen}
+        onClose={onClose}
+      />
     </Flex>
   );
 };
