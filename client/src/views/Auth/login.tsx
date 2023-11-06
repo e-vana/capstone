@@ -70,7 +70,7 @@ const Login: LoginComponent = () => {
         height={"100%"}
         align={"center"}
         justify={"center"}
-        bg={useColorModeValue("white", "#303030")}
+        bg={useColorModeValue("white", "#121212")}
         color={useColorModeValue("#303030", "whiteAlpha.800")}
         flex={1}
       >
@@ -87,9 +87,11 @@ const Login: LoginComponent = () => {
           </Stack>
           <Box
             rounded={"lg"}
-            bg={useColorModeValue("white", "#505050")}
+            bg={useColorModeValue("white", "#121212")}
             boxShadow={useColorModeValue("lg", "none")}
             p={8}
+            border={"1px solid"}
+            borderColor={useColorModeValue("transparent", "whiteAlpha.300")}
           >
             <form onSubmit={handleSubmit}>
               <Stack spacing={4}>

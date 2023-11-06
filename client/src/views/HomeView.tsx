@@ -11,6 +11,7 @@ import { FunctionComponent } from "react";
 import { useQuery } from "react-query";
 import { Helmet } from "react-helmet";
 import { getOrganizations } from "../api/organizations.api";
+import { LoadingComponent } from "../components/Loading";
 import ErrorMessage from "../components/Error";
 import OrganizationView from "./Organizations";
 import EventsView from "./Events";
@@ -26,11 +27,7 @@ const HomeView: FunctionComponent = () => {
   });
 
   const renderState = {
-    loading: (
-      <Stack align={"center"} height={"100%"} flex={1} justify={"center"}>
-        <Spinner color={"green"} size={"xl"} />
-      </Stack>
-    ),
+    loading: <LoadingComponent />,
     error: (
       <ErrorMessage
         code={404}
@@ -39,27 +36,25 @@ const HomeView: FunctionComponent = () => {
       />
     ),
     success: () => (
-      <>
-        <h1>
-          <Helmet title="Home" />
-          <Tabs defaultIndex={0} variant={"line"} colorScheme="purple" isLazy>
-            <TabList>
-              <Tab>Organizations</Tab>
-              <Tab>Events</Tab>
-            </TabList>
-            <TabPanels>
-              <TabPanel flex={1}>
-                <Helmet title="Organizations" />
-                <OrganizationView />
-              </TabPanel>
-              <TabPanel>
-                <Helmet title="Events" />
-                <EventsView />
-              </TabPanel>
-            </TabPanels>
-          </Tabs>
-        </h1>
-      </>
+      <Stack flex={1} height={"100%"}>
+        <Helmet title="Home" />
+        <Tabs defaultIndex={0} variant={"line"} colorScheme="purple" isLazy>
+          <TabList>
+            <Tab>Organizations</Tab>
+            <Tab>Events</Tab>
+          </TabList>
+          <TabPanels>
+            <TabPanel flex={1}>
+              <Helmet title="Organizations" />
+              <OrganizationView />
+            </TabPanel>
+            <TabPanel>
+              <Helmet title="Events" />
+              <EventsView />
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+      </Stack>
     ),
   };
 

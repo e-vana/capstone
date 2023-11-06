@@ -10,7 +10,6 @@ import {
   PopoverTrigger,
   PopoverContent,
   useColorModeValue,
-  useBreakpointValue,
   useDisclosure,
   Drawer,
   DrawerContent,
@@ -20,6 +19,7 @@ import {
   HStack,
   Heading,
   useColorMode,
+  Img,
 } from "@chakra-ui/react";
 import {
   HamburgerIcon,
@@ -35,7 +35,7 @@ export const LandingNav = () => {
   return (
     <Box position={"sticky"} top={0} left={0}>
       <Flex
-        bg={useColorModeValue("white", "#303030")}
+        bg={useColorModeValue("white", "#121212")}
         color={useColorModeValue("gray.600", "white")}
         minH={"60px"}
         py={{ base: 2 }}
@@ -45,20 +45,20 @@ export const LandingNav = () => {
         borderColor={useColorModeValue("gray.200", "gray.900")}
         align={"center"}
         position={"relative"}
+        boxShadow={useColorModeValue("lg", "none")}
       >
         <Flex
           flex={{ base: 1 }}
           justify={{ base: "space-between", md: "start" }}
           width={"100%"}
         >
-          <Text
-            textAlign={useBreakpointValue({ base: "center", md: "left" })}
-            fontFamily={"heading"}
-            fontSize={"1.2rem"}
-            color={useColorModeValue("gray.800", "white")}
-          >
-            {import.meta.env.VITE_APP_NAME}
-          </Text>
+          <Img
+            width={{ base: "150px", md: "170px" }}
+            src={useColorModeValue(
+              "/villagehoursbrand.png",
+              "/villagehoursbranddark.png"
+            )}
+          />
 
           <Flex display={{ base: "none", md: "flex" }} ml={10}>
             <DesktopNav />

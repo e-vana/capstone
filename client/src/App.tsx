@@ -5,6 +5,7 @@ import { Provider } from "react-redux";
 import {
   ColorModeScript,
   Stack,
+  Box,
   theme,
   useColorModeValue,
 } from "@chakra-ui/react";
@@ -16,7 +17,7 @@ import Login from "./views/Auth/login";
 import Register from "./views/Auth/register";
 import { LandingNav } from "./components/Nav/landingNav";
 import HeroView from "./views/HeroView";
-import { DashNav } from "./components/Nav/DashNav";
+import DashNav from "./components/Nav/DashNav";
 import ToolBar from "./components/Nav/ToolBar";
 import AuthGuard from "./components/RouteGuard/AuthGuard";
 import { ErrorPage } from "./components/Error";
@@ -26,6 +27,8 @@ import JoinPage from "./views/Join/JoinPage";
 import TeamPage from "./views/Teams/TeamPage";
 import ExpenseView from "./views/Expenses/ExpenseView";
 import SettingsPage from "./views/Settings/SettingsPage";
+import OrganizationView from "./views/Organizations";
+import EventsView from "./views/Events";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -63,26 +66,26 @@ const DashNavOutlet = () => {
         defaultTitle={import.meta.env.VITE_APP_NAME}
         titleTemplate={"%s | " + import.meta.env.VITE_APP_NAME}
       />
-      <Stack
+      <Box
+        display={"flex"}
+        flexDir={"column"}
         position={"relative"}
-        minHeight={"100vh"}
-        minH={"100vh"}
-        flex={1}
-        spacing={0}
+        height={"100vh"}
         bg={useColorModeValue("#ffffff", "#121212")}
       >
         <AuthGuard>
-          <DashNav />
-          <Outlet />
-          <ToolBar
-            display={{ base: "flex", md: "none" }}
-            borderTop={"1px solid"}
-            position={"sticky"}
-            bottom={0}
-            left={0}
-          />
+          <DashNav>
+            <Outlet />
+            <ToolBar
+              display={{ base: "flex", md: "none" }}
+              borderTop={"1px solid"}
+              position={"sticky"}
+              bottom={0}
+              left={0}
+            />
+          </DashNav>
         </AuthGuard>
-      </Stack>
+      </Box>
     </>
   );
 };
@@ -114,11 +117,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/d",
-        element: (
-          <Stack flex={1}>
-            <HomeView />
-          </Stack>
-        ),
+        element: <HomeView />,
       },
       {
         path: "/d/test",
@@ -135,6 +134,14 @@ const router = createBrowserRouter([
       {
         path: "/d/settings",
         element: <SettingsPage />,
+      },
+      {
+        path: "/d/organizations",
+        element: <OrganizationView />,
+      },
+      {
+        path: "/d/events",
+        element: <EventsView />,
       },
       {
         path: "/d/:organizationId",

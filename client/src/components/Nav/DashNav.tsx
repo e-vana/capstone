@@ -1,335 +1,301 @@
 import {
-  Box,
-  Flex,
-  Text,
   IconButton,
   Stack,
-  Collapse,
+  Avatar,
+  Box,
+  CloseButton,
+  Flex,
+  HStack,
+  VStack,
   Icon,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
   useColorModeValue,
-  useBreakpointValue,
-  useDisclosure,
+  Text,
   Drawer,
   DrawerContent,
-  DrawerOverlay,
-  DrawerBody,
-  DrawerCloseButton,
-  HStack,
-  Heading,
-  useColorMode,
-  Avatar,
+  useDisclosure,
+  BoxProps,
+  FlexProps,
   Menu,
-  MenuList,
   MenuButton,
+  MenuDivider,
   MenuItem,
+  MenuList,
+  useColorMode,
+  Img,
 } from "@chakra-ui/react";
 import {
-  HamburgerIcon,
-  ChevronDownIcon,
-  ChevronRightIcon,
-  MoonIcon,
-  SunIcon,
-} from "@chakra-ui/icons";
-import ToolBar from "./ToolBar";
-import { useAppSelector } from "../../app/hooks";
-import { useNavigate } from "react-router-dom";
+  FiHome,
+  FiTrendingUp,
+  FiCompass,
+  FiSettings,
+  FiMenu,
+  FiChevronDown,
+  FiGlobe,
+} from "react-icons/fi";
+import { HiSun, HiMoon, HiCurrencyDollar } from "react-icons/hi2";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { IconType } from "react-icons";
+import AddExpense from "../Expense/AddExpense";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { logout } from "../../features/Auth/userReducer";
 
-export const DashNav = () => {
-  const { isOpen, onClose, onOpen } = useDisclosure();
-  const { user } = useAppSelector((state) => state.user);
-  const navigate = useNavigate();
-  return (
-    <Box position={"sticky"} top={0} left={0} zIndex={5}>
-      <Flex
-        bg={useColorModeValue("white", "#121212")}
-        color={useColorModeValue("gray.600", "white")}
-        minH={"60px"}
-        py={{ base: 2 }}
-        px={{ base: 4 }}
-        borderBottom={1}
-        borderStyle={"solid"}
-        borderColor={useColorModeValue("gray.200", "gray.900")}
-        align={"center"}
-        position={"relative"}
-      >
-        <Flex
-          flex={{ base: 1 }}
-          justify={{ base: "space-between", md: "start" }}
-          width={"100%"}
-        >
-          <Text
-            textAlign={useBreakpointValue({ base: "center", md: "left" })}
-            fontFamily={"heading"}
-            fontSize={"1.2rem"}
-            color={useColorModeValue("gray.800", "white")}
-          >
-            {import.meta.env.VITE_APP_NAME}
-          </Text>
-
-          <Flex display={{ base: "none", md: "flex" }} ml={10}>
-            <DesktopNav />
-          </Flex>
-        </Flex>
-        <Flex
-          display={{ base: "none", md: "flex" }}
-          align={"center"}
-          width={{ sm: "30%", md: "30%", lg: "23%" }}
-        >
-          <ToolBar display={{ base: "none", md: "flex" }} />
-          <Box>
-            <Menu>
-              <MenuButton
-                border="1px solid"
-                borderColor={"gray.300"}
-                padding={2}
-                rounded={"full"}
-                width={"90px"}
-              >
-                <HStack width={"100%"} justify={"space-evenly"}>
-                  <Avatar
-                    name={user?.first_name + " " + user?.last_name}
-                    bg={"gray.400"}
-                    size={"sm"}
-                  />
-                  <Icon as={ChevronDownIcon} boxSize={5} />
-                </HStack>
-              </MenuButton>
-              <MenuList>
-                <MenuItem
-                  onClick={() => {
-                    localStorage.removeItem("token");
-                    navigate("/");
-                  }}
-                >
-                  Sign Out
-                </MenuItem>
-              </MenuList>
-            </Menu>
-          </Box>
-        </Flex>
-        <Flex display={{ base: "flex", md: "none" }} zIndex={10}>
-          <Box zIndex={12}>
-            <IconButton
-              onClick={onOpen}
-              icon={<HamburgerIcon boxSize={6} />}
-              variant={"ghost"}
-              aria-label={"Toggle Navigation"}
-            />
-          </Box>
-        </Flex>
-      </Flex>
-
-      <Drawer isOpen={isOpen} onClose={onClose} placement="left" size={"full"}>
-        <DrawerOverlay zIndex={1} position={"absolute"} />
-        <DrawerContent
-          position={"absolute"}
-          bg={useColorModeValue("#ffffff", "#303030")}
-        >
-          <DrawerCloseButton />
-          <DrawerBody mt={"60px"}>
-            <MobileNav />
-          </DrawerBody>
-        </DrawerContent>
-      </Drawer>
-    </Box>
-  );
-};
-
-const DesktopNav = () => {
-  const linkColor = useColorModeValue("gray.600", "gray.200");
-  const linkHoverColor = useColorModeValue("gray.800", "white");
-  const popoverContentBgColor = useColorModeValue("white", "gray.800");
-
-  return (
-    <Stack direction={"row"} spacing={4}>
-      {NAV_ITEMS.map((navItem) => (
-        <Box key={navItem.label}>
-          <Popover trigger={"hover"} placement={"bottom-start"}>
-            <PopoverTrigger>
-              <Box
-                as="a"
-                p={2}
-                href={navItem.href ?? "#"}
-                fontSize={"sm"}
-                fontWeight={500}
-                color={linkColor}
-                _hover={{
-                  textDecoration: "none",
-                  color: linkHoverColor,
-                }}
-              >
-                {navItem.label}
-              </Box>
-            </PopoverTrigger>
-
-            {navItem.children && (
-              <PopoverContent
-                border={0}
-                boxShadow={"xl"}
-                bg={popoverContentBgColor}
-                p={4}
-                rounded={"xl"}
-                minW={"sm"}
-              >
-                <Stack>
-                  {navItem.children.map((child) => (
-                    <DesktopSubNav key={child.label} {...child} />
-                  ))}
-                </Stack>
-              </PopoverContent>
-            )}
-          </Popover>
-        </Box>
-      ))}
-    </Stack>
-  );
-};
-
-const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
-  return (
-    <Box
-      as="a"
-      href={href}
-      role={"group"}
-      display={"block"}
-      p={2}
-      rounded={"md"}
-      _hover={{ bg: useColorModeValue("pink.50", "gray.900") }}
-    >
-      <Stack direction={"row"} align={"center"}>
-        <Box>
-          <Text
-            transition={"all .3s ease"}
-            _groupHover={{ color: "pink.400" }}
-            fontWeight={500}
-          >
-            {label}
-          </Text>
-          <Text fontSize={"sm"}>{subLabel}</Text>
-        </Box>
-        <Flex
-          transition={"all .3s ease"}
-          transform={"translateX(-10px)"}
-          opacity={0}
-          _groupHover={{ opacity: "100%", transform: "translateX(0)" }}
-          justify={"flex-end"}
-          align={"center"}
-          flex={1}
-        >
-          <Icon color={"pink.400"} w={5} h={5} as={ChevronRightIcon} />
-        </Flex>
-      </Stack>
-    </Box>
-  );
-};
-
-const MobileNav = () => {
-  const { toggleColorMode } = useColorMode();
-
-  return (
-    <Stack
-      display={{ md: "none" }}
-      width={"100%"}
-      position={"relative"}
-      height={"100%"}
-      spacing={0}
-    >
-      <Heading size={"md"}>Heading</Heading>
-      {NAV_ITEMS.map((navItem) => (
-        <MobileNavItem key={navItem.label} {...navItem} />
-      ))}
-      <HStack
-        position={"absolute"}
-        width={"100%"}
-        bottom={0}
-        left={0}
-        minH={"60px"}
-        justify={"center"}
-        borderTop={"1px solid"}
-        borderColor={"gray.100"}
-        py={5}
-      >
-        <Stack align={"center"}>
-          <Icon
-            as={useColorModeValue(MoonIcon, SunIcon)}
-            color={useColorModeValue("gray.500", "gray.100")}
-            boxSize={6}
-            cursor={"pointer"}
-            _hover={{
-              color: useColorModeValue("purple.500", "purple.300"),
-            }}
-            onClick={toggleColorMode}
-          />
-          <Text>{useColorModeValue("DARK", "LIGHT")}</Text>{" "}
-        </Stack>
-      </HStack>
-    </Stack>
-  );
-};
-
-const MobileNavItem = ({ label, children, href }: NavItem) => {
-  const { isOpen, onToggle } = useDisclosure();
-
-  return (
-    <Stack spacing={4} onClick={children && onToggle} width={"100%"}>
-      <HStack
-        py={2}
-        as="a"
-        href={href ?? "#"}
-        justifyContent="space-between"
-        alignItems="center"
-        _hover={{
-          textDecoration: "none",
-        }}
-        width={"50%"}
-        minWidth={"50%"}
-      >
-        <Text
-          fontWeight={600}
-          color={useColorModeValue("gray.600", "gray.200")}
-        >
-          {label}
-        </Text>
-        {children && (
-          <Icon
-            as={ChevronDownIcon}
-            transition={"all .25s ease-in-out"}
-            transform={isOpen ? "rotate(180deg)" : ""}
-            w={6}
-            h={6}
-          />
-        )}
-      </HStack>
-
-      <Collapse in={isOpen} style={{ marginTop: "0!important" }}>
-        <Stack
-          mt={2}
-          pl={4}
-          borderLeft={1}
-          borderStyle={"solid"}
-          borderColor={useColorModeValue("gray.200", "gray.700")}
-          align={"start"}
-        >
-          {children &&
-            children.map((child) => (
-              <Box as="a" key={child.label} py={2} href={child.href}>
-                {child.label}
-              </Box>
-            ))}
-        </Stack>
-      </Collapse>
-    </Stack>
-  );
-};
-
-interface NavItem {
-  label: string;
-  subLabel?: string;
-  children?: Array<NavItem>;
-  href?: string;
+interface LinkItemProps {
+  name: string;
+  to: string;
+  icon: IconType;
 }
 
-const NAV_ITEMS: Array<NavItem> = [];
+interface NavItemProps extends FlexProps {
+  icon: IconType;
+  link: string;
+  children: React.ReactNode;
+}
+
+interface MobileProps extends FlexProps {
+  onOpen: () => void;
+}
+
+interface SidebarProps extends BoxProps {
+  onClose: () => void;
+}
+
+const LinkItems: Array<LinkItemProps> = [
+  { name: "Home", to: "/d", icon: FiHome },
+  { name: "Organizations", to: "organizations", icon: FiGlobe },
+  { name: "Events", to: "/d/events", icon: FiCompass },
+  { name: "Expenses", to: "/d/expenses", icon: FiTrendingUp },
+  { name: "Settings", to: "/d/settings", icon: FiSettings },
+];
+
+const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
+  return (
+    <Box
+      transition="3s ease"
+      bg={useColorModeValue("white", "#121212")}
+      borderRight="1px"
+      borderRightColor={useColorModeValue("gray.100", "whiteAlpha.300")}
+      boxShadow={useColorModeValue("lg", "none")}
+      w={{ base: "full", md: 60 }}
+      pos="fixed"
+      h="full"
+      {...rest}
+    >
+      <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
+        <Img
+          src={useColorModeValue(
+            "/villagehoursbrand.png",
+            "/villagehoursbranddark.png"
+          )}
+          width={"160px"}
+        />
+        <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
+      </Flex>
+      {LinkItems.map((link) => (
+        <NavItem
+          key={link.name}
+          icon={link.icon}
+          link={link.to}
+          onClick={onClose}
+        >
+          {link.name}
+        </NavItem>
+      ))}
+    </Box>
+  );
+};
+
+const NavItem = ({ icon, children, link, ...rest }: NavItemProps) => {
+  return (
+    <Box
+      as={RouterLink}
+      to={link}
+      style={{ textDecoration: "none" }}
+      _focus={{ boxShadow: "none" }}
+    >
+      <Flex
+        align="center"
+        p="4"
+        mx="4"
+        borderRadius="lg"
+        role="group"
+        cursor="pointer"
+        transition={".1s ease-in"}
+        _hover={{
+          border: "1px solid",
+          borderColor: "purple.400",
+        }}
+        {...rest}
+      >
+        {icon && (
+          <Icon
+            mr="4"
+            fontSize="16"
+            as={icon}
+            _groupHover={{
+              color: "purple.400",
+            }}
+          />
+        )}
+        {children}
+      </Flex>
+    </Box>
+  );
+};
+
+const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
+  const {
+    isOpen: isExpModalOpen,
+    onOpen: onExpModalOpen,
+    onClose: onExpModalClose,
+  } = useDisclosure();
+
+  const { user } = useAppSelector((state) => state.user);
+  const { toggleColorMode } = useColorMode();
+  const menuItemColors = {
+    bgColor: "transparent",
+    _hover: {
+      bgColor: "purple.400",
+    },
+  };
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const handleSignout = () => {
+    dispatch(logout());
+    navigate("/");
+  };
+
+  return (
+    <Flex
+      ml={{ base: 0, md: 60 }}
+      px={{ base: 4, md: 4 }}
+      height="20"
+      alignItems="center"
+      bg={useColorModeValue("white", "#121212")}
+      borderBottomWidth="1px"
+      borderBottomColor={useColorModeValue("gray.200", "whiteAlpha.300")}
+      justifyContent={{ base: "space-between", md: "flex-end" }}
+      {...rest}
+    >
+      <IconButton
+        display={{ base: "flex", md: "none" }}
+        onClick={onOpen}
+        variant="outline"
+        aria-label="open menu"
+        icon={<FiMenu />}
+      />
+
+      <Img
+        display={{ base: "flex", md: "none" }}
+        src={useColorModeValue(
+          "/villagehoursbrand.png",
+          "/villagehoursbranddark.png"
+        )}
+        width={"150px"}
+      />
+
+      <HStack spacing={{ base: "0", md: "6" }}>
+        <Icon
+          display={{ base: "none", md: "flex" }}
+          as={HiCurrencyDollar}
+          boxSize={6}
+          color={useColorModeValue("gray.500", "gray.400")}
+          cursor={"pointer"}
+          _hover={{
+            color: useColorModeValue("purple.500", "purple.300"),
+          }}
+          onClick={onExpModalOpen}
+        />
+        <AddExpense isOpen={isExpModalOpen} onClose={onExpModalClose} />
+        <Icon
+          display={{ base: "none", md: "flex" }}
+          as={useColorModeValue(HiMoon, HiSun)}
+          color={useColorModeValue("gray.500", "gray.400")}
+          boxSize={6}
+          cursor={"pointer"}
+          _hover={{
+            color: useColorModeValue("purple.500", "purple.300"),
+          }}
+          onClick={toggleColorMode}
+        />
+
+        <Flex alignItems={"center"}>
+          <Menu colorScheme="purple">
+            <MenuButton
+              py={2}
+              transition="all 0.3s"
+              _focus={{ boxShadow: "none" }}
+            >
+              <HStack>
+                <Avatar
+                  size={"sm"}
+                  name={user?.first_name + " " + user?.last_name}
+                />
+                <VStack
+                  display={{ base: "none", md: "flex" }}
+                  alignItems="flex-start"
+                  spacing="1px"
+                  ml="2"
+                >
+                  <Text fontSize="sm">{user?.first_name}</Text>
+                  <Text fontSize="xs" color="gray.600">
+                    Admin
+                  </Text>
+                </VStack>
+                <Box>
+                  <FiChevronDown />
+                </Box>
+              </HStack>
+            </MenuButton>
+            <MenuList
+              bg={useColorModeValue("white", "#121212")}
+              borderColor={useColorModeValue("gray.200", "gray.700")}
+            >
+              <MenuItem as={RouterLink} to={"/d/settings"} {...menuItemColors}>
+                Profile
+              </MenuItem>
+              <MenuItem as={RouterLink} to={"/d/settings"} {...menuItemColors}>
+                Settings
+              </MenuItem>
+              <MenuDivider />
+              <MenuItem onClick={handleSignout} {...menuItemColors}>
+                Sign out
+              </MenuItem>
+            </MenuList>
+          </Menu>
+        </Flex>
+      </HStack>
+    </Flex>
+  );
+};
+
+const DashNav = ({ children }: { children: React.ReactNode }) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  return (
+    <Stack minH="100vh" bg={useColorModeValue("white", "#121212")}>
+      <SidebarContent
+        onClose={() => onClose}
+        display={{ base: "none", md: "block" }}
+      />
+      <Drawer
+        isOpen={isOpen}
+        placement="left"
+        onClose={onClose}
+        returnFocusOnClose={false}
+        onOverlayClick={onClose}
+        size="full"
+      >
+        <DrawerContent>
+          <SidebarContent onClose={onClose} />
+        </DrawerContent>
+      </Drawer>
+      {/* mobilenav */}
+      <MobileNav onOpen={onOpen} />
+      <Stack ml={{ base: 0, md: 60 }} flex={1} overflowX={"auto"}>
+        {children}
+      </Stack>
+    </Stack>
+  );
+};
+
+export default DashNav;
