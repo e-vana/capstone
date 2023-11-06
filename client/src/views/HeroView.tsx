@@ -3,7 +3,7 @@ import {
   Flex,
   Heading,
   Highlight,
-  Image,
+  Img,
   Stack,
   Text,
   useBreakpointValue,
@@ -18,7 +18,7 @@ const HeroView = () => {
         minH={"calc(100vh - 60px)"}
         direction={{ base: "column-reverse", md: "row" }}
       >
-        <Flex p={8} flex={1} align={"center"} justify={"center"}>
+        <Flex p={8} flex={0.5} align={"center"} justify={"center"}>
           <Stack spacing={6} w={"full"} maxW={"lg"}>
             <Heading fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }}>
               <Text
@@ -74,15 +74,35 @@ const HeroView = () => {
             </Stack>
           </Stack>
         </Flex>
-        <Flex flex={1}>
-          <Image
-            alt={"Login Image"}
-            objectFit={"cover"}
-            src={
-              "https://images.unsplash.com/photo-1522543558187-768b6df7c25c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
-            }
-            draggable={false}
+        <Flex
+          flex={1}
+          flexDir={"column"}
+          bgImg={
+            "https://images.unsplash.com/photo-1674076342825-f7e201dd8c8f?auto=format&fit=crop&q=80&w=2400&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          }
+          bgSize={"cover"}
+          bgPos={"center"}
+          justify={"center"}
+          backdropFilter={"auto"}
+          backdropInvert={useColorModeValue("80%", "0%")}
+          gap={3}
+        >
+          <Img
+            src={useColorModeValue(
+              "/villagehoursbrand.png",
+              "/villagehoursbranddark.png"
+            )}
+            height={"fit-content"}
+            alignSelf={"center"}
+            width={{ base: "200px", md: "350px" }}
           />
+          <Text
+            color={useColorModeValue("gray.600", "gray.600")}
+            alignSelf={"center"}
+            fontSize={"xs"}
+          >
+            Uniting Hearts, Building Communities
+          </Text>
         </Flex>
       </Stack>
     </>

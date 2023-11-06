@@ -24,8 +24,13 @@ const userSlice = createSlice({
     clearJoinURL: (state) => {
       state.joinURL = undefined;
     },
+    logout: (state) => {
+      state.user = undefined;
+      localStorage.removeItem("token");
+    },
   },
 });
 
-export const { setUser, addEventToJoin, clearJoinURL } = userSlice.actions;
+export const { setUser, addEventToJoin, clearJoinURL, logout } =
+  userSlice.actions;
 export default userSlice.reducer;

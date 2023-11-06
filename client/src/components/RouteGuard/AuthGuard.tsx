@@ -1,10 +1,10 @@
-import { Stack, Spinner } from "@chakra-ui/react";
 import { AuthGuardComponent } from "./types";
 import { useAppDispatch } from "../../app/hooks";
 import { useQuery } from "react-query";
 import { getUser } from "../../api/users.api";
 import { useNavigate } from "react-router-dom";
 import { setUser } from "../../features/Auth/userReducer";
+import { LoadingComponent } from "../Loading";
 
 const AuthGuard: AuthGuardComponent = ({ children }) => {
   const navigate = useNavigate();
@@ -19,11 +19,7 @@ const AuthGuard: AuthGuardComponent = ({ children }) => {
     localStorage.getItem("token") && (isSuccess && data) != null;
 
   if (isLoading) {
-    return (
-      <Stack align={"center"} height={"100%"} flex={1} justify={"center"}>
-        <Spinner color={"green"} size={"xl"} />
-      </Stack>
-    );
+    return <LoadingComponent />;
   } else if (isError || !isAuthenticated) {
     navigate("/login");
     return null;

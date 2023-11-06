@@ -115,7 +115,7 @@ const Register: RegisterComponent = () => {
         height={"100%"}
         align={"center"}
         justify={"center"}
-        bg={useColorModeValue("gray.50", "#303030")}
+        bg={useColorModeValue("gray.50", "#121212")}
         color={useColorModeValue("#303030", "whiteAlpha.800")}
         flex={1}
       >
@@ -132,8 +132,10 @@ const Register: RegisterComponent = () => {
           </Stack>
           <Box
             rounded={"lg"}
-            bg={useColorModeValue("white", "#505050")}
+            bg={useColorModeValue("white", "#121212")}
             boxShadow={useColorModeValue("lg", "none")}
+            border={"1px solid"}
+            borderColor={useColorModeValue("transparent", "whiteAlpha.300")}
             p={8}
           >
             <form onSubmit={handleSubmit}>

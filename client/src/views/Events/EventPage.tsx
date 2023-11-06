@@ -63,34 +63,35 @@ const EventPage = () => {
   }
 
   return (
-    <EventContext.Provider
-      value={{
-        eventData: data?.event,
-        eventLoading: isLoading,
-      }}
-    >
-      <Stack
-        direction={{ base: "column", md: "row" }}
-        flex={1}
-        justify={"start"}
-        p={5}
+    <Stack flex={1} height={"100%"}>
+      <EventContext.Provider
+        value={{
+          eventData: data?.event,
+          eventLoading: isLoading,
+        }}
       >
-        <Stack>
-          <Heading size={"md"}>Event Name:</Heading>
-          <EventHeader>{data?.event.event_name}</EventHeader>
+        <Stack
+          direction={{ base: "column", md: "row" }}
+          justify={"start"}
+          p={5}
+        >
+          <Stack>
+            <Heading size={"md"}>Event Name:</Heading>
+            <EventHeader>{data?.event.event_name}</EventHeader>
+          </Stack>
+          <Stack>
+            <Heading size={"sm"} alignItems={"center"} height={"100%"}>
+              Tasks: <AddTaskPopover handleAddTask={handleAddTask} />
+            </Heading>
+            {tasksData !== undefined ? (
+              <TaskList tasks={tasksData.tasks} isLoading={tasksLoading} />
+            ) : (
+              <Text>No tasks for this event yet!</Text>
+            )}
+          </Stack>
         </Stack>
-        <Stack height={"100%"}>
-          <Heading size={"sm"} alignItems={"center"} height={"100%"}>
-            Tasks: <AddTaskPopover handleAddTask={handleAddTask} />
-          </Heading>
-          {tasksData !== undefined ? (
-            <TaskList tasks={tasksData.tasks} isLoading={tasksLoading} />
-          ) : (
-            <Text>No tasks for this event yet!</Text>
-          )}
-        </Stack>
-      </Stack>
-    </EventContext.Provider>
+      </EventContext.Provider>
+    </Stack>
   );
 };
 

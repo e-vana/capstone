@@ -30,12 +30,18 @@ const EventsView = () => {
     (state) => state.organizations
   );
 
-  const selectedOrgName = useAppSelector((state) =>
-    state.organizations.organizations.find((org) => org.id === state.organizations.selectedOrg)?.name
+  const selectedOrgName = useAppSelector(
+    (state) =>
+      state.organizations.organizations.find(
+        (org) => org.id === state.organizations.selectedOrg
+      )?.name
   );
 
-  const selectedTeamName = useAppSelector((state) =>
-    state.organizations.teams.find((team) => team.id === state.organizations.selectedTeam)?.name
+  const selectedTeamName = useAppSelector(
+    (state) =>
+      state.organizations.teams.find(
+        (team) => team.id === state.organizations.selectedTeam
+      )?.name
   );
 
   const dispatch = useAppDispatch();
@@ -76,7 +82,13 @@ const EventsView = () => {
   }, [selectedTeam, selectedOrg]);
 
   return (
-    <Flex gap={8} flexDir={{ base: "column", md: "row" }}>
+    <Flex
+      flex={1}
+      height={"100%"}
+      gap={8}
+      flexDir={{ base: "column", md: "row" }}
+      p={4}
+    >
       <Stack>
         <OrgFilter />
       </Stack>
@@ -84,20 +96,20 @@ const EventsView = () => {
         <Stack>
           <Heading size={"md"}>Events</Heading>
           <Stack alignItems={"center"}>
-          {selectedTeam !== 0 && (
-            <HStack width={"100%"} alignItems={"center"}>
-              <Heading size={"xs"} mb={"5px"}>
-                Add an Event
-              </Heading>
-              <IconButton
-                aria-label="Create new event"
-                icon={<AddIcon />}
-                marginLeft={"5px"}
-                marginBottom={"6px"}
-                size="xs"
-                onClick={onOpen}
-              />
-            </HStack>
+            {selectedTeam !== 0 && (
+              <HStack width={"100%"} alignItems={"center"}>
+                <Heading size={"xs"} mb={"5px"}>
+                  Add an Event
+                </Heading>
+                <IconButton
+                  aria-label="Create new event"
+                  icon={<AddIcon />}
+                  marginLeft={"5px"}
+                  marginBottom={"6px"}
+                  size="xs"
+                  onClick={onOpen}
+                />
+              </HStack>
             )}
           </Stack>
         </Stack>

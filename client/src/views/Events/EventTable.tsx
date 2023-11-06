@@ -14,7 +14,10 @@ import { Link as RouterLink } from "react-router-dom";
 import { EventTableComponent } from "./types";
 import { useAppSelector } from "../../app/hooks";
 
-export const EventTable: EventTableComponent = ({ showTeamName = false, ...rest }) => {
+export const EventTable: EventTableComponent = ({
+  showTeamName = false,
+  ...rest
+}) => {
   const { events, selectedOrg } = useAppSelector(
     (state) => state.organizations
   );
