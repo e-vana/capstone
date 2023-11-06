@@ -44,6 +44,7 @@ const DeleteEventAlert: DeleteEventComponent = ({ isOpen, onClose, event }) => {
                 title: "Deleted event successfully",
             });
             queryClient.invalidateQueries({ queryKey: "getEvents" });
+            queryClient.invalidateQueries({ queryKey: "getEventsByTeam" });
             mutation.reset();
             onClose();
             // Navigate to the events page

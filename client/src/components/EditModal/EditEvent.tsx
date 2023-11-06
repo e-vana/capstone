@@ -78,7 +78,9 @@ const EditEventModal: EditEventComponent = ({ isOpen, onClose, event }) => {
                 status: "success",
                 title: "Updated event successfully",
             });
+            queryClient.invalidateQueries({ queryKey: "getEvent" });
             queryClient.invalidateQueries({ queryKey: "getEvents" });
+            queryClient.invalidateQueries({ queryKey: "getEventsByTeam" });
             mutation.reset();
             cleanUp()
         },
@@ -140,7 +142,7 @@ const EditEventModal: EditEventComponent = ({ isOpen, onClose, event }) => {
                             value={description}
                             min={1}
                             max={65535} // mysql TEXT field upper limit: 65,535 characters
-                            placeholder={"Event Name"}
+                            placeholder={"Event Description"}
                             pattern={encodeURIComponent("[A-Za-z0-9!.,-]{1,65535}")}
                             onChange={(e) => setDescription(e.target.value)}
                         />

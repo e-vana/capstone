@@ -47,7 +47,7 @@ const EventPage = () => {
   if (addTaskMutation.isSuccess) {
     toast({
       status: "success",
-      title: "task added!",
+      title: "Task added successfully.",
     });
     addTaskMutation.reset();
     queryClient.invalidateQueries("getTasks");
@@ -56,7 +56,7 @@ const EventPage = () => {
   if (addTaskMutation.status === "error") {
     toast({
       status: "error",
-      title: "error adding task",
+      title: "There was an error adding the task, please try again.",
     });
     addTaskMutation.reset();
     console.log(addTaskMutation.error);

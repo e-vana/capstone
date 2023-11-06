@@ -65,7 +65,9 @@ const AddEvent: AddEventComponent = ({ orgId, orgName, teamId, teamName = "", is
                 status: "success",
                 title: "Added event successfully.",
             });
+            queryClient.invalidateQueries({ queryKey: "getEvent" });
             queryClient.invalidateQueries({ queryKey: "getEvents" });
+            queryClient.invalidateQueries({ queryKey: "getEventsByTeam" });
             mutation.reset();
         },
         onError: (err: Error) => {
