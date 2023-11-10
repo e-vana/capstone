@@ -1,40 +1,37 @@
 import {
   Divider,
+  Flex,
   Heading,
   Stack,
-  Flex,
-  Tabs,
-  TabList,
   Tab,
+  TabList,
   TabPanel,
   TabPanels,
+  Tabs,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { useQuery } from "react-query";
-import { getUserExpenses } from "../../api/expenses.api";
-import ExpenseTable from "./ExpenseTable";
-import ExpenseCards from "./ExpenseCards";
+import { getUserMiles } from "../../api/miles.api";
 import { useState } from "react";
-import ExpenseFilter from "./ExpenseFilter";
-import ExpenseTotal from "./ExpenseTotal";
-import { Helmet } from "react-helmet";
+import ExpenseFilter from "../Expenses/ExpenseFilter";
+import MilesTable from "./MilesTable";
+import MilesCards from "./MilesCards";
+import MilesTotal from "./MilesTotal";
 
-const ExpenseView = () => {
+const MilesView = () => {
   const [filter, setFilter] = useState<string>("");
 
-  const { data: ExpenseData } = useQuery({
-    queryKey: ["getMyExpenses"],
-    queryFn: getUserExpenses,
+  const { data: MileageData } = useQuery({
+    queryKey: ["getMyMileage"],
+    queryFn: getUserMiles,
   });
 
-  const filteredExpenses = ExpenseData?.expenses.filter(
-    (expense) =>
-      expense.description.toLowerCase().includes(filter.toLowerCase()) ||
-      expense.organization_name.toLowerCase().includes(filter.toLowerCase())
+  const filteredMiles = MileageData?.miles.filter((mileage) =>
+    mileage.organization_name.toLowerCase().includes(filter.toLowerCase())
   );
 
   return (
     <Stack flex={1} height={"100%"}>
-      {/* DESKTOP VIEW */}
       <Flex display={{ base: "none", md: "flex" }} gap={3} flex={1} p={5}>
         <Stack
           width={"70%"}
@@ -44,13 +41,13 @@ const ExpenseView = () => {
         >
           <Heading size={"lg"}>My Activity</Heading>
           <ExpenseFilter filter={filter} setFilter={setFilter} />
-          <ExpenseTable expenses={filteredExpenses} />
+          <MilesTable miles={filteredMiles} />
         </Stack>
         <Stack>
           <Divider orientation="vertical" />
         </Stack>
         <Stack width={"30%"}>
-          <ExpenseTotal />
+          <MilesTotal />
         </Stack>
       </Flex>
 
@@ -63,17 +60,15 @@ const ExpenseView = () => {
       >
         <TabList>
           <Tab>Activity</Tab>
-          <Tab>All Expenses</Tab>
+          <Tab>All Mileage</Tab>
         </TabList>
         <TabPanels>
           <TabPanel>
-            <Helmet title="Activity" />
             <ExpenseFilter filter={filter} setFilter={setFilter} />
-            <ExpenseCards expenses={filteredExpenses} />
+            <MilesCards miles={filteredMiles} />
           </TabPanel>
           <TabPanel>
-            <Helmet title="My Expenses" />
-            <ExpenseTotal />
+            <MilesTotal />
           </TabPanel>
         </TabPanels>
       </Tabs>
@@ -81,4 +76,4 @@ const ExpenseView = () => {
   );
 };
 
-export default ExpenseView;
+export default MilesView;
