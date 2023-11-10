@@ -29,6 +29,7 @@ import ExpenseView from "./views/Expenses/ExpenseView";
 import SettingsPage from "./views/Settings/SettingsPage";
 import OrganizationView from "./views/Organizations";
 import EventsView from "./views/Events";
+import MilesView from "./views/Miles/MilesView";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -158,6 +159,10 @@ const router = createBrowserRouter([
       {
         path: "/d/expenses",
         element: <ExpenseView />,
+      },
+      {
+        path: "/d/miles",
+        element: <MilesView />,
       },
     ],
   },

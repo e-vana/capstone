@@ -5,6 +5,9 @@ import {
   iGetMilesByEventResponse,
   iGetMilesByOrganizationResponse,
   iGetMilesByTeamResponse,
+  iGetMilesByUser,
+  iGetUserMileageBreakdown,
+  iMilesJoinEventJoinTeamJoinOrgJoinUser,
 } from "../interfaces/miles.interface";
 
 // GET MILES FOR A PARTICULAR EVENT
@@ -86,3 +89,35 @@ export const createMilesForAnEvent = async function (
   );
   return response.data;
 };
+
+export const getUserMiles = async function (): Promise<iGetMilesByUser> {
+  const token = localStorage.getItem("token");
+  if (!token) throw new Error("no token, please log in");
+  const response = await axios.get<iGetMilesByUser>(
+    `${import.meta.env.VITE_BASE_URL}/auth/my-miles`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return response.data;
+};
+
+// GET USER MILES
+export const getUserMileageBreakdown =
+  async function (): Promise<iGetUserMileageBreakdown> {
+    const token = localStorage.getItem("token");
+    if (!token) throw new Error("no token, please log in");
+    const response = await axios.get<iGetUserMileageBreakdown>(
+      `${import.meta.env.VITE_BASE_URL}/auth/my-miles-breakdown`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log(response.data);
+    return response.data;
+  };
