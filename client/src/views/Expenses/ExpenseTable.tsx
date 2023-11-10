@@ -14,12 +14,13 @@ const ExpenseTable: ExpenseTableComponent = ({ expenses }) => {
   return (
     <>
       <TableContainer>
-        <Table>
+        <Table colorScheme="purple">
           <Thead>
             <Tr>
               <Th>Name</Th>
               <Th>Amount</Th>
               <Th>Organization</Th>
+              <Th>User</Th>
               <Th>Details</Th>
             </Tr>
           </Thead>

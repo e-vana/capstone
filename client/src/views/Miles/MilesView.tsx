@@ -8,7 +8,6 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
-  useColorModeValue,
 } from "@chakra-ui/react";
 import { useQuery } from "react-query";
 import { getUserMiles } from "../../api/miles.api";

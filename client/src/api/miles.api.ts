@@ -51,13 +51,13 @@ export const getMilesForATeam = async function (
   return response.data;
 };
 // GET MILES FOR A PARTICULAR ORGANIZATION
-export const getExpensesForAnOrganization = async function (
+export const getMilesForAnOrganization = async function (
   orgId: number
 ): Promise<iGetMilesByOrganizationResponse> {
   const token = localStorage.getItem("token");
   if (!token) throw new Error("no token, please log in");
   const response = await axios.get<iGetMilesByOrganizationResponse>(
-    `${import.meta.env.VITE_BASE_URL}/organizations/${orgId}/expenses`,
+    `${import.meta.env.VITE_BASE_URL}/organizations/${orgId}/miles`,
     {
       headers: {
         Authorization: `Bearer ${token}`,

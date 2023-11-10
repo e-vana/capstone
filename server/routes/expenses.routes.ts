@@ -113,7 +113,7 @@ router.get(
 );
 
 /**
- * @route GET /:organization_id/teams/:team_id/events/:event_id/expenses
+ * @route GET /:organization_id/expenses
  * @desc Get expenses for an entire organization
  * @param organization_id - The integer id of the organization
  * @returns The event with the given id
