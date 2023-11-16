@@ -1,16 +1,9 @@
-import {
-  TableContainer,
-  Table,
-  Thead,
-  Tr,
-  Th,
-  Tbody,
-  Text,
-} from "@chakra-ui/react";
+import { TableContainer, Table, Thead, Tr, Th, Tbody } from "@chakra-ui/react";
 import { ExpenseTableComponent } from "./types";
 import ExpenseTableRow from "./ExpenseTableRow";
 
 const ExpenseTable: ExpenseTableComponent = ({ expenses }) => {
+  console.log(expenses);
   return (
     <>
       <TableContainer>
@@ -25,13 +18,10 @@ const ExpenseTable: ExpenseTableComponent = ({ expenses }) => {
             </Tr>
           </Thead>
           <Tbody>
-            {expenses ? (
+            {expenses &&
               expenses.map((expense, index) => (
                 <ExpenseTableRow expense={expense} key={index} />
-              ))
-            ) : (
-              <Text>No Expenses Yet!</Text>
-            )}
+              ))}
           </Tbody>
         </Table>
       </TableContainer>

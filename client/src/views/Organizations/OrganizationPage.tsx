@@ -111,6 +111,7 @@ const OrganizationPage = () => {
         }}
       >
         <OrganizationContainer>
+          <Stack width={{ base: "100%", md: "33%" }}></Stack>
           <Tabs isLazy colorScheme="purple" variant={"enclosed"}>
             <TabList>
               <Tab>Overview</Tab>
@@ -126,13 +127,11 @@ const OrganizationPage = () => {
                 >
                   <Stack width={{ base: "100%", md: "33%" }}>
                     <OrganizationHeader>{orgData?.name}</OrganizationHeader>
-                    <OrganizationTeams />
-                  </Stack>
-                  <Stack width={{ base: "100%", md: "33%" }}>
                     <OrganizationMembers />
                   </Stack>
-                  <Stack width={{ base: "100%", md: "33%" }}>
+                  <Stack width={{ base: "100%", md: "66%" }}>
                     <OrganizationEvents />
+                    <OrganizationTeams />
                   </Stack>
                 </Flex>
               </TabPanel>

@@ -153,6 +153,7 @@ router.get(
         [parseInt(req.params.organization_id)]
       );
       await connection.end();
+      console.log("RESULTS FROM orgId/expenses: \n", getExpensesResults);
       res.status(200).json({ success: true, expenses: getExpensesResults });
     } catch (error) {
       res.status(500).json({ success: false, error });

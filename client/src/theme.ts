@@ -9,10 +9,28 @@ const styles = {
   }),
 };
 
+const components = {
+  Table: {
+    defaultProps: {
+      colorScheme: "purple",
+    },
+  },
+  Button: {
+    defaultProps: {
+      rounded: "full",
+      colorScheme: "purple",
+    },
+  },
+};
+
 const config: ThemeConfig = {
   initialColorMode: "light",
   useSystemColorMode: false,
 };
 
-const theme = extendTheme({ styles, config });
+const theme = extendTheme({
+  styles,
+  config,
+  components,
+});
 export default theme;

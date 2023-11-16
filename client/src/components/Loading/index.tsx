@@ -1,16 +1,25 @@
-import { Spinner, Stack } from "@chakra-ui/react";
+import { Img, Spinner, Stack } from "@chakra-ui/react";
 
 export const LoadingComponent = () => {
   return (
     <Stack
       w={"100%"}
-      p={4}
+      p={5}
       flex={1}
-      justify={"center"}
+      justify={"end"}
       align={"center"}
       height={"100%"}
+      position={"relative"}
     >
-      <Spinner color={"purple.400"} size={"xl"} />
+      <Stack
+        height={"55%"}
+        justify={"space-between"}
+        align={"center"}
+        padding={5}
+      >
+        <Spinner color={"purple.400"} size={"xl"} />
+        <Img src="villagehoursbrand.png" width={"200px"} alignSelf={"center"} />
+      </Stack>
     </Stack>
   );
 };
