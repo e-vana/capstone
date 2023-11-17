@@ -18,7 +18,7 @@ export const OrganizationTd: OrganizationItemComponent = ({
   ...rest
 }) => {
   return (
-    <Tr {...rest}>
+    <Tr {...rest} data-testid={organization?.name}>
       <Td>{organization.name}</Td>
       <Td>
         <Button as={RouterLink} to={"/d" + "/" + organization.id}>

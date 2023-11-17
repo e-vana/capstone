@@ -98,6 +98,7 @@ const AddOrg: AddOrgComponent = ({ isOpen, onClose }) => {
           <FormControl isRequired>
             <FormLabel>Name</FormLabel>
             <Input
+              data-testid="addOrgModalName"
               type={"text"}
               value={name}
               onChange={(e) => setName(e.currentTarget.value)}
@@ -106,6 +107,7 @@ const AddOrg: AddOrgComponent = ({ isOpen, onClose }) => {
           <FormControl>
             <FormLabel>Website</FormLabel>
             <Input
+              data-testid="addOrgModalWebsite"
               type={"url"}
               placeholder="www.example.com"
               value={website}
@@ -120,6 +122,7 @@ const AddOrg: AddOrgComponent = ({ isOpen, onClose }) => {
           <FormControl>
             <FormLabel>Phone Number</FormLabel>
             <Input
+              data-testid="addOrgModalPhone"
               type={"tel"}
               value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.currentTarget.value)}
@@ -141,6 +144,7 @@ const AddOrg: AddOrgComponent = ({ isOpen, onClose }) => {
               Cancel <Icon as={AiOutlineClose} />
             </Button>
             <Button
+              data-testid="addOrgModalSubmit"
               colorScheme="purple"
               justifyContent={"space-between"}
               width={"100%"}

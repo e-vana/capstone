@@ -112,6 +112,7 @@ const AddEvent: AddEventComponent = ({ orgId, orgName, teamId, teamName = "", is
                     <FormControl isRequired>
                         <FormLabel>Event Name</FormLabel>
                         <Input
+                            data-testid="addEventModalName"
                             type={"text"}
                             value={name}
                             min={1}
@@ -124,6 +125,7 @@ const AddEvent: AddEventComponent = ({ orgId, orgName, teamId, teamName = "", is
                     <FormControl isRequired>
                         <FormLabel>Event Description</FormLabel>
                         <Input
+                            data-testid="addEventModalDescription"
                             type={"text"}
                             value={description}
                             min={1}
@@ -137,6 +139,7 @@ const AddEvent: AddEventComponent = ({ orgId, orgName, teamId, teamName = "", is
                     <FormControl isRequired>
                         <FormLabel>Street</FormLabel>
                         <Input
+                            data-testid="addEventModalAddressStreet"
                             type={"text"}
                             value={addressStreet}
                             min={1}
@@ -149,6 +152,7 @@ const AddEvent: AddEventComponent = ({ orgId, orgName, teamId, teamName = "", is
                     <FormControl isRequired>
                         <FormLabel>City</FormLabel>
                         <Input
+                            data-testid="addEventModalAddressCity"
                             type={"text"}
                             value={addressCity}
                             min={1}
@@ -161,6 +165,7 @@ const AddEvent: AddEventComponent = ({ orgId, orgName, teamId, teamName = "", is
                     <FormControl isRequired>
                         <FormLabel>State</FormLabel>
                         <Input
+                            data-testid="addEventModalAddressState"
                             type={"text"}
                             value={addressState}
                             min={1}
@@ -173,6 +178,7 @@ const AddEvent: AddEventComponent = ({ orgId, orgName, teamId, teamName = "", is
                     <FormControl isRequired>
                         <FormLabel>Zip Code</FormLabel>
                         <Input
+                            data-testid="addEventModalAddressZip"
                             type={"text"}
                             value={addressZip}
                             min={1}
@@ -185,6 +191,7 @@ const AddEvent: AddEventComponent = ({ orgId, orgName, teamId, teamName = "", is
                     <FormControl isRequired>
                         <FormLabel>Start Date & Time</FormLabel>
                         <Input
+                            data-testid="addEventModalStartDateTime"
                             type={"datetime-local"}
                             value={startDateTime}
                             placeholder={"Event Start Date"}
@@ -194,6 +201,7 @@ const AddEvent: AddEventComponent = ({ orgId, orgName, teamId, teamName = "", is
                     <FormControl isRequired>
                         <FormLabel>End Date & Time</FormLabel>
                         <Input
+                            data-testid="addEventModalEndDateTime"
                             type={"datetime-local"}
                             value={endDateTime}
                             placeholder={"Event End Date"}
@@ -216,6 +224,7 @@ const AddEvent: AddEventComponent = ({ orgId, orgName, teamId, teamName = "", is
                             Cancel <Icon as={AiOutlineClose} />
                         </Button>
                         <Button
+                            data-testid="addEventModalSubmit"
                             colorScheme="purple"
                             justifyContent={"space-between"}
                             width={"100%"}
