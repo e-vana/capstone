@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import {
   Flex,
   Box,
@@ -93,7 +93,7 @@ const Login: LoginComponent = () => {
             border={"1px solid"}
             borderColor={useColorModeValue("transparent", "whiteAlpha.300")}
           >
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={(e: FormEvent) => e.preventDefault()}>
               <Stack spacing={4}>
                 <FormControl id="email">
                   <FormLabel>Email address</FormLabel>

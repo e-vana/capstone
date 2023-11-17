@@ -209,6 +209,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               py={2}
               transition="all 0.3s"
               _focus={{ boxShadow: "none" }}
+              data-testid="user-menu"
             >
               <HStack>
                 <Avatar
@@ -242,7 +243,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                 Settings
               </MenuItem>
               <MenuDivider />
-              <MenuItem onClick={handleSignout} {...menuItemColors}>
+              <MenuItem onClick={handleSignout} data-testid="signoutBtn" {...menuItemColors}>
                 Sign out
               </MenuItem>
             </MenuList>

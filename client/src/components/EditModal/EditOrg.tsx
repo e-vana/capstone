@@ -109,6 +109,7 @@ const EditOrgModal: EditOrgComponent = ({ org, isOpen, onClose }) => {
                     <FormControl isRequired>
                         <FormLabel>Name</FormLabel>
                         <Input
+                            data-testid="editOrgModalName"
                             type={"text"}
                             value={name}
                             min={1}
@@ -119,6 +120,7 @@ const EditOrgModal: EditOrgComponent = ({ org, isOpen, onClose }) => {
                     <FormControl>
                         <FormLabel>Website</FormLabel>
                         <Input
+                            data-testid="editOrgModalWebsite"
                             type={"url"}
                             placeholder="www.example.com"
                             value={website}
@@ -135,6 +137,7 @@ const EditOrgModal: EditOrgComponent = ({ org, isOpen, onClose }) => {
                     <FormControl>
                         <FormLabel>Phone Number</FormLabel>
                         <Input
+                            data-testid="editOrgModalPhone"
                             type={"tel"}
                             value={phoneNumber}
                             min={1}
@@ -158,6 +161,7 @@ const EditOrgModal: EditOrgComponent = ({ org, isOpen, onClose }) => {
                             Cancel <Icon as={AiOutlineClose} />
                         </Button>
                         <Button
+                            data-testid="editOrgModalSubmit"
                             colorScheme="purple"
                             justifyContent={"space-between"}
                             width={"100%"}
