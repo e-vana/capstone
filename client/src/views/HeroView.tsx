@@ -8,10 +8,24 @@ import {
   Text,
   useBreakpointValue,
   useColorModeValue,
+  Image,
+  Box
 } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
 
+
 const HeroView = () => {
+
+  function scrollToImage () {
+    const imageRef = document.getElementById('Organize');
+      if (imageRef) {
+        window.scrollTo({
+          top: imageRef.offsetWidth,
+          behavior: "smooth",
+        });
+      }
+  };
+
   return (
     <>
       <Stack
@@ -105,6 +119,131 @@ const HeroView = () => {
           </Text>
         </Flex>
       </Stack>
+      
+<Box justifyContent={"center"}>
+      <Flex flex={1} flexDir={"row"} justify={"Center"} zIndex={1}>
+        <Stack direction={{base:"column", md:"column"}} spacing={2}>
+          <Button onClick={ scrollToImage } position={"absolute"} top={750}>Learn More</Button>
+        </Stack>
+      </Flex>
+
+      
+      <Flex padding={20} flex={1} flexDir={"row"} justify={"center"}  maxHeight="500">
+      <Stack minH={"calc(100vh - 60px)"}
+        direction={{ base: "column-reverse", md: "row" }}  >
+        <Text fontSize={{ base: "3xl", lg: "3xl" }} color={"gray.500"} fontWeight={"bold"}>
+          <br />
+          <br />
+          <br />
+              <Highlight
+                query={"Larbster.io"}
+                styles={{
+                  color: "purple.400",
+                  fontSize: "50",
+                }}
+              >
+                Keep track of your organizations through one seemless productivity solution.         
+              </Highlight>
+            </Text>
+        <Image paddingLeft={5} id="Organize" maxWidth="50%" height="50%" src="https://lh6.googleusercontent.com/cnpNTJIJXJILMevTxPFwKg2Qt3Ci2F528n24lL3U9gL-yYPd4BW7egpF5JQs60LmwBirFrS_EPvLBhzQ4qUIxNg" alt="" />
+      </Stack>
+      </Flex>
+
+      <Flex padding={20} flex={1} flexDir={"row"} justify={"center"}  maxHeight="500">
+      <Stack minH={"calc(100vh - 60px)"}
+        direction={{ base: "column-reverse", md: "row" }}  >
+          <Image paddingRight={5} id="Organize" maxWidth="50%" height="50%" src="https://lh6.googleusercontent.com/7BzN895EKiH0sUADrtAUVrhc2rXL6NmfXtgr7pNDSlt-WMLySrnlm713YrIiWVon5eAPvhUYN0ig1Zenj0pQnE0" alt="" />
+        <Text fontSize={{ base: "3xl", lg: "3xl" }} color={"gray.500"} fontWeight={"bold"}>
+          <br />
+          <br />
+          <br />
+              <Highlight
+                query={"Larbster.io"}
+                styles={{
+                  color: "purple.400",
+                  fontSize: "50",
+                }}
+              >
+              Create and manage your organization's events with ease.    
+              </Highlight>
+            </Text>
+      </Stack>
+      </Flex>
+
+      <Flex padding={20} flex={1} flexDir={"row"} justify={"center"}  maxHeight="500">
+      <Stack minH={"calc(100vh - 60px)"}
+        direction={{ base: "column-reverse", md: "row" }}  >
+        <Text fontSize={{ base: "3xl", lg: "3xl" }} color={"gray.500"} fontWeight={"bold"}>
+          <br />
+          <br />
+          <br />
+              <Highlight
+                query={"Larbster.io"}
+                styles={{
+                  color: "purple.400",
+                  fontSize: "50",
+                }}
+              >
+                Optomize effiency by organizing event tasks.          
+              </Highlight>
+            </Text>
+        <Image paddingLeft={5} id="Organize" maxWidth="50%" height="50%" src="https://lh6.googleusercontent.com/cnpNTJIJXJILMevTxPFwKg2Qt3Ci2F528n24lL3U9gL-yYPd4BW7egpF5JQs60LmwBirFrS_EPvLBhzQ4qUIxNg" alt="" />
+      </Stack>
+      </Flex>
+
+      <Flex padding={20} flex={1} flexDir={"row"} justify={"center"}  maxHeight="500">
+      <Stack minH={"calc(100vh - 60px)"}
+        direction={{ base: "column-reverse", md: "row" }}  >
+          <Image paddingRight={5} id="Organize" maxWidth="50%" height="50%" src="https://lh4.googleusercontent.com/4tpTno9cj_tKqIiNSvihXDG1pa_0wYljng4l43SYYefJJ5WZNCX71bc0RLHORVWPUnFg0XWQvADgMp8amx97Uj4" alt="" />
+        <Text fontSize={{ base: "3xl", lg: "3xl" }} color={"gray.500"} fontWeight={"bold"}>
+          <br />
+          <br />
+          <br />
+              <Highlight
+                query={"Larbster.io"}
+                styles={{
+                  color: "purple.400",
+                  fontSize: "50",
+                }}
+              >
+              Never lose a tax break again with detailed expense tracking.     
+              </Highlight>
+            </Text>
+      </Stack>
+      </Flex>
+
+      <Flex padding={20} flex={1} flexDir={"row"} justify={"center"}  maxHeight="500">
+      <Stack minH={"calc(100vh - 60px)"}
+        direction={{ base: "column-reverse", md: "row" }}  >
+        <Text fontSize={{ base: "3xl", lg: "3xl" }} color={"gray.500"} fontWeight={"bold"}>
+          <br />
+          <br />
+          <br />
+              <Highlight
+                query={"Larbster.io"}
+                styles={{
+                  color: "purple.400",
+                  fontSize: "50",
+                }}
+              >
+                Manage your organization while empowering volunteers to self log hours.        
+              </Highlight>
+            </Text>
+        <Image paddingLeft={5} id="Organize" maxWidth="50%" height="50%" src="https://lh3.googleusercontent.com/cZh53hDhC-a9_P8xcYJPC2ZTqQIXrNVohjZ7QdY6CPw1Qae-D25iUVpLOuxZHXt0cz8RLe2ucxUfFGgZIWxwho4" alt="" />
+      </Stack>
+      </Flex>
+
+  
+      </Box>
+      <Flex flex={1} flexDir={"row"} justify={"Center"} zIndex={1}>
+        <Stack direction={{base:"column", md:"column"}} spacing={1}>
+          <Button as={RouterLink} to={"./ContactUs"} position={"absolute"}>Contact Us</Button>
+        </Stack>
+      </Flex>
+      
+    
+
+     
     </>
   );
 };

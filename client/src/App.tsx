@@ -29,6 +29,7 @@ import ExpenseView from "./views/Expenses/ExpenseView";
 import SettingsPage from "./views/Settings/SettingsPage";
 import OrganizationView from "./views/Organizations";
 import EventsView from "./views/Events";
+import ContactUs from "./views/ContactUs";
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -106,6 +107,10 @@ const router = createBrowserRouter([
       {
         path: "/register",
         element: <Register />,
+      },
+      {
+        path: "/ContactUs",
+        element: <ContactUs />,
       },
     ],
 
