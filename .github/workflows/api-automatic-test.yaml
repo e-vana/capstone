@@ -26,7 +26,7 @@ jobs:
 
       - name: Write DATABASE_URL to .env file
         run: |
-          echo "DATABASE_URL=mysql://root:mysecretpassword@localhost:3306/test" > server/.env
+          echo "DATABASE_URL=${{ secrets.DB_CONNECTION_URL }}" > server/.env
           echo "PORT=3000" >> server/.env
           echo "JWT_SECRET=nkz1p9nuz64134" >> server/.env
 
