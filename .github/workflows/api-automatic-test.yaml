@@ -24,13 +24,15 @@ jobs:
       - name: Copy seed SQL file to MySQL container
         run: docker cp server/database/seed.sql mysql-container:/seed.sql
 
-      - name: Run docker ps
-        run: docker ps
+      - name: Start MySQL Service
+        run: |
+          sudo /etc/init.d/mysql start
 
-      # - name: Run MySQL Seed File
-      #   run: docker exec -i mysql-container sh -c 'mysql -h 0.0.0.0 -P 3306 --protocol=TCP -u root -pmysecretpassword < /seed.sql'
-      - name: test docker exec
-        run: docker exec -i mysql-container mysql -h 0.0.0.0 -p 3306 --protocol=tcp -u root -pmysecretpassword
+      - name: Run MySQL Seed File by TCP
+        run: docker exec -i mysql-container sh -c "mysql -h 127.0.0.1 -P 3306 -u root -pmysecretpassword < /seed.sql"
+
+      - name: Run MySQL Seed File
+        run: docker exec -i mysql-container sh -c "mysql -h localhost -P 3306 -u root -pmysecretpassword < /seed.sql"
 
       - name: Write DATABASE_URL to .env file
         run: |
