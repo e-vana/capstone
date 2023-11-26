@@ -28,6 +28,9 @@ jobs:
         run: |
           sudo /etc/init.d/mysql start
 
+      - name: Wait for MySQL to initialize
+        run: sleep 5s
+
       - name: Run MySQL Seed File by TCP
         run: docker exec -i mysql-container sh -c "mysql -h 127.0.0.1 -P 3306 -u root -pmysecretpassword < /seed.sql"
 
