@@ -29,7 +29,10 @@ jobs:
           sudo /etc/init.d/mysql start
 
       - name: Wait for MySQL to initialize
-        run: sleep 5s
+        run: sleep 10s
+
+      - name: Run docker ps
+        run: docker ps
 
       - name: Run MySQL Seed File
         run: docker exec -i mysql-container sh -c "mysql -h 0.0.0.0 -P 3306 -u root -pmysecretpassword < /seed.sql"
