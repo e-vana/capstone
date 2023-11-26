@@ -43,13 +43,11 @@ jobs:
           echo "PORT=3000" >> server/.env
           echo "JWT_SECRET=nkz1p9nuz64134" >> server/.env
 
-      - name: Install dependencies
+      - name: Install dependencies & run tests
         run: |
           cd server
           npm install
           npm install typescript -g
           tsc
-      - name: Run Unit Tests
-        run: npm run test:unit
-      - name: Run Integration Tests
-        run: npm run test:integration
+          npm run test:unit
+          npm run test:integration
