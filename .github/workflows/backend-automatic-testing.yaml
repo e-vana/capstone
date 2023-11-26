@@ -1,4 +1,4 @@
-name: Docker MySQL Setup
+name: Backend Automatic Testing
 
 on:
   # Uncomment and specify the trigger event as needed
@@ -43,10 +43,13 @@ jobs:
           echo "PORT=3000" >> server/.env
           echo "JWT_SECRET=nkz1p9nuz64134" >> server/.env
 
-      - name: Install dependencies and run test suites
+      - name: Install dependencies
         run: |
           cd server
           npm install
           npm install typescript -g
           tsc
-          npm run test
+      - name: Run Unit Tests
+        run: npm run test:unit
+      - name: Run Integration Tests
+        run: npm run test:integration
