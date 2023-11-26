@@ -25,7 +25,7 @@ jobs:
         run: docker cp server/database/seed.sql mysql-container:/seed.sql
 
       - name: Run MySQL Seed File
-        run: docker exec -i mysql-container sh -c 'mysql -h localhost -P 3306 --protocol=tcp -u root -pmysecretpassword < /seed.sql'
+        run: docker exec -i mysql-container sh -c 'mysql -h  0.0.0.0 -P 3306 --protocol=tcp -u root -pmysecretpassword < /seed.sql'
 
       - name: Write DATABASE_URL to .env file
         run: |
