@@ -12,6 +12,7 @@ router.use(decodeToken);
 //Get all organizations a user owns
 router.get("/", async (req: Request, res: Response) => {
   try {
+    console.log(process.env.DATABASE_URL);
     let validationErrors = validationResult(req);
     if (!validationErrors.isEmpty()) {
       throw { validationErrors: validationErrors.array() };
