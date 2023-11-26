@@ -30,7 +30,7 @@ jobs:
           echo "PORT=3000" >> server/.env
           echo "JWT_SECRET=nkz1p9nuz64134" >> server/.env
 
-      - name: Change directory to server and perform installation
+      - name: Install dependencies and run test suite
         run: |
           cd server
           npm install
