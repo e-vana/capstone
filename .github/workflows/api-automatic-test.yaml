@@ -32,7 +32,7 @@ jobs:
         run: sleep 5s
 
       - name: Run MySQL Seed File by TCP
-        run: docker exec -i mysql-container sh -c "mysql -h 127.0.0.1 -P 3306 -u root -pmysecretpassword < /seed.sql"
+        run: docker exec -i mysql-container sh -c "mysql -h 0.0.0.0 -P 3306 -u root -pmysecretpassword < /seed.sql"
 
       - name: Run MySQL Seed File
         run: docker exec -i mysql-container sh -c "mysql -h localhost -P 3306 -u root -pmysecretpassword < /seed.sql"
