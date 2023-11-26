@@ -1,11 +1,10 @@
 name: Backend Automatic Testing
 
 on:
-  # Uncomment and specify the trigger event as needed
   # push:
   #   branches:
   #     - main
-  pull_request:
+  workflow_dispatch:
 
 jobs:
   build:
