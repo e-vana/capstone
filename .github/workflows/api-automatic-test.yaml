@@ -24,6 +24,9 @@ jobs:
       - name: Copy seed SQL file to MySQL container
         run: docker cp server/database/seed.sql mysql-container:/seed.sql
 
+      - name: Run MySQL Seed File
+        run: docker exec -i mysql-container mysql -u root -pmysecretpassword < /seed.sql
+
       - name: Write DATABASE_URL to .env file
         run: |
           echo "DATABASE_URL=${{ secrets.DB_CONNECTION_URL }}" > server/.env
