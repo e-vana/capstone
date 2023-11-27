@@ -97,7 +97,17 @@ export const EventTable: EventTableComponent = ({
                 >
                   View Event
                 </Button>
-                             
+                <Td>
+                <AddToCalendar 
+                name = {e.team_name}
+                description= {e.event_description}
+                location ={e.address_street + e.address_city + e.address_state + "" + e.address_zipcode}
+                startDate= {e.start_time}
+                endDate= {new Date(e.end_time).toDateString()}
+                startTime={new Date(e.start_time).toLocaleTimeString()}
+                endTime={new Date(e.end_time).toLocaleTimeString()}
+                />
+                  </Td>            
               </Td>
             </Tr>
           ))}
