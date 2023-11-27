@@ -97,6 +97,8 @@ export const EventTable: EventTableComponent = ({
                 >
                   View Event
                 </Button>
+                <Td>
+                
               </Td>
             </Tr>
           ))}
