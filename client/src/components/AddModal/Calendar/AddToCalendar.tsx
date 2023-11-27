@@ -4,13 +4,6 @@ import {Button} from "@chakra-ui/react";
 
 const AddToCalendar = function({name, description,location, startTime, endTime, startDate, endDate}){
 
-  //  const formatdate =(date: Date)=> format(date, "yyy-mm-dd");
-   
-   
-  //  const new_endDate: string = formatdate(endDate);
-
-
-
     const config = {
         name: name,
         description: description,
@@ -29,7 +22,7 @@ const AddToCalendar = function({name, description,location, startTime, endTime, 
         console.log(name);
         console.log(startDate);
         console.log(endDate);
-        console.log({endTime});
+        console.log(endTime);
         console.log("yes clicked");
         atcb_action(config)
 
