@@ -13,6 +13,8 @@ import {
 import { Link as RouterLink } from "react-router-dom";
 import { EventTableComponent } from "./types";
 import { useAppSelector } from "../../app/hooks";
+import AddToCalendar from "../../components/AddModal/AddToCalendar";
+import {format} from "date-fns";
 
 export const EventTable: EventTableComponent = ({
   showTeamName = false,
@@ -102,8 +104,8 @@ export const EventTable: EventTableComponent = ({
                 name = {e.team_name}
                 description= {e.event_description}
                 location ={e.address_street + e.address_city + e.address_state + "" + e.address_zipcode}
-                startDate= {e.start_time}
-                endDate= {new Date(e.end_time).toDateString()}
+                startDate= {format(new Date(e.start_time), "yyy-mm-dd")}
+                endDate= {format(new Date(e.end_time), "yyy-mm-dd")}
                 startTime={new Date(e.start_time).toLocaleTimeString()}
                 endTime={new Date(e.end_time).toLocaleTimeString()}
                 />
