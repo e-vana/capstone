@@ -17,29 +17,20 @@ const AddToCalendar = function({name, description,location, startTime, endTime, 
       };
     
                 
-       const handleClick = ()=> {
-        
-        console.log(name);
-        console.log(startDate);
-        console.log(endDate);
-        console.log(endTime);
-        console.log("yes clicked");
-        atcb_action(config)
-
-     }
-    return(
+       const handleClick = ()=> {atcb_action(config)}
+        return(
       
-        <Button
-        variant="solid"
-        bgColor= '#FAF5FF'
-        size={"sm"}
-        fontSize='11px'
-        fontWeight='bold'
+              <Button
+                  variant="solid"
+                  bgColor= '#FAF5FF'
+                  size={"sm"}
+                  fontSize='11px'
+                  fontWeight='bold'
         
         
-        onClick={handleClick}> 
-        Add to Calendar        
-        </Button>
+                onClick={handleClick}> 
+                  Add to Calendar        
+               </Button>
      
     );
 }
