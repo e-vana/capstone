@@ -12,6 +12,11 @@ import {
   Box
 } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
+import organization from "/Users/johncrabtree/Documents/capstone/capstone/client/src/views/images/organization.png";
+import tasks from "/Users/johncrabtree/Documents/capstone/capstone/client/src/views/images/tasks.png";
+import events from "/Users/johncrabtree/Documents/capstone/capstone/client/src/views/images/events.png";
+import qrcode from "/Users/johncrabtree/Documents/capstone/capstone/client/src/views/images/qrcode.png";
+import expense from "/Users/johncrabtree/Documents/capstone/capstone/client/src/views/images/expense.png";
 
 
 const HeroView = () => {
@@ -120,18 +125,23 @@ const HeroView = () => {
         </Flex>
       </Stack>
       
-<Box justifyContent={"center"}>
-      <Flex flex={1} flexDir={"row"} justify={"Center"} zIndex={1}>
-        <Stack direction={{base:"column", md:"column"}} spacing={2}>
-          <Button onClick={ scrollToImage } position={"absolute"} top={750}>Learn More</Button>
+<Box >
+    
+        
+      <Flex flex={0} flexDir={"row"} alignItems={{ base: "center", md: "center"}} justifyContent={{base: "center", md: "center"}} zIndex={1}>
+        <Stack direction={{base:"row", md:"row"}} spacing={0}>
+          <Button display={{ base: 'none', md: 'inline-block' }} onClick={ scrollToImage } position={"absolute"} top={750}>Learn More</Button>
         </Stack>
       </Flex>
 
-      
-      <Flex padding={20} flex={1} flexDir={"row"} justify={"center"}  maxHeight="500">
+{/* organizations */}
+      <Flex padding={20} flex={1} flexDir={"row"} justify={"center"}  maxHeight={{base: "600", md: "500"}}>
       <Stack minH={"calc(100vh - 60px)"}
         direction={{ base: "column-reverse", md: "row" }}  >
-        <Text fontSize={{ base: "3xl", lg: "3xl" }} color={"gray.500"} fontWeight={"bold"}>
+          <Box paddingTop={{base: "10", md: "0"}} paddingBottom={{base: "10", md: "0"}} width="100%">
+              <Image height="425" width="auto" objectFit="cover" paddingLeft={{base: "0", md:"0"}} id="Organize"  src={organization} alt="" />
+            </Box>
+        <Text  textAlign="center" fontSize={{ base: "3xl", lg: "3xl" }} color={"gray.500"} fontWeight={"bold"}>
           <br />
           <br />
           <br />
@@ -145,15 +155,17 @@ const HeroView = () => {
                 Keep track of your organizations through one seemless productivity solution.         
               </Highlight>
             </Text>
-        <Image paddingLeft={5} id="Organize" maxWidth="50%" height="50%" src="https://lh6.googleusercontent.com/cnpNTJIJXJILMevTxPFwKg2Qt3Ci2F528n24lL3U9gL-yYPd4BW7egpF5JQs60LmwBirFrS_EPvLBhzQ4qUIxNg" alt="" />
       </Stack>
       </Flex>
 
-      <Flex padding={20} flex={1} flexDir={"row"} justify={"center"}  maxHeight="500">
+      {/* events */}
+      <Flex padding={20} flex={1} flexDir={"row"} justify={"center"}  maxHeight={{base: "600", md: "500"}}>
       <Stack minH={"calc(100vh - 60px)"}
-        direction={{ base: "column-reverse", md: "row" }}  >
-          <Image paddingRight={5} id="Organize" maxWidth="50%" height="50%" src="https://lh6.googleusercontent.com/7BzN895EKiH0sUADrtAUVrhc2rXL6NmfXtgr7pNDSlt-WMLySrnlm713YrIiWVon5eAPvhUYN0ig1Zenj0pQnE0" alt="" />
-        <Text fontSize={{ base: "3xl", lg: "3xl" }} color={"gray.500"} fontWeight={"bold"}>
+        direction={{ base: "column-reverse", md: "row-reverse" }}  >
+          <Box paddingTop={{base: "10", md: "0"}} paddingBottom={{base: "10", md: "0"}} width="100%">
+              <Image height="425" width="auto" objectFit="cover" paddingLeft={{base: "0", md:"0"}} id="Organize"  src={events} alt="" />
+            </Box>
+        <Text textAlign="center" fontSize={{ base: "3xl", lg: "3xl" }} color={"gray.500"} fontWeight={"bold"}>
           <br />
           <br />
           <br />
@@ -164,16 +176,20 @@ const HeroView = () => {
                   fontSize: "50",
                 }}
               >
-              Create and manage your organization's events with ease.    
+                Create and manage your organization's events with ease.         
               </Highlight>
             </Text>
       </Stack>
       </Flex>
-
-      <Flex padding={20} flex={1} flexDir={"row"} justify={"center"}  maxHeight="500">
+      
+{/* event tasks */}
+      <Flex padding={20} flex={1} flexDir={"row"} justify={"center"}  maxHeight={{base: "600", md: "500"}}>
       <Stack minH={"calc(100vh - 60px)"}
         direction={{ base: "column-reverse", md: "row" }}  >
-        <Text fontSize={{ base: "3xl", lg: "3xl" }} color={"gray.500"} fontWeight={"bold"}>
+          <Box paddingTop={{base: "10", md: "0"}} paddingBottom={{base: "10", md: "0"}} width="100%">
+        <Image height="425" width="auto" objectFit="cover" paddingLeft={{base: "0", md:"0"}} src={tasks} alt="" />
+        </Box>
+        <Text textAlign="center" fontSize={{ base: "3xl", lg: "3xl" }} color={"gray.500"} fontWeight={"bold"}>
           <br />
           <br />
           <br />
@@ -187,15 +203,18 @@ const HeroView = () => {
                 Optomize effiency by organizing event tasks.          
               </Highlight>
             </Text>
-        <Image paddingLeft={5} id="Organize" maxWidth="50%" height="50%" src="https://lh6.googleusercontent.com/cnpNTJIJXJILMevTxPFwKg2Qt3Ci2F528n24lL3U9gL-yYPd4BW7egpF5JQs60LmwBirFrS_EPvLBhzQ4qUIxNg" alt="" />
       </Stack>
       </Flex>
-
-      <Flex padding={20} flex={1} flexDir={"row"} justify={"center"}  maxHeight="500">
+{/* expense tracking */}
+      <Flex padding={20} flex={1} flexDir={"row"} justify={"center"}  maxHeight={{base: "600", md: "500"}}>
       <Stack minH={"calc(100vh - 60px)"}
-        direction={{ base: "column-reverse", md: "row" }}  >
-          <Image paddingRight={5} id="Organize" maxWidth="50%" height="50%" src="https://lh4.googleusercontent.com/4tpTno9cj_tKqIiNSvihXDG1pa_0wYljng4l43SYYefJJ5WZNCX71bc0RLHORVWPUnFg0XWQvADgMp8amx97Uj4" alt="" />
-        <Text fontSize={{ base: "3xl", lg: "3xl" }} color={"gray.500"} fontWeight={"bold"}>
+        direction={{ base: "column-reverse", md: "row-reverse" }}  >
+
+          <Box paddingTop={{base: "10", md: "0"}} paddingBottom={{base: "10", md: "0"}} width="100%"> 
+          <Image height="425" width="auto" objectFit="cover" paddingRight={{base: "0", md:"0"}}  src={expense} alt="" />
+          </Box>
+
+        <Text textAlign="center" fontSize={{ base: "3xl", lg: "3xl" }} color={"gray.500"} fontWeight={"bold"}>
           <br />
           <br />
           <br />
@@ -211,11 +230,14 @@ const HeroView = () => {
             </Text>
       </Stack>
       </Flex>
-
-      <Flex padding={20} flex={1} flexDir={"row"} justify={"center"}  maxHeight="500">
+{/*log hours */}
+      <Flex padding={20} flex={1} flexDir={"row"} justify={"center"}  maxHeight={{base: "600", md: "500"}}>
       <Stack minH={"calc(100vh - 60px)"}
         direction={{ base: "column-reverse", md: "row" }}  >
-        <Text fontSize={{ base: "3xl", lg: "3xl" }} color={"gray.500"} fontWeight={"bold"}>
+          <Box paddingTop={{base: "10", md: "0"}} paddingBottom={{base: "10", md: "0"}} width="100%">
+          <Image height="425" width="auto" objectFit="cover" paddingLeft={{base: "0", md:"0"}}  src={qrcode} alt="" />
+        </Box>
+        <Text textAlign="center" fontSize={{ base: "3xl", lg: "3xl" }} color={"gray.500"} fontWeight={"bold"}>
           <br />
           <br />
           <br />
@@ -229,17 +251,18 @@ const HeroView = () => {
                 Manage your organization while empowering volunteers to self log hours.        
               </Highlight>
             </Text>
-        <Image paddingLeft={5} id="Organize" maxWidth="50%" height="50%" src="https://lh3.googleusercontent.com/cZh53hDhC-a9_P8xcYJPC2ZTqQIXrNVohjZ7QdY6CPw1Qae-D25iUVpLOuxZHXt0cz8RLe2ucxUfFGgZIWxwho4" alt="" />
       </Stack>
       </Flex>
 
-  
-      </Box>
-      <Flex flex={1} flexDir={"row"} justify={"Center"} zIndex={1}>
+
+      <Flex margin={150} maxHeight="10" flex={0} flexDir={"row"} justify={"center"} zIndex={1}>
         <Stack direction={{base:"column", md:"column"}} spacing={1}>
-          <Button as={RouterLink} to={"./ContactUs"} position={"absolute"}>Contact Us</Button>
+          <Button as={RouterLink} to={"./ContactUs"} position={"relative"}>Contact Us</Button>
         </Stack>
       </Flex>
+  
+      </Box>
+      
       
     
 

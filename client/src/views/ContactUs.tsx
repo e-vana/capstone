@@ -14,6 +14,7 @@ import {
   InputGroup,
   InputLeftElement,
   Textarea,
+  Highlight
 } from '@chakra-ui/react'
 import {
   MdOutlineEmail,
@@ -37,6 +38,7 @@ function ContactUs() {
                 <Box>
                   <Heading>Contact</Heading>
                   <Text mt={{ sm: 3, md: 3, lg: 5 }} color="black" fontSize={"xl"}>
+                  
                     If you have inquiries please send us a message by using this email form. We are happy to answer any questions you may have! 
                     
                   </Text>
