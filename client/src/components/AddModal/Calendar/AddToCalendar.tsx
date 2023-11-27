@@ -12,7 +12,7 @@ const AddToCalendar = function({name, description,location, startTime, endTime, 
         endDate:endDate,
         startTime: startTime,
         endTime: endTime,
-        options: ["Google|", "iCal|", "Apple|","Yahoo|"],
+        options: ["Google|", "iCal|", "Apple|"],
        
       };
     
@@ -28,12 +28,19 @@ const AddToCalendar = function({name, description,location, startTime, endTime, 
 
      }
     return(
+      
         <Button
         variant="solid"
-        size={"xs"}
+        bgColor= '#FAF5FF'
+        size={"sm"}
+        fontSize='11px'
+        fontWeight='bold'
+        
+        
         onClick={handleClick}> 
         Add to Calendar        
         </Button>
+     
     );
 }
 

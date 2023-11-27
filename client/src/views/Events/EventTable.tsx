@@ -9,6 +9,8 @@ import {
   Badge,
   Text,
   Button,
+  Stack,
+  
 } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
 import { EventTableComponent } from "./types";
@@ -91,7 +93,9 @@ export const EventTable: EventTableComponent = ({
                 {e.address_street}, {e.address_city}, {e.address_state}{" "}
                 {e.address_zipcode}
               </Td>
+              
               <Td>
+              <Stack direction={['column']} spacing={4} align='center'>             
                 <Button
                   as={RouterLink}
                   variant="solid"
@@ -100,9 +104,9 @@ export const EventTable: EventTableComponent = ({
                 >
                   View Event
                 </Button>
-                <Td>
+                                                       
                 <AddToCalendar 
-                name = {e.event_name}
+                name = {e?.event_name || e?.name}
                 description= {e.event_description}
                 location ={e.address_street + e.address_city + e.address_state + "" + e.address_zipcode}
                 startDate= {format(new Date(e.start_time), "yyy-MM-dd")}
@@ -110,8 +114,10 @@ export const EventTable: EventTableComponent = ({
                 startTime= {new Date(e.start_time).toTimeString().slice(0,5)}
                 endTime={new Date(e.end_time).toTimeString().slice(0,5)}
                 />
-                  </Td>            
+                </Stack >                          
+                 
               </Td>
+              
             </Tr>
           ))}
         </Tbody>
