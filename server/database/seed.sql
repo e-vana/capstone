@@ -1,3 +1,4 @@
+DROP DATABASE test;
 CREATE DATABASE test;
 USE test;
 DROP TABLE IF EXISTS permissions;
