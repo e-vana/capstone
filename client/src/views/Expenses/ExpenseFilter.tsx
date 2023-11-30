@@ -24,7 +24,7 @@ const ExpenseFilter: ExpenseFilterComponent = ({ filter, setFilter }) => {
       </InputLeftElement>
       <Input
         rounded={"full"}
-        placeholder="Search Expenses"
+        placeholder="Search Activity"
         value={filter}
         onChange={handleSetFilter}
       />

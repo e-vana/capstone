@@ -1,0 +1,52 @@
+name: Backend Automatic Testing
+
+on:
+  # push:
+  #   branches:
+  #     - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v1
+
+      - name: Run MySQL Docker container
+        run: docker run --name mysql-container -e MYSQL_ROOT_PASSWORD=mysecretpassword -p 3306:3306 -d mysql:latest
+
+      - name: Copy seed SQL file to MySQL container
+        run: docker cp server/database/seed.sql mysql-container:/seed.sql
+
+      - name: Start MySQL Service
+        run: |
+          sudo /etc/init.d/mysql start
+
+      - name: Wait for MySQL to initialize
+        run: sleep 10s
+
+      - name: Run docker ps
+        run: docker ps
+
+      - name: Run MySQL Seed File
+        run: docker exec -i mysql-container sh -c "mysql -h 0.0.0.0 -P 3306 -u root -pmysecretpassword < /seed.sql"
+
+      - name: Write DATABASE_URL to .env file
+        run: |
+          echo "DATABASE_URL=${{ secrets.DB_CONNECTION_URL }}" > server/.env
+          echo "PORT=3000" >> server/.env
+          echo "JWT_SECRET=nkz1p9nuz64134" >> server/.env
+
+      - name: Install dependencies & run tests
+        run: |
+          cd server
+          npm install
+          npm install typescript -g
+          tsc
+          npm run test:unit
+          npm run test:integration

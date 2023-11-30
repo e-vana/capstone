@@ -11,6 +11,7 @@ import { organizationsRouter } from "./routes/organizations.routes";
 import { tasksRouter } from "./routes/tasks.routes";
 import { teamsRouter } from "./routes/teams.routes";
 import { userRouter } from "./routes/users.routes";
+import { milesRouter } from "./routes/miles.routes";
 
 // Use the .env.development file in development
 if (process.env.NODE_ENV !== "production") {
@@ -24,7 +25,7 @@ if (process.env.NODE_ENV !== "production") {
   dotenv.config();
 }
 
-const app: Express = express();
+export const app: Express = express();
 const port = process.env.PORT;
 app.use(
   cors({
@@ -44,6 +45,7 @@ app.use("/organizations", tasksRouter);
 app.use("/organizations", teamsRouter);
 app.use("/organizations", hoursRouter);
 app.use("/organizations", expensesRouter);
+app.use("/organizations", milesRouter);
 
 if (process.env.NODE_ENV == "production") {
   app.use(express.static(path.join(__dirname, "../../client/dist")));

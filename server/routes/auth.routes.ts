@@ -246,4 +246,64 @@ router.get(
   }
 );
 
+router.get("/my-miles", decodeToken, async (req: Request, res: Response) => {
+  try {
+    let connection = await mysql.createConnection(
+      process.env.DATABASE_URL as string
+    );
+    let query = `SELECT
+      u.email as user_email,
+      u.first_name as user_first_name,
+      u.last_name as user_last_name,
+      wm.mileage,
+      wm.date_traveled,
+      o.name as organization_name,
+      t.name as team_name,
+      e.name as event_name,
+      e.description as event_description,
+      e.start_time as event_start_time,
+      e.end_time as event_end_time
+      FROM work_miles wm
+      JOIN events e ON wm.event_id = e.id
+      JOIN users u ON wm.user_id
+      JOIN teams t ON e.team_id = t.id
+      JOIN organizations o ON t.organization_id = o.id
+      WHERE u.id = ? 
+    `;
+    const [result] = await connection.query<RowDataPacket[]>(query, req.userId);
+    res.status(200).json({ success: true, miles: result });
+  } catch (error) {
+    res.status(500).json({ success: false, error });
+  }
+});
+
+router.get(
+  "/my-miles-breakdown",
+  decodeToken,
+  async (req: Request, res: Response) => {
+    try {
+      let connection = await mysql.createConnection(
+        process.env.DATABASE_URL as string
+      );
+      let query = `SELECT 
+        o.name as organization_name,
+        SUM(wm.mileage) as total_mileage
+        FROM work_miles wm
+        JOIN events e ON wm.event_id = e.id
+        JOIN users u ON wm.user_id = u.id
+        JOIN teams t ON e.team_id = t.id
+        JOIN organizations o ON t.organization_id = o.id
+        WHERE u.id = ?
+        GROUP BY organization_name
+      `;
+
+      const [results, fields] = await connection.query(query, [req.userId]);
+      res.status(200).json({ success: true, mileage_breakdown: results });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ success: false, error });
+    }
+  }
+);
+
 export { router as authRouter };

@@ -8,11 +8,9 @@ import {
   HStack,
   VStack,
   Icon,
-  useColorModeValue,
   Text,
   Drawer,
   DrawerContent,
-  useDisclosure,
   BoxProps,
   FlexProps,
   Menu,
@@ -20,8 +18,9 @@ import {
   MenuDivider,
   MenuItem,
   MenuList,
-  useColorMode,
   Img,
+  useDisclosure,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import {
   FiHome,
@@ -32,12 +31,14 @@ import {
   FiChevronDown,
   FiGlobe,
 } from "react-icons/fi";
-import { HiSun, HiMoon, HiCurrencyDollar } from "react-icons/hi2";
+import { FaRoad } from "react-icons/fa";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { IconType } from "react-icons";
-import AddExpense from "../Expense/AddExpense";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { logout } from "../../features/Auth/userReducer";
+import AddExpenseButton from "../Expense/AddExpenseButton";
+import AddMilesButton from "../Miles/AddMilesButton";
+import ToggleTheme from "./ToggleTheme";
 
 interface LinkItemProps {
   name: string;
@@ -64,6 +65,7 @@ const LinkItems: Array<LinkItemProps> = [
   { name: "Organizations", to: "organizations", icon: FiGlobe },
   { name: "Events", to: "/d/events", icon: FiCompass },
   { name: "Expenses", to: "/d/expenses", icon: FiTrendingUp },
+  { name: "Miles", to: "/d/miles", icon: FaRoad },
   { name: "Settings", to: "/d/settings", icon: FiSettings },
 ];
 
@@ -105,6 +107,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
 };
 
 const NavItem = ({ icon, children, link, ...rest }: NavItemProps) => {
+  const iconColor = useColorModeValue("purple.500", "purple.200");
   return (
     <Box
       as={RouterLink}
@@ -131,6 +134,7 @@ const NavItem = ({ icon, children, link, ...rest }: NavItemProps) => {
             mr="4"
             fontSize="16"
             as={icon}
+            color={iconColor}
             _groupHover={{
               color: "purple.400",
             }}
@@ -143,14 +147,7 @@ const NavItem = ({ icon, children, link, ...rest }: NavItemProps) => {
 };
 
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
-  const {
-    isOpen: isExpModalOpen,
-    onOpen: onExpModalOpen,
-    onClose: onExpModalClose,
-  } = useDisclosure();
-
   const { user } = useAppSelector((state) => state.user);
-  const { toggleColorMode } = useColorMode();
   const menuItemColors = {
     bgColor: "transparent",
     _hover: {
@@ -193,31 +190,19 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         width={"150px"}
       />
 
-      <HStack spacing={{ base: "0", md: "6" }}>
-        <Icon
+      <HStack spacing={{ base: 0, md: 3 }}>
+        <AddExpenseButton
+          aria-label="add-expense"
           display={{ base: "none", md: "flex" }}
-          as={HiCurrencyDollar}
-          boxSize={6}
-          color={useColorModeValue("gray.500", "gray.400")}
-          cursor={"pointer"}
-          _hover={{
-            color: useColorModeValue("purple.500", "purple.300"),
-          }}
-          onClick={onExpModalOpen}
         />
-        <AddExpense isOpen={isExpModalOpen} onClose={onExpModalClose} />
-        <Icon
+        <AddMilesButton
+          aria-label="add-miles"
           display={{ base: "none", md: "flex" }}
-          as={useColorModeValue(HiMoon, HiSun)}
-          color={useColorModeValue("gray.500", "gray.400")}
-          boxSize={6}
-          cursor={"pointer"}
-          _hover={{
-            color: useColorModeValue("purple.500", "purple.300"),
-          }}
-          onClick={toggleColorMode}
         />
-
+        <ToggleTheme
+          aria-label="toggle theme"
+          display={{ base: "none", md: "flex" }}
+        />
         <Flex alignItems={"center"}>
           <Menu colorScheme="purple">
             <MenuButton

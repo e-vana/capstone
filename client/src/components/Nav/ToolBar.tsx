@@ -1,55 +1,36 @@
-import {
-  Box,
-  HStack,
-  Icon,
-  useColorModeValue,
-  useColorMode,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { HStack, IconButton, Icon, useColorModeValue } from "@chakra-ui/react";
 import { HiHome } from "react-icons/hi2";
-import {
-  HiCog,
-  HiMoon,
-  HiSun,
-  HiCurrencyDollar,
-  HiClock,
-} from "react-icons/hi";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 import { TabComponent, ToolBarComponent, iTab } from "./types";
-import AddExpense from "../Expense/AddExpense";
+import AddExpenseButton from "../Expense/AddExpenseButton";
+import ToggleTheme from "./ToggleTheme";
+import AddMilesButton from "../Miles/AddMilesButton";
 
 const Tab: TabComponent = ({ item }) => {
   const location = useLocation();
-  const color = useColorModeValue(
-    location.pathname === item.route ? "purple.500" : "gray.500",
-    location.pathname === item.route ? "purple.400" : "gray.400"
-  );
+  const variant = location.pathname === item.route ? "solid" : "ghost";
   return (
     <RouterLink to={item.route}>
       {item.route === "/home/user" ? (
         <>{item.icon}</>
       ) : (
-        <Icon as={item.icon} boxSize={7} color={color} />
+        <IconButton
+          aria-label="change page"
+          colorScheme="purple"
+          variant={variant}
+        >
+          <Icon as={item.icon} boxSize={5} />
+        </IconButton>
       )}
     </RouterLink>
   );
 };
 
 const ToolBar: ToolBarComponent = ({ ...rest }) => {
-  const { toggleColorMode } = useColorMode();
-  const { onOpen, isOpen, onClose } = useDisclosure();
   const TOOL_BAR_ITEMS: iTab[] = [
     {
       route: "/d",
       icon: HiHome,
-    },
-    {
-      route: "/d/settings",
-      icon: HiCog,
-    },
-    {
-      route: "/d/expenses",
-      icon: HiClock,
     },
   ];
   return (
@@ -57,7 +38,7 @@ const ToolBar: ToolBarComponent = ({ ...rest }) => {
       {...rest}
       width={"100%"}
       minH={"60px"}
-      borderColor={useColorModeValue("gray.200", "gray.900")}
+      borderColor={useColorModeValue("blackAlpha.300", "whiteAlpha.300")}
       bg={useColorModeValue("#ffffff", "#121212")}
       zIndex={5}
     >
@@ -65,28 +46,18 @@ const ToolBar: ToolBarComponent = ({ ...rest }) => {
         {TOOL_BAR_ITEMS.map((item) => (
           <Tab item={item} key={item.route} />
         ))}
-        <Box>
-          <Icon
-            as={HiCurrencyDollar}
-            boxSize={7}
-            color={useColorModeValue("gray.500", "gray.400")}
-            cursor={"pointer"}
-            onClick={onOpen}
-          />
-        </Box>
-        <Box>
-          <Icon
-            as={useColorModeValue(HiMoon, HiSun)}
-            color={useColorModeValue("gray.500", "gray.400")}
-            boxSize={7}
-            cursor={"pointer"}
-            _hover={{
-              color: useColorModeValue("purple.500", "purple.300"),
-            }}
-            onClick={toggleColorMode}
-          />
-        </Box>
-        <AddExpense isOpen={isOpen} onClose={onClose} />
+        <AddExpenseButton
+          aria-label="add-expense"
+          display={{ base: "flex", md: "none" }}
+        />
+        <AddMilesButton
+          aria-label="add-miles"
+          display={{ base: "flex", md: "none" }}
+        />
+        <ToggleTheme
+          aria-label="toggle theme"
+          display={{ base: "flex", md: "none" }}
+        />
       </HStack>
     </HStack>
   );
