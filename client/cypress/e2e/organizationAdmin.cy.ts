@@ -83,4 +83,13 @@ describe('organization admin functions spec', () => {
     cy.get("body").should('contain', "Test Event");
     cy.wait(1000);
   });
+
+  it("can view Event Details for the newly created event via the All Events table", () => {
+    cy.get(`[data-testid="${dummyOrgName}"] > :nth-child(2) > .chakra-button`).click(); // View More button
+
+    cy.get("[data-testid='eventsTableViewMoreBtn Test Event']").click();
+    cy.wait(1000);
+    // We should now see the Event Details page for the newly created event
+    cy.get("body").should('contain', "Test Event");
+  });
 });
