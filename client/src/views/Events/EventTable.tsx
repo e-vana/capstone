@@ -10,14 +10,12 @@ import {
   Text,
   Button,
   Stack,
-  
 } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
 import { EventTableComponent } from "./types";
 import { useAppSelector } from "../../app/hooks";
 import AddToCalendar from "../../components/AddModal/Calendar/AddToCalendar";
-import {format} from "date-fns";
-
+import { format } from "date-fns";
 
 export const EventTable: EventTableComponent = ({
   showTeamName = false,
@@ -49,7 +47,7 @@ export const EventTable: EventTableComponent = ({
         </Thead>
         <Tbody>
           {events.map((e) => (
-            <Tr key={"EventTableTd" + e.event_id}>
+            <Tr key={"EventTableTd" + e?.event_id}>
               <Td>
                 {/* TODO: For some reason the events have a .name instead of .event_name here */}
                 {e?.event_name || e?.name || "Unnamed Event"}
@@ -93,32 +91,28 @@ export const EventTable: EventTableComponent = ({
                 {e.address_street}, {e.address_city}, {e.address_state}{" "}
                 {e.address_zipcode}
               </Td>
-              
               <Td>
-              <Stack direction={['column']} spacing={4} align='center'>             
-                <Button
-                  as={RouterLink}
-                  variant="solid"
-                  size={"sm"}
-                  to={"/d" + "/" + selectedOrg + "/" + (e?.event_id || e?.id)}
-                  data-testid={"eventsTableViewMoreBtn " + (e?.event_name || e?.name)}
-                >
-                  View Event
-                </Button>
-                                                       
-                <AddToCalendar 
-                name = {e?.event_name || e?.name}
-                description= {e.event_description}
-                location ={e.address_street + e.address_city + e.address_state + "" + e.address_zipcode}
-                startDate= {format(new Date(e.start_time), "yyy-MM-dd")}
-                endDate= {format(new Date(e.end_time), "yyy-MM-dd")}
-                startTime= {new Date(e.start_time).toTimeString().slice(0,5)}
-                endTime={new Date(e.end_time).toTimeString().slice(0,5)}
-                />
-                </Stack >                          
-                 
+                <Stack direction={['column']} spacing={4} align='center'>
+                  <Button
+                    as={RouterLink}
+                    variant="solid"
+                    size={"sm"}
+                    to={"/d" + "/" + selectedOrg + "/" + (e?.event_id || e?.id)}
+                    data-testid={"eventsTableViewMoreBtn " + (e?.event_name || e?.name)}
+                  >
+                    View Event
+                  </Button>
+                  <AddToCalendar
+                    name={e?.event_name || e?.name}
+                    description={e.event_description}
+                    location={e.address_street + e.address_city + e.address_state + "" + e.address_zipcode}
+                    startDate={format(new Date(e.start_time), "yyy-MM-dd")}
+                    endDate={format(new Date(e.end_time), "yyy-MM-dd")}
+                    startTime={new Date(e.start_time).toTimeString().slice(0, 5)}
+                    endTime={new Date(e.end_time).toTimeString().slice(0, 5)}
+                  />
+                </Stack>
               </Td>
-              
             </Tr>
           ))}
         </Tbody>
