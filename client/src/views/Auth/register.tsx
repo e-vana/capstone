@@ -19,7 +19,7 @@ import {
   ListItem,
 } from "@chakra-ui/react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { useMutation } from "react-query";
 import { Helmet } from "react-helmet";
@@ -138,7 +138,7 @@ const Register: RegisterComponent = () => {
             borderColor={useColorModeValue("transparent", "whiteAlpha.300")}
             p={8}
           >
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={(e: FormEvent) => e.preventDefault()}>
               <Stack spacing={4}>
                 <HStack>
                   <Box>
@@ -163,7 +163,7 @@ const Register: RegisterComponent = () => {
                   </Box>
                 </HStack>
                 <FormControl id="email" isRequired>
-                  <FormLabel>Email address</FormLabel>
+                  <FormLabel>Email Address</FormLabel>
                   <Input
                     type="email"
                     value={email}
