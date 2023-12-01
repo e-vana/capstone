@@ -91,7 +91,5 @@ describe('organization admin functions spec', () => {
     cy.wait(1000);
     // We should now see the Event Details page for the newly created event
     cy.get("body").should('contain', "Test Event");
-    
-  
   });
 });
