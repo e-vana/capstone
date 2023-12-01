@@ -90,7 +90,13 @@ const HeroView = () => {
               <Button as={RouterLink} to={"/login"} rounded={"full"}>
                 Login
               </Button>
+              
             </Stack>
+            
+        <Stack >
+        <Button display={{ base: 'none', md: 'inline-block' }} rounded={"full"} size= 'sm' onClick={ scrollToImage } >Learn More</Button>
+        </Stack>
+     
           </Stack>
         </Flex>
         <Flex
@@ -128,11 +134,12 @@ const HeroView = () => {
 <Box >
     
         
-      <Flex flex={0} flexDir={"row"} alignItems={{ base: "center", md: "center"}} justifyContent={{base: "center", md: "center"}} zIndex={1}>
+      {/* <Flex flex={0} flexDir={"row"} alignItems={{ base: "center", md: "center"}} justifyContent={{base: "center", md: "center"}} zIndex={1}>
         <Stack direction={{base:"row", md:"row"}} spacing={0}>
-          <Button display={{ base: 'none', md: 'inline-block' }} onClick={ scrollToImage } position={"absolute"} top={750}>Learn More</Button>
+        <Button display={{ base: 'none', md: 'inline-block' }} rounded={"full"} size= 'sm' onClick={ scrollToImage } >Learn More</Button>
         </Stack>
-      </Flex>
+      </Flex> */}
+      
 
 {/* organizations */}
       <Flex padding={20} flex={1} flexDir={"row"} justify={"center"}  maxHeight={{base: "600", md: "500"}}>
