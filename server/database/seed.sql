@@ -1,3 +1,6 @@
+DROP DATABASE test;
+CREATE DATABASE test;
+USE test;
 DROP TABLE IF EXISTS permissions;
 DROP TABLE IF EXISTS work_expenses;
 DROP TABLE IF EXISTS work_miles;

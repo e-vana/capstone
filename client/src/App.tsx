@@ -29,6 +29,7 @@ import ExpenseView from "./views/Expenses/ExpenseView";
 import SettingsPage from "./views/Settings/SettingsPage";
 import OrganizationView from "./views/Organizations";
 import EventsView from "./views/Events";
+import ContactUs from "./views/ContactUs";
 import MilesView from "./views/Miles/MilesView";
 
 export const queryClient = new QueryClient({
@@ -108,6 +109,11 @@ const router = createBrowserRouter([
         path: "/register",
         element: <Register />,
       },
+      {
+        path: "/ContactUs",
+        element: <ContactUs />,
+      },
+
     ],
 
     errorElement: <ErrorPage code={404} message="Page Not Found" />,
