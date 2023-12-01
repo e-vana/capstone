@@ -49,7 +49,6 @@ export const EventTable: EventTableComponent = ({
           {events.map((e) => (
             <Tr key={"EventTableTd" + e?.event_id}>
               <Td>
-                {/* TODO: For some reason the events have a .name instead of .event_name here */}
                 {e?.event_name || e?.name || "Unnamed Event"}
                 {new Date(Date.now()) > new Date(e.end_time) ? (
                   <Badge
