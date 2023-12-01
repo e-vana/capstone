@@ -12,11 +12,11 @@ import {
   Box
 } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
-import organization from "/Users/johncrabtree/Documents/capstone/capstone/client/src/views/images/organization.png";
-import tasks from "/Users/johncrabtree/Documents/capstone/capstone/client/src/views/images/tasks.png";
-import events from "/Users/johncrabtree/Documents/capstone/capstone/client/src/views/images/events.png";
-import qrcode from "/Users/johncrabtree/Documents/capstone/capstone/client/src/views/images/qrcode.png";
-import expense from "/Users/johncrabtree/Documents/capstone/capstone/client/src/views/images/expense.png";
+import organization from "../../src/views/images/expense.png";
+import tasks from "../../src/views/images/expense.png";
+import events from "../../src/views/images/expense.png";
+import qrcode from "../../src/views/images/expense.png";
+import expense from "../../src/views/images/expense.png";
 
 
 const HeroView = () => {
@@ -29,7 +29,7 @@ const HeroView = () => {
           behavior: "smooth",
         });
       }
-  };
+  }
 
   return (
     <>
