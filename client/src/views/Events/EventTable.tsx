@@ -94,6 +94,7 @@ export const EventTable: EventTableComponent = ({
                   variant="solid"
                   size={"sm"}
                   to={"/d" + "/" + selectedOrg + "/" + (e?.event_id || e?.id)}
+                  data-testid={"eventsTableViewMoreBtn " + (e?.event_name || e?.name)}
                 >
                   View Event
                 </Button>
