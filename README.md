@@ -1,5 +1,5 @@
 # VillageHours - A Non-profit Organization Event and Employee Management System
-## KSU Fall 2023 Capstone Project - Team 6
+## KSU Fall 2023 Capstone Project - Team 4
 ### Development Team Members:
 - Frederik Ackander
 - John Crabtree
