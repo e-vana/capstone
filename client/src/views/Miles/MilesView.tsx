@@ -10,12 +10,13 @@ import {
   Tabs,
 } from "@chakra-ui/react";
 import { useQuery } from "react-query";
-import { getUserMiles } from "../../api/miles.api";
+import { getUserMileageBreakdown, getUserMiles } from "../../api/miles.api";
 import { useState } from "react";
 import ExpenseFilter from "../Expenses/ExpenseFilter";
 import MilesTable from "./MilesTable";
 import MilesCards from "./MilesCards";
 import MilesTotal from "./MilesTotal";
+import PieChart from "../../components/Charts/PieChart";
 
 const MilesView = () => {
   const [filter, setFilter] = useState<string>("");
@@ -29,9 +30,26 @@ const MilesView = () => {
     mileage.organization_name.toLowerCase().includes(filter.toLowerCase())
   );
 
+  const { data: MileageBreakdown } = useQuery({
+    queryKey: ["getUserMileageBreakdown"],
+    queryFn: getUserMileageBreakdown, //eslint-disable-line,
+  });
+
+  const convertedData = MileageBreakdown?.mileage_breakdown.map((mileage) => ({
+    id: mileage.organization_name,
+    label: mileage.organization_name,
+    value: parseFloat(mileage.total_mileage),
+  }));
+
   return (
     <Stack flex={1} height={"100%"}>
-      <Flex display={{ base: "none", md: "flex" }} gap={3} flex={1} p={5}>
+      <Flex
+        display={{ base: "none", md: "flex" }}
+        gap={3}
+        flex={1}
+        p={5}
+        height={"100%"}
+      >
         <Stack
           width={"70%"}
           overflowY={"auto"}
@@ -46,7 +64,9 @@ const MilesView = () => {
           <Divider orientation="vertical" />
         </Stack>
         <Stack width={"30%"}>
-          <MilesTotal />
+          <MilesTotal height={400}>
+            {convertedData && <PieChart convertedData={convertedData} />}
+          </MilesTotal>
         </Stack>
       </Flex>
 
@@ -67,7 +87,9 @@ const MilesView = () => {
             <MilesCards miles={filteredMiles} />
           </TabPanel>
           <TabPanel>
-            <MilesTotal />
+            <MilesTotal height={150}>
+              {convertedData && <PieChart convertedData={convertedData} />}
+            </MilesTotal>
           </TabPanel>
         </TabPanels>
       </Tabs>

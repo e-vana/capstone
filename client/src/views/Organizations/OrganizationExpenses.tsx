@@ -1,7 +1,10 @@
 import { useContext, useState } from "react";
 import { Stack, Flex, Heading } from "@chakra-ui/react";
 import { useQuery } from "react-query";
-import { getExpensesForAnOrganization } from "../../api/expenses.api";
+import {
+  getExpensesForAnOrganization,
+  getOrgExpenseBreakdown,
+} from "../../api/expenses.api";
 import OrganizationContext from "./OrganizationContext";
 import ExpenseFilter from "../Expenses/ExpenseFilter";
 import ExpenseTable from "../Expenses/ExpenseTable";
@@ -14,12 +17,25 @@ const OrganizationExpenses = () => {
     () => getExpensesForAnOrganization(orgData?.id!) // eslint-disable-line
   );
 
+  const { data: OrgExpBreakdown } = useQuery({
+    queryKey: ["getOrgExpenseBreakdown"],
+    queryFn: () => getOrgExpenseBreakdown(orgData?.id!), // eslint-disable-line
+  });
+
   const filteredData = ExpenseData?.expenses.filter(
     (expense) =>
       expense.description.toLowerCase().includes(filter.toLowerCase()) ||
       expense.organization_name.toLowerCase().includes(filter.toLowerCase()) ||
       expense.user_first_name.toLowerCase().includes(filter.toLowerCase())
   );
+
+  const convertedData = OrgExpBreakdown?.expense_breakdown.map((expense) => ({
+    id: expense.user_name,
+    label: expense.user_name,
+    value: parseFloat(expense.total_expenses),
+  }));
+  console.log(OrgExpBreakdown);
+  console.log(convertedData);
 
   return (
     <Flex display={{ base: "none", md: "flex" }} gap={3} flex={1}>

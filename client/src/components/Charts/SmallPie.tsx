@@ -3,7 +3,7 @@ import { ResponsivePie } from "@nivo/pie";
 import { Theme } from "@nivo/core";
 import { PieChartComponent } from "./types";
 
-const PieChart: PieChartComponent = ({ convertedData, valueFormat }) => {
+const SmallPie: PieChartComponent = ({ convertedData, valueFormat }) => {
   const COLORS = ["#9F7AEA", "#ED64A6", "#38B2AC"];
   const textColor = useColorModeValue("#303030", "#ffffff");
   const bgColor = useColorModeValue("#ffffff", "#303030");
@@ -23,12 +23,11 @@ const PieChart: PieChartComponent = ({ convertedData, valueFormat }) => {
   return (
     <ResponsivePie
       data={convertedData}
-      margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
+      margin={{ top: 0, right: 0, bottom: 60, left: 0 }}
       colors={COLORS}
       innerRadius={0.5}
       padAngle={0.7}
       cornerRadius={3}
-      enableArcLabels={true}
       arcLabelsTextColor={textColor}
       arcLinkLabelsColor={textColor}
       valueFormat={valueFormat}
@@ -39,4 +38,4 @@ const PieChart: PieChartComponent = ({ convertedData, valueFormat }) => {
   );
 };
 
-export default PieChart;
+export default SmallPie;

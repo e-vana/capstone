@@ -6,6 +6,7 @@ import {
   TabPanel,
   Tab,
   TabPanels,
+  SimpleGrid,
 } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
@@ -26,6 +27,8 @@ import {
 import { useAppDispatch } from "../../app/hooks";
 import { useEffect } from "react";
 import OrganizationActivity from "./OrganizationActivity";
+import OrganizationExpenseTotal from "./OrganizationExpenseTotal";
+import OrganizationMilesTotal from "./OrganizationMilesTotal";
 
 export const FAKE_MEMBERS = [
   {
@@ -115,6 +118,8 @@ const OrganizationPage = () => {
           <Tabs isLazy colorScheme="purple" variant={"enclosed"}>
             <TabList>
               <Tab>Overview</Tab>
+              <Tab>Teams</Tab>
+              <Tab>Events</Tab>
               <Tab>Activity</Tab>
             </TabList>
             <TabPanels>
@@ -125,15 +130,30 @@ const OrganizationPage = () => {
                   justify={"start"}
                   gap={5}
                 >
-                  <Stack width={{ base: "100%", md: "33%" }}>
+                  <Stack width={{ base: "100%", md: "40%" }}>
                     <OrganizationHeader>{orgData?.name}</OrganizationHeader>
                     <OrganizationMembers />
                   </Stack>
-                  <Stack width={{ base: "100%", md: "66%" }}>
-                    <OrganizationEvents />
-                    <OrganizationTeams />
-                  </Stack>
+                  <SimpleGrid
+                    width={{ base: "100%", md: "60%" }}
+                    columns={2}
+                    alignItems={"start"}
+                    gap={5}
+                  >
+                    <OrganizationExpenseTotal />
+                    <OrganizationMilesTotal />
+                  </SimpleGrid>
                 </Flex>
+              </TabPanel>
+              <TabPanel>
+                <Stack width={{ base: "100%", md: "100%" }}>
+                  <OrganizationTeams />
+                </Stack>
+              </TabPanel>
+              <TabPanel>
+                <Stack width={{ base: "100%", md: "100%" }}>
+                  <OrganizationEvents />
+                </Stack>
               </TabPanel>
               <TabPanel>
                 <OrganizationActivity />

@@ -16,6 +16,11 @@ export interface iExpenseBreakdown {
   total_expenses: string;
 }
 
+export interface iOrgExpenseBreakdown {
+  user_name: string;
+  total_expenses: string;
+}
+
 export interface iExpenseJoinEventJoinTeamJoinOrgJoinUser {
   user_email: string;
   user_first_name: string;
@@ -65,4 +70,9 @@ export interface iGetExpenseByUser {
 export interface iGetUserExpenseBreakdown {
   success: boolean;
   expense_breakdown: iExpenseBreakdown[];
+}
+
+export interface iGetOrgExpenseBreakdown {
+  success: boolean;
+  expense_breakdown: iOrgExpenseBreakdown[];
 }
