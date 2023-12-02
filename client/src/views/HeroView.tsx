@@ -12,10 +12,10 @@ import {
   Box
 } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
-import organization from "../../src/views/images/expense.png";
-import tasks from "../../src/views/images/expense.png";
-import events from "../../src/views/images/expense.png";
-import qrcode from "../../src/views/images/expense.png";
+import organization from "../../src/views/images/organization.png";
+import tasks from "../../src/views/images/tasks.png";
+import events from "../../src/views/images/events.png";
+import qrcode from "../../src/views/images/qrcode.png";
 import expense from "../../src/views/images/expense.png";
 
 const HeroView = () => {
