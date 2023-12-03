@@ -14,11 +14,12 @@ const MilesTable: MilesTableComponent = ({ miles }) => {
   return (
     <>
       <TableContainer>
-        <Table>
+        <Table colorScheme="purple">
           <Thead>
             <Tr>
               <Th>Organization</Th>
               <Th>Miles</Th>
+              <Th>User</Th>
               <Th>Date</Th>
             </Tr>
           </Thead>

@@ -6,6 +6,7 @@ import {
   iGetExpensesByEventResponse,
   iGetExpensesByOrganizationResponse,
   iGetExpensesByTeamResponse,
+  iGetOrgExpenseBreakdown,
   iGetUserExpenseBreakdown,
 } from "../interfaces/expenses.interface";
 
@@ -118,3 +119,19 @@ export const getUserExpenseBreakdown =
     );
     return res.data;
   };
+
+export const getOrgExpenseBreakdown = async function (
+  orgId: number
+): Promise<iGetOrgExpenseBreakdown> {
+  const token = localStorage.getItem("token");
+  if (!token) throw new Error("no token, please log in");
+  const res = await axios.get<iGetOrgExpenseBreakdown>(
+    `${import.meta.env.VITE_BASE_URL}/organizations/${orgId}/expense-breakdown`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return res.data;
+};

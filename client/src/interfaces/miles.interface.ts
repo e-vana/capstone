@@ -38,6 +38,11 @@ export interface iCreateMiles {
   date_traveled: string;
 }
 
+export interface iOrgMileageBreakdown {
+  user_name: string;
+  total_mileage: string;
+}
+
 export interface iMileageBreakdown {
   organization_name: string;
   total_mileage: string;
@@ -46,4 +51,9 @@ export interface iMileageBreakdown {
 export interface iGetUserMileageBreakdown {
   success: boolean;
   mileage_breakdown: iMileageBreakdown[];
+}
+
+export interface iGetOrgMileageBreakdown {
+  success: boolean;
+  mileage_breakdown: iOrgMileageBreakdown[];
 }

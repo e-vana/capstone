@@ -11,6 +11,7 @@ const ExpenseTableRow: ExpenseTableRowComponent = ({ expense }) => {
         <Td>{expense.expense_name}</Td>
         <Td>${expense.amount}</Td>
         <Td>{expense.organization_name}</Td>
+        <Td>{expense.user_first_name}</Td>
         <Td>
           <Button onClick={onOpen}>See More</Button>
         </Td>

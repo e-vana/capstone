@@ -5,7 +5,7 @@ const OrganizationContainer: OrganizationContainerComponent = ({
   children,
 }) => {
   return (
-    <Stack flex={1} justify={"start"} width={"100%"} p={5}>
+    <Stack flex={1} justify={"start"} width={"100%"}>
       {children}
     </Stack>
   );

@@ -6,6 +6,7 @@ import {
   iGetMilesByOrganizationResponse,
   iGetMilesByTeamResponse,
   iGetMilesByUser,
+  iGetOrgMileageBreakdown,
   iGetUserMileageBreakdown,
   iMilesJoinEventJoinTeamJoinOrgJoinUser,
 } from "../interfaces/miles.interface";
@@ -51,13 +52,13 @@ export const getMilesForATeam = async function (
   return response.data;
 };
 // GET MILES FOR A PARTICULAR ORGANIZATION
-export const getExpensesForAnOrganization = async function (
+export const getMilesForAnOrganization = async function (
   orgId: number
 ): Promise<iGetMilesByOrganizationResponse> {
   const token = localStorage.getItem("token");
   if (!token) throw new Error("no token, please log in");
   const response = await axios.get<iGetMilesByOrganizationResponse>(
-    `${import.meta.env.VITE_BASE_URL}/organizations/${orgId}/expenses`,
+    `${import.meta.env.VITE_BASE_URL}/organizations/${orgId}/miles`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -121,3 +122,19 @@ export const getUserMileageBreakdown =
     console.log(response.data);
     return response.data;
   };
+
+export const getOrgMileageBreakdown = async function (
+  orgId: number
+): Promise<iGetOrgMileageBreakdown> {
+  const token = localStorage.getItem("token");
+  if (!token) throw new Error("no token, please log in");
+  const response = await axios.get<iGetOrgMileageBreakdown>(
+    `${import.meta.env.VITE_BASE_URL}/organizations/${orgId}/miles-breakdown`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return response.data;
+};

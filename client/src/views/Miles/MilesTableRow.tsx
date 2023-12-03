@@ -9,6 +9,7 @@ const MilesTableRow: MilesTableRowComponent = ({ miles }) => {
       <Tr>
         <Td>{miles.organization_name}</Td>
         <Td>{miles.mileage}</Td>
+        <Td>{miles.user_first_name}</Td>
         <Td>{formattedDate}</Td>
       </Tr>
     </>

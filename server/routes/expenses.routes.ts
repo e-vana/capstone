@@ -1,4 +1,4 @@
-import { Request, Response, Router } from "express";
+import { Request, Response, Router, query } from "express";
 import { body, validationResult } from "express-validator";
 import mysql, { RowDataPacket, ResultSetHeader } from "mysql2/promise";
 import decodeToken from "../middleware/token.middleware";
@@ -39,7 +39,7 @@ router.get(
         e.end_time as event_end_time
         FROM work_expenses we
         JOIN events e ON we.event_id = e.id
-        JOIN users u ON we.user_id
+        JOIN users u ON we.user_id = u.id
         JOIN teams t ON e.team_id = t.id
         JOIN organizations o ON t.organization_id = o.id
         WHERE o.id = ?
@@ -94,7 +94,7 @@ router.get(
         e.end_time as event_end_time
         FROM work_expenses we
         JOIN events e ON we.event_id = e.id
-        JOIN users u ON we.user_id
+        JOIN users u ON we.user_id = u.id
         JOIN teams t ON e.team_id = t.id
         JOIN organizations o ON t.organization_id = o.id
         WHERE o.id = ?
@@ -113,7 +113,7 @@ router.get(
 );
 
 /**
- * @route GET /:organization_id/teams/:team_id/events/:event_id/expenses
+ * @route GET /:organization_id/expenses
  * @desc Get expenses for an entire organization
  * @param organization_id - The integer id of the organization
  * @returns The event with the given id
@@ -143,7 +143,7 @@ router.get(
       e.end_time as event_end_time
       FROM work_expenses we
       JOIN events e ON we.event_id = e.id
-      JOIN users u ON we.user_id
+      JOIN users u ON we.user_id = u.id
       JOIN teams t ON e.team_id = t.id
       JOIN organizations o ON t.organization_id = o.id
       WHERE o.id = ?
@@ -153,7 +153,37 @@ router.get(
         [parseInt(req.params.organization_id)]
       );
       await connection.end();
+      console.log("RESULTS FROM orgId/expenses: \n", getExpensesResults);
       res.status(200).json({ success: true, expenses: getExpensesResults });
+    } catch (error) {
+      res.status(500).json({ success: false, error });
+    }
+  }
+);
+
+router.get(
+  "/:organization_id/expense-breakdown",
+  async (req: Request, res: Response) => {
+    try {
+      let connection = await mysql.createConnection(
+        process.env.DATABASE_URL as string
+      );
+      let orgExpenseBreakdown = `SELECT
+        u.first_name as user_name,
+        SUM(we.amount) as total_expenses
+        FROM work_expenses we 
+        JOIN events e on we.event_id = e.id 
+        JOIN users u on we.user_id = u.id 
+        JOIN teams t on e.team_id = t.id 
+        JOIN organizations o on t.organization_id = o.id 
+        WHERE o.id = ?
+        GROUP BY user_name;
+      `;
+
+      const [results, fields] = await connection.query(orgExpenseBreakdown, [
+        req.params.organization_id,
+      ]);
+      res.status(200).json({ success: true, expense_breakdown: results });
     } catch (error) {
       res.status(500).json({ success: false, error });
     }

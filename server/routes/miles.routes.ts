@@ -36,7 +36,7 @@ router.get(
         e.end_time as event_end_time
         FROM work_miles wm
         JOIN events e ON wm.event_id = e.id
-        JOIN users u ON wm.user_id
+        JOIN users u ON wm.user_id = u.id
         JOIN teams t ON e.team_id = t.id
         JOIN organizations o ON t.organization_id = o.id
         WHERE o.id = ?
@@ -88,7 +88,7 @@ router.get(
         e.end_time as event_end_time
         FROM work_miles wm
         JOIN events e ON wm.event_id = e.id
-        JOIN users u ON wm.user_id
+        JOIN users u ON wm.user_id = u.id
         JOIN teams t ON e.team_id = t.id
         JOIN organizations o ON t.organization_id = o.id
         WHERE o.id = ?
@@ -107,7 +107,7 @@ router.get(
 );
 
 /**
- * @route GET /:organization_id/teams/:team_id/events/:event_id/miles
+ * @route GET /:organization_id/miles
  * @desc Get miles for an entire organization
  * @param organization_id - The integer id of the organization
  * @returns The event with the given id
@@ -132,7 +132,7 @@ router.get("/:organization_id/miles", async (req: Request, res: Response) => {
       e.end_time as event_end_time
       FROM work_miles wm
       JOIN events e ON wm.event_id = e.id
-      JOIN users u ON wm.user_id
+      JOIN users u ON wm.user_id = u.id
       JOIN teams t ON e.team_id = t.id
       JOIN organizations o ON t.organization_id = o.id
       WHERE o.id = ?
@@ -180,6 +180,38 @@ router.post(
       await connection.end();
       res.status(200).json({ success: true });
     } catch (error) {
+      res.status(500).json({ success: false, error });
+    }
+  }
+);
+
+router.get(
+  "/:organization_id/miles-breakdown",
+  async (req: Request, res: Response) => {
+    try {
+      let connection = await mysql.createConnection(
+        process.env.DATABASE_URL as string
+      );
+
+      let orgMilesBreakdown = `SELECT
+        u.first_name as user_name,
+        SUM(wm.mileage) as total_mileage
+        FROM work_miles wm 
+        JOIN events e on wm.event_id = e.id 
+        JOIN users u on wm.user_id = u.id 
+        JOIN teams t on e.team_id = t.id 
+        JOIN organizations o on t.organization_id = o.id 
+        WHERE o.id = ?
+        GROUP BY user_name;
+      `;
+
+      const [results, fields] = await connection.query(
+        orgMilesBreakdown,
+        req.params.organization_id
+      );
+      res.status(200).json({ success: true, mileage_breakdown: results });
+    } catch (error) {
+      console.log(error);
       res.status(500).json({ success: false, error });
     }
   }

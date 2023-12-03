@@ -1,4 +1,13 @@
-import { Flex, Stack } from "@chakra-ui/react";
+import {
+  Flex,
+  Stack,
+  Tabs,
+  TabList,
+  TabPanel,
+  Tab,
+  TabPanels,
+  SimpleGrid,
+} from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import { getOrganization } from "../../api/organizations.api";
@@ -15,8 +24,11 @@ import {
   setTeam,
   setTeams,
 } from "../../features/Organizations/organizationSlice";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useAppDispatch } from "../../app/hooks";
 import { useEffect } from "react";
+import OrganizationActivity from "./OrganizationActivity";
+import OrganizationExpenseTotal from "./OrganizationExpenseTotal";
+import OrganizationMilesTotal from "./OrganizationMilesTotal";
 
 export const FAKE_MEMBERS = [
   {
@@ -73,21 +85,20 @@ const OrganizationPage = () => {
         // The "global" team is initially named "Organization-wide Team"
         teamsData?.teams?.find((team) =>
           team.name.includes("Organization-wide Team")
-        )?.id
-        ||
-        // If the name's been changed, we can search for the lowest ID, since it'll have been
-        // created first. Ideally, the org-wide team would have a flag that we could use to identify it,
-        (teamsData?.teams?.reduce((acc, team) => {
-          if (team.id < acc.id) {
-            return team;
-          }
-          return acc;
-        }))?.id
-        || -1
+        )?.id ||
+          // If the name's been changed, we can search for the lowest ID, since it'll have been
+          // created first. Ideally, the org-wide team would have a flag that we could use to identify it,
+          teamsData?.teams?.reduce((acc, team) => {
+            if (team.id < acc.id) {
+              return team;
+            }
+            return acc;
+          })?.id ||
+          -1
       )
     );
   }, [orgData, teamsData, organizationId]); // eslint-disable-line react-hooks/exhaustive-deps
-  
+
   return (
     <>
       <OrganizationContext.Provider
@@ -103,23 +114,52 @@ const OrganizationPage = () => {
         }}
       >
         <OrganizationContainer>
-          <Flex
-            flexDir={{ base: "column", md: "row" }}
-            width={"100%"}
-            justify={"start"}
-            gap={5}
-          >
-            <Stack width={{ base: "100%", md: "33%" }}>
-              <OrganizationHeader>{orgData?.name}</OrganizationHeader>
-              <OrganizationTeams />
-            </Stack>
-            <Stack width={{ base: "100%", md: "33%" }}>
-              <OrganizationMembers />
-            </Stack>
-            <Stack width={{ base: "100%", md: "33%" }}>
-              <OrganizationEvents />
-            </Stack>
-          </Flex>
+          <Stack width={{ base: "100%", md: "33%" }}></Stack>
+          <Tabs isLazy colorScheme="purple" variant={"enclosed"}>
+            <TabList>
+              <Tab>Overview</Tab>
+              <Tab>Teams</Tab>
+              <Tab>Events</Tab>
+              <Tab>Activity</Tab>
+            </TabList>
+            <TabPanels>
+              <TabPanel>
+                <Flex
+                  flexDir={{ base: "column", md: "row" }}
+                  width={"100%"}
+                  justify={"start"}
+                  gap={5}
+                >
+                  <Stack width={{ base: "100%", md: "40%" }}>
+                    <OrganizationHeader>{orgData?.name}</OrganizationHeader>
+                    <OrganizationMembers />
+                  </Stack>
+                  <SimpleGrid
+                    width={{ base: "100%", md: "60%" }}
+                    columns={2}
+                    alignItems={"start"}
+                    gap={5}
+                  >
+                    <OrganizationExpenseTotal />
+                    <OrganizationMilesTotal />
+                  </SimpleGrid>
+                </Flex>
+              </TabPanel>
+              <TabPanel>
+                <Stack width={{ base: "100%", md: "100%" }}>
+                  <OrganizationTeams />
+                </Stack>
+              </TabPanel>
+              <TabPanel>
+                <Stack width={{ base: "100%", md: "100%" }}>
+                  <OrganizationEvents />
+                </Stack>
+              </TabPanel>
+              <TabPanel>
+                <OrganizationActivity />
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
         </OrganizationContainer>
       </OrganizationContext.Provider>
     </>

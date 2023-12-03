@@ -10,13 +10,17 @@ import {
   TabPanels,
 } from "@chakra-ui/react";
 import { useQuery } from "react-query";
-import { getUserExpenses } from "../../api/expenses.api";
+import {
+  getUserExpenses,
+  getUserExpenseBreakdown,
+} from "../../api/expenses.api";
 import ExpenseTable from "./ExpenseTable";
 import ExpenseCards from "./ExpenseCards";
 import { useState } from "react";
 import ExpenseFilter from "./ExpenseFilter";
 import ExpenseTotal from "./ExpenseTotal";
 import { Helmet } from "react-helmet";
+import PieChart from "../../components/Charts/PieChart";
 
 const ExpenseView = () => {
   const [filter, setFilter] = useState<string>("");
@@ -31,6 +35,16 @@ const ExpenseView = () => {
       expense.description.toLowerCase().includes(filter.toLowerCase()) ||
       expense.organization_name.toLowerCase().includes(filter.toLowerCase())
   );
+  const { data: ExpenseBreakdown } = useQuery({
+    queryKey: ["getMyExpenseBreakdown"],
+    queryFn: getUserExpenseBreakdown,
+  });
+
+  const convertedData = ExpenseBreakdown?.expense_breakdown.map((expense) => ({
+    id: expense.organization_name,
+    label: expense.organization_name,
+    value: parseFloat(expense.total_expenses),
+  }));
 
   return (
     <Stack flex={1} height={"100%"}>
@@ -50,7 +64,9 @@ const ExpenseView = () => {
           <Divider orientation="vertical" />
         </Stack>
         <Stack width={"30%"}>
-          <ExpenseTotal />
+          <ExpenseTotal height={400}>
+            {convertedData && <PieChart convertedData={convertedData} />}
+          </ExpenseTotal>
         </Stack>
       </Flex>
 

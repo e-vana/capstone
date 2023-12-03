@@ -1,5 +1,6 @@
 import { Dispatch, FunctionComponent, SetStateAction } from "react";
 import { iExpenseJoinEventJoinTeamJoinOrgJoinUser } from "../../interfaces/expenses.interface";
+import { StackProps } from "@chakra-ui/react";
 
 interface ExpenseTableProps {
   expenses: iExpenseJoinEventJoinTeamJoinOrgJoinUser[] | undefined;
@@ -22,7 +23,9 @@ interface ExpenseFilterProps {
   setFilter: Dispatch<SetStateAction<string>>;
 }
 
-interface ExpenseTotalProps {}
+interface ExpenseTotalProps extends StackProps {
+  children: React.ReactNode;
+}
 
 interface ExpenseModalProps {
   onClose: () => void;
