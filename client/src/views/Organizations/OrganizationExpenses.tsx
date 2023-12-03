@@ -8,6 +8,7 @@ import {
 import OrganizationContext from "./OrganizationContext";
 import ExpenseFilter from "../Expenses/ExpenseFilter";
 import ExpenseTable from "../Expenses/ExpenseTable";
+import ExpenseCards from "../Expenses/ExpenseCards";
 
 const OrganizationExpenses = () => {
   const { orgData } = useContext(OrganizationContext);
@@ -38,20 +39,30 @@ const OrganizationExpenses = () => {
   console.log(convertedData);
 
   return (
-    <Flex display={{ base: "none", md: "flex" }} gap={3} flex={1}>
-      <Stack
-        width={"100%"}
-        overflowY={"auto"}
-        height={"fit-content"}
-        maxH={"100%"}
+    <>
+      <Flex display={{ base: "none", md: "flex" }} gap={3} flex={1}>
+        <Stack
+          width={"100%"}
+          overflowY={"auto"}
+          height={"fit-content"}
+          maxH={"100%"}
+        >
+          <Heading size={"lg"} alignSelf={"start"}>
+            {orgData?.name} Activity:
+          </Heading>
+          <ExpenseFilter filter={filter} setFilter={setFilter} />
+          <ExpenseTable expenses={filteredData} />
+        </Stack>
+      </Flex>
+      <Flex
+        display={{ base: "flex", md: "none" }}
+        direction={"column"}
+        gap={3}
+        flex={1}
       >
-        <Heading size={"lg"} alignSelf={"start"}>
-          {orgData?.name} Activity:
-        </Heading>
-        <ExpenseFilter filter={filter} setFilter={setFilter} />
-        <ExpenseTable expenses={filteredData} />
-      </Stack>
-    </Flex>
+        <ExpenseCards expenses={filteredData} />
+      </Flex>
+    </>
   );
 };
 

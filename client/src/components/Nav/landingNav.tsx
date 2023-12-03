@@ -33,7 +33,7 @@ export const LandingNav = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { toggleColorMode } = useColorMode();
   return (
-    <Box position={"sticky"} top={0} left={0}>
+    <Box position={"sticky"} top={0} left={0} zIndex={20}>
       <Flex
         bg={useColorModeValue("white", "#121212")}
         color={useColorModeValue("gray.600", "white")}

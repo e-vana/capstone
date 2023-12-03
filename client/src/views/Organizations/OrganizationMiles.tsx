@@ -5,6 +5,7 @@ import { useContext, useState } from "react";
 import OrganizationContext from "./OrganizationContext";
 import { useQuery } from "react-query";
 import { getMilesForAnOrganization } from "../../api/miles.api";
+import MilesCards from "../Miles/MilesCards";
 
 const OrganizationMiles = () => {
   const { orgData } = useContext(OrganizationContext);
@@ -33,6 +34,9 @@ const OrganizationMiles = () => {
           <MilesTable miles={filteredMiles} />
         </Stack>
       </Flex>
+      <Stack display={{ base: "flex", md: "none" }}>
+        <MilesCards miles={filteredMiles} />
+      </Stack>
     </Stack>
   );
 };
